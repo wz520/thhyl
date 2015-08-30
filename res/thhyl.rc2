@@ -1,0 +1,50 @@
+//
+// THHYL.RC2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+	#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+
+/// 菜单项帮助
+
+STRINGTABLE
+BEGIN
+	IDM_OPEN			"有REP有真相"
+	IDC_CLOSEFILE		"回到程序启动时的画面"
+	IDM_MENUCOPY		"将录像信息复制到剪贴板"
+
+	IDM_SAVERAW			"导出REP文件的原始数据"
+	IDM_SAVERAWPART		"选取部分REP文件的原始数据，分别存入不同的文件中"
+	IDC_OPEN_SH_ALICE	"文花帖DS之后的游戏存档和REP的集中存放地"
+
+	IDC_CUTFILE			"配合资源管理器的【粘贴】可以移动文件"
+	IDC_COPYFILE		"配合资源管理器的【粘贴】可以拷贝文件"
+
+	IDM_OPENFOLDER		"找出这个REP的具体位置"
+	IDM_FILEDELETE		"你想删除啊？你想删除的话你就点嘛，你不点我怎么知道你想删除呢？虽然你把光标停在这里，可是你还是要点一下的。你真的想删除吗？那你就删除吧。你不是真的想删除吧，难道你真的想qazsxedcrfvtgbyhjnukmil,o;"
+
+	IDM_SETASSOC		"√关联 .rpy 文件"
+	IDM_DELASSOC		"×关联 .rpy 文件"
+
+	IDM_OPENPROP		"打开该 REP 文件的“属性”对话框"
+
+	IDM_MENUHELP		"？"
+	IDM_ABOUT			"ｉ"
+	IDM_EXIT			"ヾ(￣▽￣)Bye~Bye~"
+END
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+
+1                       24           "res\\manifest.xml"
+
+/////////////////////////////////////////////////////////////////////////////

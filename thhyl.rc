@@ -1,0 +1,438 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\thhyl.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_THHYL_DIALOG DIALOGEX 0, 0, 286, 269
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_ACCEPTFILES | WS_EX_APPWINDOW
+CAPTION "东方回映录"
+FONT 9, "新宋体"
+BEGIN
+    GROUPBOX        "录像文件",IDC_STATIC_RPYFILE,7,7,272,34
+    EDITTEXT        IDC_RPYFILE,14,20,257,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "▲",IDC_BROWSE,186,7,18,14
+    GROUPBOX        "录像信息",IDC_STATIC_RPYINFO,7,49,272,192
+    EDITTEXT        IDC_RPYINFO,13,63,259,169,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_NOHIDESEL | ES_READONLY | ES_WANTRETURN | WS_VSCROLL
+    PUSHBUTTON      "字体(&F)...",IDC_CHGFONT,86,45,53,14
+    PUSHBUTTON      "复制(&C)",IDC_COPY,149,45,48,14
+    PUSHBUTTON      "编辑注释(&M)...",IDC_EDITCOMMENT,203,45,67,14
+    CONTROL         "置顶(&T)",IDC_ONTOP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,247,54,15
+    PUSHBUTTON      "选项(&O)...",IDC_OPTION,99,248,60,14
+    PUSHBUTTON      "菜单(&N)",IDC_HELPHTML,169,248,51,14
+    PUSHBUTTON      "退出(&X)",IDCANCEL,229,248,50,14
+    PUSHBUTTON      "▼",IDC_CLOSEFILE,207,7,18,14
+    PUSHBUTTON      "C",IDC_COPYFILE,251,7,17,12
+    PUSHBUTTON      "X",IDC_CUTFILE,234,7,16,13
+    CONTROL         "自动完成(&A)",IDC_AUTOCOMP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,52,3,64,14
+END
+
+IDD_OPTION DIALOG DISCARDABLE  0, 0, 239, 253
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "选项"
+FONT 9, "新宋体"
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,64,233,50,14
+    PUSHBUTTON      "取消",IDCANCEL,124,233,50,14
+    GROUPBOX        "录像信息编码（TH09+）",IDC_STATIC,7,7,225,36
+    COMBOBOX        IDC_INFOCODE,14,21,143,12,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_INFOCODEEDIT,169,21,53,12,ES_AUTOHSCROLL
+    GROUPBOX        "录像注释编码（TH08+）",IDC_STATIC,7,49,225,40
+    COMBOBOX        IDC_COMMENTCODE,15,67,143,14,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_COMMENTCODEEDIT,170,67,53,12,ES_AUTOHSCROLL
+    GROUPBOX        "可选的录像信息（TH06 ~ TH09）",IDC_STATIC,7,94,225,35
+    CONTROL         "PlayTime*",IDC_CHK_PLAYTIME,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,109,57,11
+    CONTROL         "SlowRateByFPS*",IDC_CHK_SLOWRATE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,80,109,77,11
+    GROUPBOX        "其他",IDC_STATIC,7,135,225,76
+    CONTROL         "单击鼠标中键删除文件",IDC_CHK_MBTN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,147,103,12
+    CONTROL         "双击鼠标左键退出程序*",IDC_CHK_DBLCLK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,163,104,12
+    CONTROL         "删除文件之前要求确认",IDC_CHK_CONFIRM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,179,105,10
+    CONTROL         "花映塚里的琪露诺是⑨*",IDC_CHK_9,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,196,103,9
+    CONTROL         "打开复制后的目标文件*",IDC_CHK_COPYOPENDEST,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,127,147,105,9
+    LTEXT           "※ 鼠标移至带*的项目上会出现帮助提示",IDC_STATIC,7,218,
+                    225,12
+    CONTROL         "位于非标题栏也可拖动*",IDC_CHK_ANYDRAG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,127,162,105,10
+    CONTROL         "文件不存在时自动退出*",IDC_CHK_AUTOEXIT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,127,177,105,9
+END
+
+IDD_COMMENT DIALOG DISCARDABLE  0, 0, 242, 143
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+CAPTION "编辑注释"
+FONT 9, "新宋体"
+BEGIN
+    DEFPUSHBUTTON   "保存并关闭(&S)",IDOK,7,7,68,14
+    PUSHBUTTON      "关闭(&C)",IDCANCEL,81,7,60,14
+    PUSHBUTTON      "另存为(&A)...",IDC_SAVEAS,177,7,58,13
+    COMBOBOX        IDC_COMMENTCODE,13,40,94,15,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_COMMENTCODEEDIT,117,39,72,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_COMMENTEDIT,7,69,228,67,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
+                    WS_VSCROLL | WS_HSCROLL
+    GROUPBOX        "写入编码",IDC_STATIC,7,28,228,32
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 296, 171
+STYLE DS_MODALFRAME | WS_POPUP
+FONT 9, "新宋体"
+BEGIN
+    DEFPUSHBUTTON   "很好很强大",IDOK,239,7,50,29
+    EDITTEXT        IDC_EDITABOUT,7,7,223,157,ES_MULTILINE | ES_READONLY | 
+                    NOT WS_BORDER
+    PUSHBUTTON      "发邮件给我",IDC_MYEMAIL,240,42,50,21
+    PUSHBUTTON      "检查更新",IDC_UPDATEURL,240,70,49,19
+    ICON            IDR_MAINFRAME,IDC_ABOUTPIC,253,96,20,20,SS_NOTIFY
+END
+
+IDD_SAVERAWPART DIALOG DISCARDABLE  0, 0, 407, 263
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "保存原始数据"
+FONT 9, "新宋体"
+BEGIN
+    DEFPUSHBUTTON   "保存到文件夹(&S)...",IDOK,312,205,88,24
+    PUSHBUTTON      "关闭",IDCANCEL,312,235,88,21
+    CONTROL         "List1",IDC_SAVERAW_LIST,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,33,393,166
+    LTEXT           "",IDC_SAVERAWSIZE,7,7,308,22
+    GROUPBOX        "勾选",IDC_STATIC,7,205,186,33
+    PUSHBUTTON      "全部",IDC_SAVERAW_SELALL,71,216,49,15
+    PUSHBUTTON      "仅高亮",IDC_SAVERAW_SELHI,126,216,49,15
+    CONTROL         "保存成功后关闭该窗口(&C)",IDC_SAVERAW_CHKEXIT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,241,109,15
+    CONTROL         "覆盖已存在的文件(&O)",IDC_SAVERAW_OVERWRITE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,124,243,96,13
+    CONTROL         "反相",IDC_SAVERAW_INV,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,217,39,12
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,8,0,812
+ PRODUCTVERSION 1,8,0,812
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "Comments", "东方.rpy文件信息查看器\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "东方STG录像信息查看器\0"
+            VALUE "FileVersion", "1.80\0"
+            VALUE "InternalName", "thhyl\0"
+            VALUE "LegalCopyright", "wz520\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "thhyl.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "东方回映录\0"
+            VALUE "ProductVersion", "1.70\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_THHYL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 279
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 262
+    END
+
+    IDD_OPTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 247
+    END
+
+    IDD_COMMENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 136
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 289
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 164
+    END
+
+    IDD_SAVERAWPART, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 400
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 256
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\thhyl.ico"
+IDI_REIMU               ICON    DISCARDABLE     "res\\thhylrpy.ico"
+IDI_YINSMILE            ICON    DISCARDABLE     "res\\yx.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Pop"
+    BEGIN
+        MENUITEM "打开录像(&O)...\tCTRL+B,CTRL+O", IDM_OPEN
+        MENUITEM "关闭录像(&L)\tCTRL+L,CTRL+W", IDC_CLOSEFILE
+        MENUITEM "复制信息(&C)",                IDM_MENUCOPY
+        POPUP "编码(&N)"
+        BEGIN
+            MENUITEM "日文 &Shift-JIS\tF1",         33000
+            MENUITEM "简体中文 &GBK\tF2",           33001
+            MENUITEM "繁体中文 &Big5\tF3",          33002
+            MENUITEM SEPARATOR
+            MENUITEM "系统默认(&D)\tF4",            33003
+        END
+        POPUP "保存原始数据(&R)"
+        BEGIN
+            MENUITEM "全部(&A)...\tCtrl+R",         IDM_SAVERAW
+            MENUITEM "自定义(&C)...\tCtrl+Alt+R",   IDM_SAVERAWPART
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "打开 ShanghaiAlice 文件夹(&S)\tCtrl+S", IDC_OPEN_SH_ALICE
+        MENUITEM SEPARATOR
+        MENUITEM "剪切(&Y)\tF9",                IDC_CUTFILE
+        MENUITEM "复制(&U)\tF10",               IDC_COPYFILE
+        MENUITEM SEPARATOR
+        MENUITEM "打开文件夹(&F)\tCtrl+F",      IDM_OPENFOLDER
+        MENUITEM "移动/重命名到(&M)...\tF6",    IDM_FILEMOVETO
+        MENUITEM "复制到(&P)...\tF5",           IDM_FILECOPYTO
+        MENUITEM "删除(&D)\tF8,Delete",         IDM_FILEDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "属性(&T)...\tAlt+Enter",      IDM_OPENPROP
+        MENUITEM SEPARATOR
+        POPUP "文件关联(&A)"
+        BEGIN
+            MENUITEM "设置(&S)...",                 IDM_SETASSOC
+            MENUITEM "解除(&E)...",                 IDM_DELASSOC
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "帮助(&H)",                    IDM_MENUHELP
+        MENUITEM "关于(&B)",                    IDM_ABOUT
+        MENUITEM "退出(&X)",                    IDM_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCEL ACCELERATORS DISCARDABLE 
+BEGIN
+    "F",            IDM_OPENFOLDER,         VIRTKEY, CONTROL, NOINVERT
+    "R",            IDM_SAVERAW,            VIRTKEY, CONTROL, NOINVERT
+    "R",            IDM_SAVERAWPART,        VIRTKEY, CONTROL, ALT, NOINVERT
+    "B",            IDM_OPEN,               VIRTKEY, CONTROL, NOINVERT
+    "O",            IDM_OPEN,               VIRTKEY, CONTROL, NOINVERT
+    "S",            IDC_OPEN_SH_ALICE,      VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          IDM_CHANGEENCODESTART,  VIRTKEY, NOINVERT
+    VK_F2,          33001,                  VIRTKEY, NOINVERT
+    VK_F3,          33002,                  VIRTKEY, NOINVERT
+    VK_F4,          33003,                  VIRTKEY, NOINVERT
+    VK_F5,          IDM_FILECOPYTO,         VIRTKEY, NOINVERT
+    VK_F6,          IDM_FILEMOVETO,         VIRTKEY, NOINVERT
+    "L",            IDC_CLOSEFILE,          VIRTKEY, CONTROL, NOINVERT
+    "W",            IDC_CLOSEFILE,          VIRTKEY, CONTROL, NOINVERT
+    VK_F9,          IDC_CUTFILE,            VIRTKEY, NOINVERT
+    VK_F10,         IDC_COPYFILE,           VIRTKEY, NOINVERT
+    VK_RETURN,      IDM_OPENPROP,           VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_PLDEAD00            WAVE    DISCARDABLE     "res\\pldead00.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DLGFILTER           "录像文件 (*.rpy)|*.rpy|所有文件 (*.*)|*.*||"
+    IDS_RMA                 "霊夢A（霊符）"
+    IDS_RMB                 "霊夢B（夢符）"
+    IDS_MRSA                "魔理沙A（魔符）"
+    IDS_MRSB                "魔理沙B（恋符）"
+    IDS_EASY                "Easy"
+    IDS_NORMAL              "Normal"
+    IDS_HARD                "Hard"
+    IDS_LUNATIC             "Lunatic"
+    IDS_EXTRA               "Extra"
+    IDS_HINTNOFILE          "请将录像文件拖进来……"
+    IDS_SKYA                "咲夜A（幻符）"
+    IDS_SKYB                "咲夜B（時符）"
+    IDS_PH                  "Phantasm"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TH67DECERROR        "这貌似是 %s 的录像哦，但解析失败。可能的原因：\r\n1. 录像版本太老了（比如 妖妖梦 C63 体验版 的录像文件格式与正式版完全不同，本版本暂不支持）\r\n2. 文件已损坏！"
+    IDS_ISNOTRPY            "文件分析失败，可能的原因：\r\n1. 根本就不是东方STG的录像；\r\n2. 可能是东方STG的游戏录像，但所属游戏比【东方绀珠传】还要新。此版本暂不支持这样的录像；\r\n3. #@；\r\n4. 解码函数娘傲娇了；\r\n5. 解码函数娘在解码的过程中被紫妈神隐了；\r\n6. ..."
+    IDS_HINTSTART           "如何打开录像文件？\r\n* 从资源管理器中拖动录像文件到本窗口上然后松手；\r\n* 点击浏览按钮；\r\n* 在上面的框中输入完整路径回车。\r\n\r\n支持的录像格式：\r\nTH06-TH15（红魔乡、妖妖梦、永夜抄、花映冢、文花帖、风神录、地灵殿、星莲船、文花帖DS、妖精大战争、神灵庙、辉针城、弹幕天邪鬼、绀珠传），黄昏酒场。\r\n\r\n使用右下角的 【菜单】按钮->【文件关联】 可以设置/解除 .rpy 文件与本程序的关联。\r\n\r\n建立关联后，如果双击 .rpy 文件的同时按住 ScrollLock 键，则程序会将录像信息复制到剪贴板后自动退出。\r\n\r\n要获取更详细的使用说明请点击【菜单】按钮 -> 【帮助】。\r\n"
+    IDS_CONVCODEERROR       "Ansi2Unicode() error: "
+    IDS_CONVTOANSIERROR     "Unicode2Ansi() error: "
+    IDS_DLGFILTERALL        "所有文件 (*.*)|*.*||"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\thhyl.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
