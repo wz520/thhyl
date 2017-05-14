@@ -25,6 +25,10 @@ CString& TH8FormatGameTime(int nGameTime, CString& strGameTime);
 //转换TH12的UFOStock为汉字显示
 void TH12FormatUFOStock(DWORD UFOStock[], CString& outStrUFOStock);
 
+// 转换TH16的季节槽为 子机+槽的百分比形式
+// 返回负数表示输入有误
+double TH16FormatSeasonGauge(DWORD dwSeasonGauge);
+
 }
 
 #endif /* __RPYINFO_FORMATTER_H__55D15D62_ */

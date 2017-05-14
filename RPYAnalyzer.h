@@ -59,6 +59,7 @@ protected:
 	void TH13GenStageInfo();
 	void TH14GenStageInfo();
 	void TH15GenStageInfo();
+	void TH16GenStageInfo();
 	void TH128GenStageInfo();
 
 	// 无单关信息

@@ -255,6 +255,31 @@ typedef struct tagTH15_STAGEINFO {
     DWORD dwBombFragment;   // offset 0x84
 }TH15_STAGEINFO;
 
+// TODO: 用于体验版。不知正式版是否会改变。
+// NOTE: 从 dwScore 开始比 TH15 多偏移 4 bytes
+typedef struct tagTH16_STAGEINFO {
+    THHDR_STAGEINFO hdr;
+
+    int   nPosX;            // /128+224, player position X, offset 0x0c
+    int   nPosY;            // /128+16
+    DWORD _u1[8];           // offset 0x14
+	DWORD dwScore;			// offset 0x34
+    DWORD _u2[3];           // offset 0x38
+    DWORD dwGraze;          // offset 0x44
+    DWORD _u3[5];           // offset 0x48
+    DWORD dwMaxScore;       // offset 0x5c
+    DWORD _u4[2];           // offset 0x60
+    DWORD dwPower;          // offset 0x68
+    DWORD _u5[3];           // offset 0x6c
+    DWORD dwPlayer;         // offset 0x78
+    DWORD _uPlayerFragment; // offset 0x7c  // 因为本结构与上面 TH15_STAGEINFO 相似，如果本作有命碎片的话估计就在这里
+    DWORD dw1upCount;       // offset 0x80
+
+    DWORD dwBomb;           // offset 0x84
+    DWORD dwBombFragment;   // offset 0x88
+    DWORD dwSeasonGauge;    // offset 0x8c  // 本作新要素“季节槽”
+}TH16_STAGEINFO;
+
 // for TH95/TH125/TH143
 typedef struct tagTHHALF_INFO {
 	// Item ID and count, currently available for TH143 only.
@@ -344,10 +369,15 @@ public:
 		TH13_STAGEINFO* th13[6];
 		TH14_STAGEINFO* th14[6];
 		TH15_STAGEINFO* th15[6];
+		TH16_STAGEINFO* th16[6];
 		THHDR_STAGEINFO* thhdr[6];
 	 } pStageInfo;
 
 	THRPYINFO2();
+
+	inline bool isTrialVersion() {
+		return dwGameVersion < 0x100;
+	}
 };
 
 // ReplayDecode2()

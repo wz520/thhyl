@@ -596,7 +596,7 @@ static bool _GetStageInfo(
 				const bool isTH14Release = (wVersion == 2) &&
 					((pOutInfo->dwGameVersion == 0x100) ||  // th14 release
 					(pOutInfo->dwGameVersion == 0));  // th14 demo by ZUN
-				const bool isTH14Trial = (pOutInfo->dwGameVersion == 0x1); // th14 trial
+				const bool isTH14Trial = pOutInfo->isTrialVersion(); // th14 trial
 				if ( forceTH14 && ( isTH14Release || isTH14Trial ) ) { 
 					// treat as release version if forceTH14 is true
 					pOutInfo->wFlags |= forceTH14 ? RPYFLAG2_TH14RELEASE : RPYFLAG2_TH14TRIAL;
@@ -644,6 +644,26 @@ static bool _GetStageInfo(
 			o.difficulty   = 0x94;
 			o.lastStage    = 0x98;
 			o.stageSizeFix = 0x238;
+			break;
+		case mgc16:
+			// 目前只允许分析体验版录像。以免将来出现正式版录像时因为录像文件结构发生变化而使程序出错。
+			if (pOutInfo->isTrialVersion()) {
+				nMaxStageCount  = 3;
+				nMaxStageNumber = 3;
+				o.firstStage    = 0xa0;
+				offsetFlags     = 0x40;
+
+				// 大部分数据的偏移都比 TH15 少 8 bytes
+				o.slowRate     = 0x84-8;
+				o.stageCount   = 0x88-8;
+				o.ID           = 0x8c-8;
+				o.equipID      = 0x9c;
+				o.difficulty   = 0x94-8;
+				o.lastStage    = 0x98-8;
+				o.stageSizeFix = 0x284;
+			}
+			else
+				return false;
 			break;
 		// no stage info
 		case mgc95:
@@ -733,6 +753,7 @@ BYTE* ReplayDecode2(
 		case mgc13: // includes th14
 		case mgc143:
 		case mgc15:
+		case mgc16:
 			CALL_DECRYPT(0x5c, 0xe1, 0x400); CALL_DECRYPT(0x7d, 0x3a, 0x100);
 			break;
 		default:

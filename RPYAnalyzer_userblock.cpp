@@ -75,6 +75,7 @@ int CRpyInfoUserBlock::analyze()
 	case mgc128:
 	case mgc13:
 	case mgc15:
+	case mgc16:
 	case mgc143: {
 		ret = GetUBRpyInfo();
 		if (ret != RPYINFO_OK) break;

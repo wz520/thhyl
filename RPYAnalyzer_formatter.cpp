@@ -7,6 +7,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define lengthof(arr) (sizeof(arr)/sizeof(arr[0]))
+
 namespace RPYAnalyzer_formatter {
 
 CString& TH8FormatGameTime(int nGameTime, CString& strGameTime)
@@ -33,6 +35,31 @@ void TH12FormatUFOStock(DWORD UFOStock[], CString& outStrUFOStock)
 			: szUFOHZMap[UFOStock[i]];
 
 	outStrUFOStock = szUFOHZ;
+}
+
+double TH16FormatSeasonGauge(DWORD dwSeasonGauge)
+{
+	// 增加子机所需值列表（用于体验版，不知正式版是否有变化）
+	DWORD arrSubWeapon[] = {
+		0, 100, 230, 390, 590, 840, 1140
+	};
+	double result = -1.00;
+
+	if ( dwSeasonGauge == arrSubWeapon[lengthof(arrSubWeapon)-1] ) {
+		result = 6.00;  // 最大值需要特殊处理
+	}
+	else {
+		for ( int i = 1; i < lengthof(arrSubWeapon); ++i ) {
+			if ( dwSeasonGauge < arrSubWeapon[i] ) {
+				DWORD diff = arrSubWeapon[i] - arrSubWeapon[i-1];
+				DWORD diff_curr = dwSeasonGauge - arrSubWeapon[i-1];
+				result = ((double)diff_curr / (double)diff) + (double)(i-1);
+				break;
+			}
+		}
+	}
+
+	return result;
 }
 
 void FormatScore(const CString &inScore, CString &outScore, BOOL bAddZero,
