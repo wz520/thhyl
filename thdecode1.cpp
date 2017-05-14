@@ -447,10 +447,12 @@ static RPYINFOERR TH6GetInfo(BYTE* pData, DWORD size, THRPYINFO* pOutInfo)
 		memset(pInfo, 0, sizeof(TH6_RPYINFO));
 		memcpy(pInfo->szDate  , pData+0x10, sizeof(pInfo->szDate));
 		memcpy(pInfo->szPlayer, pData+0x19, sizeof(pInfo->szPlayer));
-		pInfo->cChara  = pData[0x06];
-		pInfo->cRank   = pData[0x07];
-		pInfo->dwScore = *(DWORD*)(pData+0x24);
-		pInfo->fDrop   = *(float*)(pData+0x2C);
+		pInfo->cGameMinorVersion = pData[0x04];
+		pInfo->cGameMajorVersion = pData[0x05];
+		pInfo->cChara            = pData[0x06];
+		pInfo->cRank             = pData[0x07];
+		pInfo->dwScore           = *(DWORD*)(pData+0x24);
+		pInfo->fDrop             = *(float*)(pData+0x2C);
 
 		// since TH6 doesn't need decompression,
 		// here we need to copy the decrypted data to pOutInfo->pDecodeData to keep consistency

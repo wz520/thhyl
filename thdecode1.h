@@ -63,12 +63,14 @@ typedef struct tagTH6_STAGEINFO{
 	BYTE  cPlayRank;
 }TH6_STAGEINFO;
 typedef struct tagTH6_RPYINFO{
-	char  szDate[9];	// date
-	char  szPlayer[9];	// player name
-	BYTE  cChara;		// chara(0:ReimuA 1:ReimuB 2:MarisaA 3:MarisaB)
-	BYTE  cRank;		// rank(0:Easy 1:Normal 2:Hard 3:Lunatic 4:Extra)
-	DWORD dwScore;		// score
-	float fDrop;		// drop
+	char  szDate[9];         // date
+	char  szPlayer[9];       // player name
+	BYTE  cGameMinorVersion; // for ver 1.02, this should be 2
+	BYTE  cGameMajorVersion; // for ver 1.02, this should be 1
+	BYTE  cChara;            // chara(0:ReimuA 1:ReimuB 2:MarisaA 3:MarisaB)
+	BYTE  cRank;             // rank(0:Easy 1:Normal 2:Hard 3:Lunatic 4:Extra)
+	DWORD dwScore;           // score
+	float fDrop;             // drop
 }TH6_RPYINFO;
 
 //TH7

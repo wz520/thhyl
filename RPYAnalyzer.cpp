@@ -245,11 +245,12 @@ void CRPYAnalyzer::TH6GenInfo()
 
 	// 整体信息
 	m_info.Format(
-		_T("遊戲: 東方紅魔郷\r\n")
+		_T("遊戲: 東方紅魔郷 %u.%02u\r\n")
 		_T("玩家: %s\r\n日期: %s\r\n")
 		_T("角色: %s\r\n難度: %s\r\n")
 		_T("分數: %s\r\n掉幀: %f%%\r\n"),
 
+		(DWORD)(pGeneralInfo->cGameMajorVersion), (DWORD)(pGeneralInfo->cGameMinorVersion), 
 		StrPlayer, StrDate,
 		StrChara, StrRank,
 		StrScore, pGeneralInfo->fDrop
