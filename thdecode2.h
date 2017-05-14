@@ -376,7 +376,10 @@ public:
 	THRPYINFO2();
 
 	inline bool isTrialVersion() {
-		return dwGameVersion < 0x100;
+		return dwGameVersion < 0x100 && dwGameVersion > 0;
+	}
+	inline bool isDebugVersion() {
+		return dwGameVersion == 0;
 	}
 };
 

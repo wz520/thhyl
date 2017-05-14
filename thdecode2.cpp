@@ -595,7 +595,7 @@ static bool _GetStageInfo(
 			{
 				const bool isTH14Release = (wVersion == 2) &&
 					((pOutInfo->dwGameVersion == 0x100) ||  // th14 release
-					(pOutInfo->dwGameVersion == 0));  // th14 demo by ZUN
+					pOutInfo->isDebugVersion());  // th14 demo by ZUN
 				const bool isTH14Trial = pOutInfo->isTrialVersion(); // th14 trial
 				if ( forceTH14 && ( isTH14Release || isTH14Trial ) ) { 
 					// treat as release version if forceTH14 is true
