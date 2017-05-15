@@ -250,10 +250,10 @@ void CRPYAnalyzer::TH6GenInfo()
 		_T("角色: %s\r\n難度: %s\r\n")
 		_T("分數: %s\r\n掉幀: %f%%\r\n"),
 
-		(DWORD)(pGeneralInfo->cGameMajorVersion), (DWORD)(pGeneralInfo->cGameMinorVersion), 
-		StrPlayer, StrDate,
-		StrChara, StrRank,
-		StrScore, pGeneralInfo->fDrop
+		(DWORD)(pGeneralInfo->cGameMajorVersion), (DWORD)(pGeneralInfo->cGameMinorVersion)
+		,StrPlayer, StrDate
+		,StrChara, StrRank
+		,StrScore, pGeneralInfo->fDrop
 	);
 
 	// Start to get stage info
@@ -320,8 +320,7 @@ void CRPYAnalyzer::TH7GenInfo()
 	const UINT CharaId[6] = { IDS_RMA, IDS_RMB, IDS_MRSA, IDS_MRSB, IDS_SKYA, IDS_SKYB };
 	const UINT RankId[6] = { IDS_EASY, IDS_NORMAL, IDS_HARD, IDS_LUNATIC, IDS_EXTRA, IDS_PH };
 	
-	CString StrPlayer(pGeneralInfo->szPlayer), StrDate(pGeneralInfo->szDate),
-			StrVersion(pGeneralInfo->szVersion);
+	CString StrPlayer(pGeneralInfo->szPlayer), StrDate(pGeneralInfo->szDate), StrVersion(pGeneralInfo->szVersion);
 	FormatScore(pGeneralInfo->dwScore, StrScore, TRUE);
 
 	if (m_pTHRpyInfo->wFlags & RPYFLAG_CNVER) // Chinese version
@@ -332,11 +331,11 @@ void CRPYAnalyzer::TH7GenInfo()
 	if (pGeneralInfo->cChara < lengthof(CharaId))
 		StrChara.LoadString(CharaId[pGeneralInfo->cChara]);
 	else
-		StrChara=STR_ERROR;
+		StrChara = STR_ERROR;
 	if (pGeneralInfo->cRank < lengthof(RankId))
 		StrRank.LoadString(RankId[pGeneralInfo->cRank]);
 	else
-		StrRank=STR_ERROR;
+		StrRank = STR_ERROR;
 	
 	// 整体信息
 	m_info.Format(
@@ -345,10 +344,10 @@ void CRPYAnalyzer::TH7GenInfo()
 		_T("角色: %s\r\n難度: %s\r\n")
 		_T("分數: %s\r\n掉幀: %f%%\r\n"),
 			
-		StrVersion,
-		StrPlayer, StrDate,
-		StrChara, StrRank,
-		StrScore, pGeneralInfo->fDrop
+		StrVersion
+		,StrPlayer, StrDate
+		,StrChara, StrRank
+		,StrScore, pGeneralInfo->fDrop
 	);
 
 	AddGameOptionsInfo(m_pTHRpyInfo->wFlags, TRUE);
@@ -537,8 +536,7 @@ void CRPYAnalyzer::TH9GenStageInfo()
 	ASSERT(lengthof(PlaceListJP) == lengthof(PlaceListCN) &&
 			lengthof(PlaceListJP) == lengthof(szChara));
 
-	CString StrFormat2,
-		StrStageScores[2]; // Player1 & Player2
+	CString StrFormat2, StrStageScores[2]; // StrStageScores[2] stands for Player1 & Player2
 
 	// Cirno is ⑨ ?
 	if (HasConfigOption(CFG_9))	{
@@ -675,8 +673,7 @@ void CRPYAnalyzer::THXAddExtraInfo(const THX_EXTRAINFO* pExtraInfo)
 /////////////
 void CRPYAnalyzer::THALGenStageInfo()
 {
-	THAL_STAGEINFO**       ppStageInfo = m_pTHRpyInfo2->pStageInfo.alco;
-
+	THAL_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.alco;
 	CString StrFormat2, StrStageScore;
 
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
@@ -708,8 +705,7 @@ void CRPYAnalyzer::THALGenStageInfo()
 
 void CRPYAnalyzer::TH10GenStageInfo()
 {
-	TH10_STAGEINFO**       ppStageInfo = m_pTHRpyInfo2->pStageInfo.th10;
-
+	TH10_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th10;
 	CString StrFormat2, StrStageScore, strPlayer;
 	
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
@@ -728,14 +724,14 @@ void CRPYAnalyzer::TH10GenStageInfo()
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
-			_T("        Power:%5d.%02d\r\n")
+			_T("        Power:%5d.%02d(%u)\r\n")
 			_T("         信仰:%8d\r\n")
 			_T("       連擊槽:%8d\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
 			, strPlayer
-			, pCurrStage->dwPower/20, pCurrStage->dwPower%20*5
+			, pCurrStage->dwPower/20, pCurrStage->dwPower%20*5, pCurrStage->dwPower
 			, pCurrStage->dwFaith*10
 			, pCurrStage->dwComboGauge
 			, pCurrStage->nPosX, pCurrStage->nPosY, transTH10PosX(pCurrStage->nPosX), transTH10PosY(pCurrStage->nPosY)
@@ -754,8 +750,7 @@ void CRPYAnalyzer::TH10GenStageInfo()
 
 void CRPYAnalyzer::TH11GenStageInfo()
 {
-	TH11_STAGEINFO**       ppStageInfo = m_pTHRpyInfo2->pStageInfo.th11;
-	
+	TH11_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th11;
 	CString StrFormat2, StrStageScore, strPlayer;
 
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
@@ -788,14 +783,14 @@ void CRPYAnalyzer::TH11GenStageInfo()
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
-			_T("        Power:%5u.%02u\r\n")
+			_T("        Power:%5u.%02u(%u)\r\n")
 			_T("        Graze:%8d\r\n")
 			_T("     通信強度:%8d\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
 			, strPlayer
-			, dwPowerInt, dwPowerDec
+			, dwPowerInt, dwPowerDec, pCurrStage->dwPower
 			, pCurrStage->dwGraze
 			, pCurrStage->dwConnect
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
@@ -814,8 +809,7 @@ void CRPYAnalyzer::TH11GenStageInfo()
 
 void CRPYAnalyzer::TH12GenStageInfo()
 {
-	TH12_STAGEINFO**       ppStageInfo = m_pTHRpyInfo2->pStageInfo.th12;
-	
+	TH12_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th12;
 	CString StrFormat2, StrStageScore, strPlayer, strBomb, strUFOStock;
 
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
@@ -868,7 +862,6 @@ void CRPYAnalyzer::TH12GenStageInfo()
 void CRPYAnalyzer::TH128GenStageInfo()
 {
 	TH128_STAGEINFO **ppStageInfo = m_pTHRpyInfo2->pStageInfo.th128;
-	
 	CString StrFormat2, StrStageScore;
 
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
@@ -913,8 +906,7 @@ void CRPYAnalyzer::TH128GenStageInfo()
 
 void CRPYAnalyzer::TH13GenStageInfo()
 {
-	TH13_STAGEINFO**       ppStageInfo           = m_pTHRpyInfo2->pStageInfo.th13;
-
+	TH13_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th13;
 	DWORD dwPlayerFragmentNorm = (DWORD)-1;
 	DWORD const PlayerFragmentNormList[] = {8, 10, 12, 15, 18, 20, 25}; // 奖命碎片定额列表，只用于正式版。
 	DWORD const dwBombFragmentNorm = (m_pTHRpyInfo2->wVersion > 1) // 加Bomb碎片的定额根据游戏版本而定
@@ -989,8 +981,7 @@ void CRPYAnalyzer::TH13GenStageInfo()
 
 void CRPYAnalyzer::TH14GenStageInfo()
 {
-	TH14_STAGEINFO**       ppStageInfo    = m_pTHRpyInfo2->pStageInfo.th14;
-	
+	TH14_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th14;
 	CString StrFormat2, StrStageScore, strPlayer, strBomb;
 
 	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th14sc.lst"));
@@ -1043,8 +1034,7 @@ void CRPYAnalyzer::TH14GenStageInfo()
 
 void CRPYAnalyzer::TH15GenStageInfo()
 {
-	TH15_STAGEINFO**       ppStageInfo    = m_pTHRpyInfo2->pStageInfo.th15;
-	
+	TH15_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th15;
 	CString StrFormat2, StrStageScore, strPlayer, strBomb;
 
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
