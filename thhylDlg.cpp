@@ -73,6 +73,7 @@ CThhylDlg::CThhylDlg(CWnd* pParent /*=NULL*/)
 	m_pRpyData = NULL;
 	m_pRpyAnalyzer = NULL;
 	m_dwRpySize = 0;
+	m_bNeedReanalyze = TRUE;
 
 	// Load Accelerator
 	m_hAccel = ::LoadAccelerators(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_ACCEL)); 
@@ -1138,7 +1139,7 @@ public:
 	int sel_start;
 	int sel_end;
 	int scrollpos;
-	CEditControlInfo(HWND hEdit) : sel_start(0), sel_end(0), scrollpos(0) {
+	explicit CEditControlInfo(HWND hEdit) : sel_start(0), sel_end(0), scrollpos(0) {
 		m_hEdit = hEdit;
 	}
 	void save() {

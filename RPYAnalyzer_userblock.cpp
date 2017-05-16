@@ -49,18 +49,17 @@ int CRpyInfoUserBlock::analyze()
 
 		if (m_isCNVer) {
 			m_info.Insert(0, _T("游戏名\t\t东方永夜抄 中文版\r\n"));
-			cwszFindForScore=_T("\r\n分数  \t\t");
+			cwszFindForScore = _T("\r\n分数  \t\t");
 		}
 		else {
 			m_info.Insert(0, _T("ゲーム\t\t東方永夜抄\r\n"));
-			cwszFindForScore=_T("\r\nスコア\t\t");
+			cwszFindForScore = _T("\r\nスコア\t\t");
 		}
 		bAddZero=FALSE;
 		break;
 		}
 	case mgc9:
 		ret = GetUBRpyInfo();
-		if (ret!=RPYINFO_OK) break;
 
 		break;
 	//  alco,95,125,alco 无需补 0

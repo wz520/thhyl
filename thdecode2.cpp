@@ -250,9 +250,7 @@ static unsigned char *STDCALL thdecode2_decompress(const unsigned char * const p
 
 static void STDCALL thdecode2_decrypt(char mask1, unsigned char *pData, signed int size1, char mask2, signed int key, signed int size2)
 {
-	unsigned char *pWorkArea, *v13, *v17;
-	signed int v14;
-	int v16, v29;
+	unsigned char *pWorkArea, *v13;
 
 	const int c1 = size1 % key & ((size1 % key >= key / 4) - 1);
 	if (size2 > size1)
@@ -260,10 +258,13 @@ static void STDCALL thdecode2_decrypt(char mask1, unsigned char *pData, signed i
 
 	v13 = pWorkArea = (unsigned char *)malloc(size2);
 	if ( pWorkArea ) {
-		v14 = v29 = size1 - (c1 + (size1 & 1));
+		int v29 = size1 - (c1 + (size1 & 1));
+		signed int v14 = v29;
 		memcpy(pWorkArea, pData, size2);
 		if ( v29 > 0 ) {
 			while ( size2 > 0 ) {
+				unsigned char *v17;
+				int v16;
 				if ( v14 < key )
 					key = v14;
 				pData += key;

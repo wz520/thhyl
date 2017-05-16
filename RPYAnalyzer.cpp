@@ -171,11 +171,10 @@ int CRPYAnalyzer::GenInfoWrapper2()
 
 int CRPYAnalyzer::Analyze()
 {
-	int ret = RPYINFO_UNKNOWNFORMAT;
 	const RPYMGC Header = *((RPYMGC*)m_pData);
 
 	// Get/Generate Stage Info for 6,7,8,9
-	ret = GenInfoWrapper();
+	int ret = GenInfoWrapper();
 	if ( ret != RPYINFO_OK ) {
 		// Get/Generate Stage Info for 10,11,12,128,13,alco,14,15
 		if ( ret == RPYINFO_UNKNOWNFORMAT )
@@ -780,19 +779,24 @@ void CRPYAnalyzer::TH11GenStageInfo()
             dwPowerDec = pCurrStage->dwPower%20*5; // 小数部分
 		}
 
+		// 计算最大得点
+		const DWORD base_pt = pCurrStage->dwConnect - pCurrStage->dwConnect % 10; // 确保个位为 0
+		const DWORD rate = min(pCurrStage->dwGraze/100, 899) + 100;
+		const DWORD max_pt = rate * base_pt / 100;
+
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
 			_T("        Power:%5u.%02u(%u)\r\n")
-			_T("        Graze:%8d\r\n")
-			_T("     通信強度:%8d\r\n")
+			_T("        Graze:%8u\r\n")
+			_T("     最大得點:%8u(%u×%u.%02u)\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
 			, strPlayer
 			, dwPowerInt, dwPowerDec, pCurrStage->dwPower
 			, pCurrStage->dwGraze
-			, pCurrStage->dwConnect
+			, max_pt, pCurrStage->dwConnect, rate/100, rate%100  // 为了显示确切的内部值，这里使用未作修改的 dwConnect 而不是 base_pt。正常情况下 dwConnect 应该等于 base_pt
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);
 		

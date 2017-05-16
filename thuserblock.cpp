@@ -180,9 +180,8 @@ bool RPYUserBlockMgr::set(int index, const RPYUserBlock* pBlock)
 
 const RPYUserBlock* RPYUserBlockMgr::getFirstBlockByID(RPYUBID id) const
 {
-	const RPYUserBlock* pBlock;
 	for ( int i = 0; i < MAXUSERBLOCKCOUNT; ++i ) {
-		pBlock = this->get(i);
+		const RPYUserBlock* pBlock = this->get(i);
 		if ( pBlock && pBlock->getHeader()->id == id ) {
 			return pBlock;
 		}
@@ -195,9 +194,8 @@ const RPYUserBlock* RPYUserBlockMgr::getFirstBlockByID(RPYUBID id) const
 
 int RPYUserBlockMgr::getFirstIndexByID(RPYUBID id) const
 {
-	const RPYUserBlock* pBlock;
 	for ( int i = 0; i < MAXUSERBLOCKCOUNT; ++i ) {
-		pBlock = this->get(i);
+		const RPYUserBlock* pBlock = this->get(i);
 		if ( pBlock && pBlock->getHeader()->id == id ) {
 			return i;
 		}
@@ -210,9 +208,8 @@ int RPYUserBlockMgr::getFirstIndexByID(RPYUBID id) const
 size_t RPYUserBlockMgr::size() const
 {
 	DWORD allsize = 0;
-	const RPYUserBlock* pBlock;
 	for ( int i = 0; i < MAXUSERBLOCKCOUNT; ++i ) {
-		pBlock = this->get(i);
+		const RPYUserBlock* pBlock = this->get(i);
 		if ( pBlock ) {
 			allsize += pBlock->getHeader()->length;
 		}

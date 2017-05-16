@@ -29,7 +29,7 @@ class RPYUserBlock {
 public:
 	// pData 会被备份
 	RPYUserBlock(const BYTE* pData, size_t datasize, RPYUBID id);
-	RPYUserBlock(const RPYUBHeader* pHeader);
+	explicit RPYUserBlock(const RPYUBHeader* pHeader);
 	~RPYUserBlock();
 
 	const RPYUBHeader* getHeader() const { return m_pHeader; }

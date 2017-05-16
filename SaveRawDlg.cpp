@@ -31,6 +31,9 @@ CSaveRawDlg::CSaveRawDlg(CWnd* pParent /*=NULL*/)
 	m_chkOverwrite = FALSE;
 	m_chkInv = FALSE;
 	//}}AFX_DATA_INIT
+	m_dwRpySize = 0;
+	m_pRpyInfoPointers = NULL;
+	m_pRpyInfoBase = NULL;
 }
 
 
@@ -64,6 +67,8 @@ BOOL CSaveRawDlg::OnInitDialog()
 	CDlgBaseWZ::OnInitDialog();
 	
 	// TODO: Add extra initialization here
+	
+	ASSERT(m_dwRpySize && m_pRpyInfoPointers && m_pRpyInfoBase);
 	
 	// 初始化与控件关联的变量
 	m_chkExit      = HasConfigOption(CFG_SAVERAW_AUTOEXIT);
