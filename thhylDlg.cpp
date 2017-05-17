@@ -1123,8 +1123,15 @@ void CThhylDlg::OnCopyfile()
 void CThhylDlg::OnAbout() 
 {
 	// TODO: Add your command handler code here
-	CDlgAbout dlg;
-	dlg.DoModal();
+	static CDlgAbout* pDlg = NULL;
+
+	if ( !pDlg->GetSafeHwnd() ) {
+		if (pDlg == NULL)
+			pDlg = new CDlgAbout(this);
+		pDlg->Create(IDD_ABOUT, this);
+	}
+	pDlg->ShowWindow(SW_SHOW);
+	pDlg->SetActiveWindow();
 }
 
 

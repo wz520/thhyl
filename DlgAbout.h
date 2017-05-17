@@ -43,6 +43,7 @@ protected:
 	afx_msg void OnMyemail();
 	afx_msg void OnUpdateurl();
 	virtual void OnOK();
+	virtual void OnCancel();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnAboutpic();
 	//}}AFX_MSG

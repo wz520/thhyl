@@ -159,6 +159,8 @@ BOOL CDlgAbout::OnInitDialog()
 		yinxiao = FALSE;
 	}
 
+	this->CenterWindow();
+
 	return !yinxiao;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -226,7 +228,12 @@ void CDlgAbout::OnOK()
 		}
 	}
 
-	CDlgBaseWZ::OnOK();
+	OnCancel();
+}
+
+void CDlgAbout::OnCancel()
+{
+	DestroyWindow();
 }
 
 HBRUSH CDlgAbout::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
