@@ -26,8 +26,9 @@ CString& TH8FormatGameTime(int nGameTime, CString& strGameTime);
 void TH12FormatUFOStock(DWORD UFOStock[], CString& outStrUFOStock);
 
 // 转换TH16的季节槽为 子机+槽的百分比形式
+// dwOutNorm：输出参数，返回下一次增加子机所需季节槽数值
 // 返回负数表示输入有误
-double TH16FormatSeasonGauge(DWORD dwSeasonGauge);
+double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm);
 
 }
 

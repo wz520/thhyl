@@ -1121,7 +1121,8 @@ void CRPYAnalyzer::TH16GenStageInfo()
 		Num2Star(pCurrStage->dwBomb, strBomb, 9, pCurrStage->dwBombFragment);
 
 		// 转换季节槽为子机
-		double dblSubWeapon = TH16FormatSeasonGauge(pCurrStage->dwSeasonGauge); 
+		DWORD dwSeasonNorm = 0;
+		double dblSubWeapon = TH16FormatSeasonGauge(pCurrStage->dwSeasonGauge, dwSeasonNorm); 
 		
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
@@ -1130,7 +1131,7 @@ void CRPYAnalyzer::TH16GenStageInfo()
 			_T("     1UPCount:%12d\r\n")
 			_T("        Power:%9d.%02d\r\n")
 			_T("        Graze:%12d\r\n")
-			_T("       季節槽:%12.3f(%d)\r\n")
+			_T("       季節槽:%12.3f(%d/%d)\r\n")
 			_T("     最大得點:%9d.%02d\r\n")
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
@@ -1140,7 +1141,7 @@ void CRPYAnalyzer::TH16GenStageInfo()
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
-			, dblSubWeapon, pCurrStage->dwSeasonGauge
+			, dblSubWeapon, pCurrStage->dwSeasonGauge, dwSeasonNorm
 			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);

@@ -37,23 +37,29 @@ void TH12FormatUFOStock(DWORD UFOStock[], CString& outStrUFOStock)
 	outStrUFOStock = szUFOHZ;
 }
 
-double TH16FormatSeasonGauge(DWORD dwSeasonGauge)
+double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm)
 {
 	// 增加子机所需值列表（用于体验版，不知正式版是否有变化）
 	DWORD arrSubWeapon[] = {
 		0, 100, 230, 390, 590, 840, 1140
 	};
 	double result = -1.00;
+	DWORD const dwLastNorm = arrSubWeapon[lengthof(arrSubWeapon)-1];
 
-	if ( dwSeasonGauge == arrSubWeapon[lengthof(arrSubWeapon)-1] ) {
+	dwOutNorm = 0;
+	if ( dwSeasonGauge == dwLastNorm ) {
 		result = 6.00;  // 最大值需要特殊处理
+		dwOutNorm = dwLastNorm;
 	}
 	else {
 		for ( int i = 1; i < lengthof(arrSubWeapon); ++i ) {
-			if ( dwSeasonGauge < arrSubWeapon[i] ) {
-				DWORD diff = arrSubWeapon[i] - arrSubWeapon[i-1];
-				DWORD diff_curr = dwSeasonGauge - arrSubWeapon[i-1];
+			DWORD const dwNextNorm = arrSubWeapon[i];
+			DWORD const dwPrevNorm = arrSubWeapon[i-1];
+			if ( dwSeasonGauge < dwNextNorm ) {
+				DWORD diff = dwNextNorm - dwPrevNorm;
+				DWORD diff_curr = dwSeasonGauge - dwPrevNorm;
 				result = ((double)diff_curr / (double)diff) + (double)(i-1);
+				dwOutNorm = dwNextNorm;
 				break;
 			}
 		}
