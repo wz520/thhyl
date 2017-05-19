@@ -781,14 +781,17 @@ void CRPYAnalyzer::TH11GenStageInfo()
 
 		// 计算最大得点
 		const DWORD base_pt = pCurrStage->dwConnect - pCurrStage->dwConnect % 10; // 确保个位为 0
-		const DWORD rate = min(pCurrStage->dwGraze/100, 899) + 100;
-		const DWORD max_pt = rate * base_pt / 100;
+		const DWORD min_rate = min(pCurrStage->dwGraze/100, 899);
+		const DWORD max_rate = min_rate + 100;
+		const DWORD min_pt = min_rate * base_pt / 100;
+		const DWORD max_pt = max_rate * base_pt / 100;
 
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
 			_T("        Power:%5u.%02u(%u)\r\n")
 			_T("        Graze:%8u\r\n")
+			_T("     最小得點:%8u(%u×%u.%02u)\r\n")
 			_T("     最大得點:%8u(%u×%u.%02u)\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
@@ -796,7 +799,8 @@ void CRPYAnalyzer::TH11GenStageInfo()
 			, strPlayer
 			, dwPowerInt, dwPowerDec, pCurrStage->dwPower
 			, pCurrStage->dwGraze
-			, max_pt, pCurrStage->dwConnect, rate/100, rate%100  // 为了显示确切的内部值，这里使用未作修改的 dwConnect 而不是 base_pt。正常情况下 dwConnect 应该等于 base_pt
+			, min_pt, pCurrStage->dwConnect, min_rate/100, min_rate%100
+			, max_pt, pCurrStage->dwConnect, max_rate/100, max_rate%100
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);
 		
