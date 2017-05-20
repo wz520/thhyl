@@ -144,8 +144,10 @@ int CRPYAnalyzer::GenInfoWrapper2()
 			m_pDecompData = ReplayDecode2(m_pData, m_nDataSize, m_pTHRpyInfo2);
 			if ( m_pDecompData ) {
 
-#ifdef _DEBUG
+#if 0
+# ifdef _DEBUG
 				DumpRPYData(_T("d:\\rpyraw.bin"));
+# endif
 #endif
 
 				if ( m_pTHRpyInfo2->wFlags & (RPYFLAG2_TH14TRIAL | RPYFLAG2_TH14RELEASE) )

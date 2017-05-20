@@ -121,6 +121,59 @@ BOOL CThhylApp::InitInstance()
 
 }
 
+
+
+// return NULL if not found
+static void* memfind(const void* buf, size_t buf_len,  const void* tofind, size_t tofind_len)
+{
+	const BYTE* const end_buf = (const BYTE*)buf + buf_len;
+	for (const BYTE* curr_buf = (const BYTE*)buf; curr_buf < end_buf; ++curr_buf ) {
+		if ( memcmp( curr_buf, tofind, tofind_len) == 0 ) {
+			return (void*)curr_buf;
+		}
+	}
+
+	return NULL;
+}
+
+
+// 对于国人制作的以下仿东方STG的REP文件，目前可以识别，但无法解析：
+// 《东方幕华祭》、《东方百花宴》、《东方音乐绘》、《东方夏夜祭》
+// 返回TRUE表示该 REP 疑似以上几个游戏之一，并在 strOutGameName 标明游戏名称
+static BOOL IsUnanalyzableRPY(const BYTE* pData, DWORD dwFileSize, CString& strOutGameName)
+{
+	// 检查是不是 东方幕华祭……这貌似是固定的文件头？
+	const char mhj_header[] =
+		"\xF0\x67\x82\xFF\xCA\xE3\xC8\x5B\xFC\x91\xB5"
+		"\x72\xCB\x84\xC2\xEF\xDC\xE1\xC2\xE4\x11\x42"
+		"\x66\x2E\x3A\x85\x9C\x1E\xC8\x16\xB5\x6E\x38"
+		"\x83\x6F\x7E\xA1\x10\x73\x52\x30\x40\x5A\xC0"
+		"\xD0\x4C\x3C\x4D\xCE\xC6\xAA\x7D\x05\xCB\x74"
+		"\x97\x5B\x6E\xE2\x47\x3A\xED\x6D\xEB\xDE\x09"
+		"\x06\x7F\x0B\xC8\x19\x20\xED\x36\x92\x29\x07"
+		"\x0A\x8E\x9E\x6D\x1F\xEF\x03\xF3\xC9\xB7\x96"
+		"\x10\xC0\xED\x2C\x83\x9A\x3F\xCC";
+	BOOL result = FALSE;
+
+	if ( memcmp(mhj_header, pData, sizeof(mhj_header) - 1) == 0 ) {
+		strOutGameName = _T("東方幕華祭");
+		result = TRUE;
+	}
+	else if ( *((WORD*)pData) == 0xe00e ) {
+		const char start_of_info[] = "\x0e\xe0\xf0\x0f\x0d\x0a";
+		size_t sizeof_info = sizeof(start_of_info) - 1;
+		pData += 2;
+		dwFileSize -= 2;
+		const BYTE* pStartOfInfo = (const BYTE*)memfind(pData, (size_t)dwFileSize, start_of_info, sizeof_info);
+		if ( pStartOfInfo ) {
+			strOutGameName = _T("东方百花宴/弹幕音乐绘/東方夏夜祭");
+			result = TRUE;
+		}
+	}
+
+	return result;
+}
+
 BYTE* ReadRPYFile(LPCTSTR szFileName, CString& strErrorInfo, HWND hWnd, CFileStatus* pFileStatus, DWORD& dwFileSize)
 {
 	CFile          cfRpyFile;
@@ -148,26 +201,15 @@ BYTE* ReadRPYFile(LPCTSTR szFileName, CString& strErrorInfo, HWND hWnd, CFileSta
 	pBuf[dwFileSize] = '\0';
 	cfRpyFile.Close();
 
-	// 检查是不是 东方幕华祭……这貌似是固定的文件头？
-	const char mhj_header[] =
-		"\xF0\x67\x82\xFF\xCA\xE3\xC8\x5B\xFC\x91\xB5"
-		"\x72\xCB\x84\xC2\xEF\xDC\xE1\xC2\xE4\x11\x42"
-		"\x66\x2E\x3A\x85\x9C\x1E\xC8\x16\xB5\x6E\x38"
-		"\x83\x6F\x7E\xA1\x10\x73\x52\x30\x40\x5A\xC0"
-		"\xD0\x4C\x3C\x4D\xCE\xC6\xAA\x7D\x05\xCB\x74"
-		"\x97\x5B\x6E\xE2\x47\x3A\xED\x6D\xEB\xDE\x09"
-		"\x06\x7F\x0B\xC8\x19\x20\xED\x36\x92\x29\x07"
-		"\x0A\x8E\x9E\x6D\x1F\xEF\x03\xF3\xC9\xB7\x96"
-		"\x10\xC0\xED\x2C\x83\x9A\x3F\xCC";
 
-	if ( memcmp(mhj_header, pBuf, sizeof(mhj_header) - 1) == 0 ) {
-		strErrorInfo =
-			_T("这貌似是 東方幕華祭 的录像哦……\r\n")
-			_T("但是回映录解析不了喵……＝＿＝\r\n");
+	CString strGameName;
+	if ( IsUnanalyzableRPY(pBuf, dwFileSize, strGameName) ) {
+		strErrorInfo.Format(
+			_T("这貌似是 %s 的录像哦……\r\n")
+			_T("但是回映录解析不了喵……＝＿＝\r\n")
+			, strGameName);
 		return delete []pBuf, NULL;
 	}
-
-	// 其实还想支持 东方百花宴，只是搞不懂如何判断，好像没有固定文件头……
 
 	return pBuf;
 }
