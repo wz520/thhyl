@@ -82,11 +82,11 @@ void SetConfigFilename(LPCTSTR filename)
 BOOL LoadConfig()
 {
 	CFile cfile;
-	CFGCONTENTS cfgcontents;
 
 	if (!cfile.Open(cfgfilename, CFile::modeRead | CFile::shareDenyWrite | CFile::typeBinary))
 		return FALSE;
 	
+	CFGCONTENTS cfgcontents;
 	const UINT uBytesRead = cfile.Read(&cfgcontents, sizeof(cfgcontents));
 	cfile.Close();
 
@@ -111,11 +111,11 @@ BOOL LoadConfig()
 BOOL SaveConfig()
 {
 	CFile cfile;
-	CFGCONTENTS cfgcontents;
 	
 	if (!cfile.Open(cfgfilename, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyRead | CFile::typeBinary))
 		return FALSE;
 
+	CFGCONTENTS cfgcontents;
 	cfgcontents.h1  = CFGHEADER1;
 	cfgcontents.h2  = CFGHEADER2;
 	cfgcontents.cfg = cfg;

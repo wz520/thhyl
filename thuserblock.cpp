@@ -5,6 +5,9 @@
 #define USERBLOCKMARKER	((DWORD)'RESU')
 #define SIZEOF_UBHEADER (sizeof(RPYUBHeader))
 
+#define delete_then_null(v) ((delete (v)), (v)=NULL)
+#define free_then_null(v) (free(v), (v)=NULL)
+
 RPYUserBlock::RPYUserBlock(const BYTE* pData, size_t datasize, RPYUBID id)
 {
 	init(pData, datasize, id);
@@ -13,7 +16,7 @@ RPYUserBlock::RPYUserBlock(const BYTE* pData, size_t datasize, RPYUBID id)
 RPYUserBlock::RPYUserBlock(const RPYUBHeader* pHeader)
 {
 	if ( pHeader->marker == USERBLOCKMARKER ) {
-		init( (const BYTE*)(pHeader) + SIZEOF_UBHEADER,
+		init( reinterpret_cast<const BYTE*>(pHeader) + SIZEOF_UBHEADER,
 				pHeader->length - SIZEOF_UBHEADER, pHeader->id);
 	}
 	else {
@@ -25,7 +28,7 @@ RPYUserBlock::RPYUserBlock(const RPYUBHeader* pHeader)
 
 RPYUserBlock::~RPYUserBlock()
 {
-	free(m_pHeader);
+	free_then_null(m_pHeader);
 }
 
 void RPYUserBlock::init(const BYTE* pData, size_t datasize, RPYUBID id)
@@ -35,7 +38,7 @@ void RPYUserBlock::init(const BYTE* pData, size_t datasize, RPYUBID id)
 	// Allocate additional 1 byte.
 	// We will fill this byte with '\0' to ensure that the block data
 	//   can be safely copied by strcpy()
-	m_pHeader = (RPYUBHeader*)malloc(blocksize+1);
+	m_pHeader = static_cast<RPYUBHeader*>(malloc(blocksize+1));
 	m_pHeader->marker = USERBLOCKMARKER;
 	m_pHeader->length = blocksize;
 	m_pHeader->id = id;
@@ -59,7 +62,7 @@ static const BYTE* getBegin(const BYTE* pData, size_t sz)
 		
 		if ( offset == (DWORD)sz )
 			; // offset == sz, no user blocks, permitted.
-		else if ( ((RPYUBHeader*)pBegin)->marker != USERBLOCKMARKER ) {
+		else if ( reinterpret_cast<const RPYUBHeader*>(pBegin)->marker != USERBLOCKMARKER ) {
 			pBegin = NULL; // offset != sz, there must be at least 1 user block.
 		}
 	}
@@ -71,8 +74,7 @@ RPYUserBlock* RPYUserBlockMgr::newuserblock(int i, const RPYUBHeader* pHeader)
 	m_pUserBlocks[i] = new RPYUserBlock(pHeader);
 
 	if ( !m_pUserBlocks[i]->isValid() ) {  // not a valid user block
-		delete m_pUserBlocks[i];
-		m_pUserBlocks[i] = NULL;
+		delete_then_null(m_pUserBlocks[i]);
 	}
 
 	return m_pUserBlocks[i];
@@ -95,7 +97,7 @@ RPYUserBlockMgr::RPYUserBlockMgr(const BYTE* const pRPYData, size_t sz)
 	}
 
 	for (int i = 0; i < MAXUSERBLOCKCOUNT; ++i ) {
-		RPYUBHeader* pHeader = (RPYUBHeader*)pCurrBlock;
+		const RPYUBHeader* pHeader = reinterpret_cast<const RPYUBHeader*>(pCurrBlock);
 		if ( pCurrBlock < pEnd ) {
 			if ( !newuserblock(i, pHeader) )	{  // not a valid user block
 				pCurrBlock = pEnd; // to prevent from constructing more RPYUserBlock objects
@@ -124,8 +126,7 @@ RPYUserBlockMgr::RPYUserBlockMgr(const RPYUserBlockMgr &other)
 RPYUserBlockMgr::~RPYUserBlockMgr()
 {
 	for (int i = 0; i < MAXUSERBLOCKCOUNT; ++i ) {
-		delete m_pUserBlocks[i];
-		m_pUserBlocks[i] = NULL;
+		delete_then_null(m_pUserBlocks[i]);
 	}
 }
 
@@ -149,18 +150,16 @@ bool RPYUserBlockMgr::append(const RPYUserBlock* pBlock)
 
 bool RPYUserBlockMgr::remove(int index)
 {
-	const DWORD i = (DWORD)index;
+	const DWORD i = static_cast<DWORD>(index);
 	if ( i >= MAXUSERBLOCKCOUNT ) return false;
 
-	delete m_pUserBlocks[i];
-	m_pUserBlocks[i] = NULL;
-
+	delete_then_null(m_pUserBlocks[i]);
 	return true;
 }
 
 const RPYUserBlock* RPYUserBlockMgr::get(int index) const
 {
-	const DWORD i = (DWORD)index;
+	const DWORD i = static_cast<DWORD>(index);
 	if ( i >= MAXUSERBLOCKCOUNT || m_pUserBlocks[i] == NULL ) return NULL;
 
 	return m_pUserBlocks[i];
@@ -168,7 +167,7 @@ const RPYUserBlock* RPYUserBlockMgr::get(int index) const
 
 bool RPYUserBlockMgr::set(int index, const RPYUserBlock* pBlock)
 {
-	const DWORD i = (DWORD)index;
+	const DWORD i = static_cast<DWORD>(index);
 	if ( i >= MAXUSERBLOCKCOUNT) return false;
 
 	if ( m_pUserBlocks[i] != NULL ) {

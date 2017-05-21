@@ -52,6 +52,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #define lengthof(arr) (sizeof(arr)/sizeof(arr[0]))
+#define delete_then_null(v) ((delete (v)), (v)=NULL)
+#define delete_array_then_null(v) ((delete[] (v)), (v)=NULL)
 
 /////////////////////////////////////////////////////////////////////////////
 // CThhylDlg dialog
@@ -62,7 +64,7 @@ CThhylDlg::CThhylDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CThhylDlg)
 	m_rpyfile = _T("");
 	m_bOnTop = TRUE;
-	m_bAutocomp = TRUE;
+	m_bAutocomplete = TRUE;
 	m_rpyinfo = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
@@ -85,7 +87,7 @@ void CThhylDlg::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CThhylDlg)
 	DDX_Text(pDX, IDC_RPYFILE, m_rpyfile);
 	DDX_Check(pDX, IDC_ONTOP, m_bOnTop);
-	DDX_Check(pDX, IDC_AUTOCOMP, m_bAutocomp);
+	DDX_Check(pDX, IDC_AUTOCOMP, m_bAutocomplete);
 	DDX_Text(pDX, IDC_RPYINFO, m_rpyinfo);
 	//}}AFX_DATA_MAP
 }
@@ -96,7 +98,7 @@ BEGIN_MESSAGE_MAP(CThhylDlg, CDlgBaseWZ)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_DROPFILES()
 	ON_BN_CLICKED(IDC_ONTOP, OnOntop)
-	ON_BN_CLICKED(IDC_AUTOCOMP, OnAutocomp)
+	ON_BN_CLICKED(IDC_AUTOCOMP, OnAutocomplete)
 	ON_BN_CLICKED(IDC_BROWSE, OnBrowse)
 	ON_BN_CLICKED(IDC_COPY, OnCopy)
 	ON_WM_CONTEXTMENU()
@@ -155,7 +157,7 @@ BOOL CThhylDlg::OnInitDialog()
 	// 初始化与控件关联的变量
 	m_rpyfile = ((CThhylApp*)AfxGetApp())->m_rpyfile;
 	m_bOnTop = ((CThhylApp*)AfxGetApp())->m_bOnTop;
-	m_bAutocomp = HasConfigOption(CFG_AUTOCOMP);
+	m_bAutocomplete = HasConfigOption(CFG_AUTOCOMP);
 
 	CoInitialize(NULL);
 
@@ -177,7 +179,7 @@ BOOL CThhylDlg::OnInitDialog()
 
 	// 置顶
 	if (m_bOnTop) OnOntop();
-	if (m_bAutocomp) OnAutocomp();
+	if (m_bAutocomplete) OnAutocomplete();
 
 	// Set window pos
 	if (cfg.WinPlace.length == sizeof(WINDOWPLACEMENT)) {
@@ -297,18 +299,19 @@ void CThhylDlg::Analyze()
 
 	if ( RPYAnalyzer_ret != RPYINFO_UNKNOWNFORMAT ) {
 		m_rpyinfo = m_pRpyAnalyzer->GetFinalInfo();
+		m_strCurrComment = m_pRpyAnalyzer->GetComment(cfg.CommentCode);
+		if (!m_strCurrComment.IsEmpty()) {
+			m_rpyinfo += CString(_T("\r\n注释：\r\n")) + m_strCurrComment;
+		}
+
 		if ( m_pRpyAnalyzer->m_header!=mgc6 && m_pRpyAnalyzer->m_header!=mgc7 ) {
-			m_strCurrComment = m_pRpyAnalyzer->GetComment(cfg.CommentCode);
-			if (!m_strCurrComment.IsEmpty()) {
-				m_rpyinfo += CString(_T("\r\n注释：\r\n")) + m_strCurrComment;
-			}
 			m_bTHX = TRUE;
 		}
 	}
 	else {
 		// decoding failed.
 		CloseFile(TRUE);
-		m_rpyinfo    = LoadNotRpyString();
+		m_rpyinfo = LoadNotRpyString();
 	}
 
 	UpdateTitle();       // 标题栏显示文件名
@@ -325,10 +328,8 @@ void CThhylDlg::CloseFile(BOOL bSilently)
 {
 	m_filestatus.Clear();
 	m_bTHX = FALSE;
-	delete m_pRpyAnalyzer;
-	m_pRpyAnalyzer = NULL;
-	delete []m_pRpyData;
-	m_pRpyData = NULL;
+	delete_then_null(m_pRpyAnalyzer);
+	delete_array_then_null(m_pRpyData);
 	if (bSilently)
 		return;
 
@@ -374,8 +375,6 @@ void CThhylDlg::OnDropFiles(HDROP hDropInfo)
 	delete []lpszFileName;
 	
 	if (nFileCount > 0) Analyze();
-
-	//CDlgBaseWZ::OnDropFiles(hDropInfo);
 }
 
 void CThhylDlg::OnOntop() 
@@ -387,13 +386,13 @@ void CThhylDlg::OnOntop()
 		0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 }
 
-void CThhylDlg::OnAutocomp() 
+void CThhylDlg::OnAutocomplete() 
 {
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	
 	SHAutoComplete( ((CEdit*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(),
-		m_bAutocomp ? 0x10000043 : 0x20000043 );
+		m_bAutocomplete ? 0x10000043 : 0x20000043 );
 }
 
 
@@ -473,8 +472,6 @@ void CThhylDlg::OnOK()
 	ConvToFullPath();
 	UpdateData(FALSE);
 	Analyze();
-
-	//CDlgBaseWZ::OnOK();
 }
 
 void CThhylDlg::OnContextMenu(CWnd* pWnd, CPoint point) 
@@ -594,7 +591,7 @@ void CThhylDlg::CopyOrMoveRpy(LPCTSTR DialogTitle, BOOL bCopy)
 	if (!m_filestatus.IsValid())
 		return;
 	
-	CString filter((LPCTSTR)IDS_DLGFILTER), newfilename;
+	CString filter((LPCTSTR)IDS_DLGFILTER);
 	
 	CFileDialogWZ dlg(FALSE, _T("rpy"), m_rpyfile,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST,
@@ -603,10 +600,9 @@ void CThhylDlg::CopyOrMoveRpy(LPCTSTR DialogTitle, BOOL bCopy)
 	if (dlg.DoModal()==IDCANCEL)
 		return;
 	
-	newfilename=dlg.GetPathName();
+	CString newfilename(dlg.GetPathName());
 	
-	BOOL result;
-	result = bCopy
+	BOOL result = bCopy
 		? CopyFile(m_rpyfile, newfilename, FALSE)
 		: MoveFileEx(m_rpyfile, newfilename, MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 
@@ -685,7 +681,7 @@ void CThhylDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 void CThhylDlg::ConvToFullPath()
 {
-	TCHAR FullPath[MAX_PATH]={0};
+	TCHAR FullPath[MAX_PATH] = {0};
 	GetFullPathName(m_rpyfile, MAX_PATH, FullPath, NULL);
 	m_rpyfile = FullPath;
 }
@@ -772,11 +768,11 @@ void CThhylDlg::OnHelphtml()
 	// TODO: Add your control notification handler code here
 	
 	// “菜单”按钮
-	POINT point;
 	CWnd *pBtnHelp = GetDlgItem(IDC_HELPHTML);
 	RECT rect;
-
 	pBtnHelp->GetWindowRect(&rect);
+
+	POINT point;
 	point.x = rect.left;
 	point.y = rect.bottom;
 
@@ -833,8 +829,6 @@ void CThhylDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 	
 	lpMMI->ptMinTrackSize.x = 410;
 	lpMMI->ptMinTrackSize.y = 240;
-
-	//CDlgBaseWZ::OnGetMinMaxInfo(lpMMI);
 }
 
 void CThhylDlg::SpawnInstance(LPCTSTR lpszFileName)
@@ -923,7 +917,7 @@ BOOL CThhylDlg::DestroyWindow()
 
 	cfg.byteAlpha = GetWindowAlpha(this->GetSafeHwnd());
 
-	cfg.set(CFG_AUTOCOMP, m_bAutocomp);
+	cfg.set(CFG_AUTOCOMP, m_bAutocomplete);
 
 	CoUninitialize();
 	
@@ -1015,7 +1009,7 @@ void CThhylDlg::OnSaveraw()
 	DWORD rawsize = 0;
 	m_pRpyAnalyzer->GetDecodedDataPointer(&rawsize);
 	CString title;
-	title.Format(_T("保存 raw 数据(raw 数据大小: %d, rpy 文件大小: %d)"), (int)rawsize, (int)m_dwRpySize);
+	title.Format(_T("保存原始数据(原始数据大小: %d, rpy 文件大小: %d)"), (int)rawsize, (int)m_dwRpySize);
 	dlg.m_ofn.lpstrTitle = title;
 	if (dlg.DoModal() == IDOK) {
 		// dump
@@ -1137,9 +1131,6 @@ void CThhylDlg::OnAbout()
 
 
 
-
-
-
 // 保存，载入 EDIT 控件的选区和垂直滚动条位置
 static class CEditControlInfo {
 public:
@@ -1172,7 +1163,7 @@ void CThhylDlg::OnEnterMenuLoop(BOOL bIsTrackPopupMenu)
 			LISTITEMSIGN _T("百糟必有一发 poi"),
 			LISTITEMSIGN _T("POI...POI? POI! POIPOIPOI~"),
 			LISTITEMSIGN _T("【系统提示】：灵梦的节操严重不足。为保证您能继续使用灵梦，请您尽快通过官方游戏、官方漫画、及(哔~)等方式充值。"),
-			LISTITEMSIGN _T("0x2016年贺岁大片倾情巨献：《骂死他，斯巴克！》。主演：【五欲磨立杀】、【爬出栗·知识】、【啊♂力死·马嘎特攻略王】。她，不会再爱了……"),
+			LISTITEMSIGN _T("嘘~你们看，我发现了什么？这里有一只落单的赤蛮奇，我们可以尝试捕捉她。一只赤蛮奇可以为我们提供好几天的能量，她们富含大量的发气，不过赤蛮奇可不好对付。我们从后面慢慢接近她，小心别发出任何声音……嘿，我抓到了，她挣扎得很厉害！我们把她的头拧下来，其余的部位可以生吃，她的发气含量是触手的6倍，当然，如果时间不紧迫，我们可以先prpr，那样会更美味……嗯，她们的口感嘎嘣脆，味道就像小碎骨一样。"),
 			LISTITEMSIGN _T("GZZLLNMNBNS？是在下输了"),
 			LISTITEMSIGN _T("CAUTION: SJF is watching you!"),
 			LISTITEMSIGN _T("看录像(DELETE)，多练习(THE)，相信自己(GAME)"),
@@ -1185,13 +1176,13 @@ void CThhylDlg::OnEnterMenuLoop(BOOL bIsTrackPopupMenu)
 			LISTITEMSIGN _T("你是我的小呀小猪猡，怎么干你都不嫌多\x266a"),
 			LISTITEMSIGN _T("宁做炸B，也不抱B"),
 			LISTITEMSIGN _T("不在沉默中放B，就在沉默中MISS"),
-			LISTITEMSIGN _T("……那么问题来了，挖脑洞哪家强？博丽神社找萃香"),
-			LISTITEMSIGN _T("没关系，猫也可以"),
+			LISTITEMSIGN _T("燃～燃～入～"),
+			LISTITEMSIGN _T("B还是要放的，万一撞了呢？"),
 			LISTITEMSIGN _T("听说在贵圈17岁的叫BBA，500岁的叫萝莉？我读书少你们不要骗我啊！"),
 			LISTITEMSIGN _T("BBA我喜欢你啊！"),
 			LISTITEMSIGN _T("大丈夫萌大奶，早苗本买买买！"),
 			LISTITEMSIGN _T("俺の郷長がこんなに可愛いわけがない！"),
-			LISTITEMSIGN _T("zun://www.幻想郷.com/魔法の森/森近霖之助×雲山.mp4"),
+			LISTITEMSIGN _T("zun://www.幻想郷.com/魔法の森/森近霖之助×雲山.avi"),
 			LISTITEMSIGN _T("红魔乡可以玩，妖妖梦开着（姐姐）玩，永夜抄随便玩，风神录撞着玩，地灵殿擦着玩，星莲船不能玩，神灵庙Ｃ着玩，辉针城炸着玩，绀珠传逗你玩"),
 			LISTITEMSIGN _T("\x0425\x043e\x0440\x043e\x0448\x043e"), // Xopowo
 			LISTITEMSIGN _T("2un你头伸过来，我给你加个buff"),
@@ -1239,7 +1230,6 @@ void CThhylDlg::OnExitMenuLoop(BOOL bIsTrackPopupMenu )
 	if (bIsTrackPopupMenu) {
 		UpdateData(FALSE);
 		s_pEditCtrlInfo->load();
-		delete s_pEditCtrlInfo;
-		s_pEditCtrlInfo = NULL;
+		delete_then_null(s_pEditCtrlInfo);
 	}
 }

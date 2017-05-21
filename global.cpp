@@ -89,8 +89,7 @@ LPCTSTR GetErrorMessage(UINT ErrorCode)
 	static TCHAR ErrorMsg[256];
 
 	return FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, ErrorCode, 0, ErrorMsg, 255, NULL)
-		? (LPCTSTR)ErrorMsg
-		: NULL;
+		? const_cast<LPCTSTR>(ErrorMsg) : NULL;
 }
 
 BOOL CheckRPYFileSize(HANDLE hFile, HWND hwnd)
@@ -105,8 +104,7 @@ BOOL CheckRPYFileSize(HANDLE hFile, HWND hwnd)
 			int mbret = ::MessageBox(hwnd, _T("该文件大于 100MB ，这真的会是东方STG录像文件吗？"),
 				g_title, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
 			if (mbret==IDYES)
-				::MessageBox(hwnd, _T("好重，打不开 （＞＿＜）"),
-				g_title, MB_ICONSTOP);
+				::MessageBox(hwnd, _T("好重，打不开 （＞＿＜）"), g_title, MB_ICONSTOP);
 			return FALSE;
 		}
 		else {
@@ -124,9 +122,7 @@ BOOL CheckRPYFileSize(HANDLE hFile, HWND hwnd)
 BOOL DumpBinData(const BYTE* pData, DWORD nSize, LPCTSTR szFilename)
 {
 	CFile dfile;
-	if(!dfile.Open(szFilename, CFile::shareDenyRead | CFile::modeCreate |
-		CFile::modeWrite | CFile::typeBinary))
-	{
+	if (!dfile.Open(szFilename, CFile::shareDenyRead | CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
 		AfxMessageBox(_T("Open dump file error!"), MB_ICONSTOP);
 		return FALSE;
 	}
@@ -308,14 +304,14 @@ BOOL IncreaseControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont)
 	HFONT const hFont = (HFONT)SendMessage(hwnd, WM_GETFONT, 0, 0);
 	
 	if (hFont) {
-		LOGFONT   lf       = {0};
-		int       point    = 0;
-		HDC       hdc      = GetDC(hwnd);
 		const int pointmin = 9;
 		const int pointmax = 108;
+		LOGFONT   lf       = {0};
 
 		GetObject((HGDIOBJ)hFont, sizeof(lf), &lf);
-		point = LogicalToPoint(lf.lfHeight, hdc) + n;
+
+		HDC hdc = GetDC(hwnd);
+		int point = LogicalToPoint(lf.lfHeight, hdc) + n;
 
 		if ( point > pointmax )
 			point = pointmax;

@@ -29,7 +29,7 @@ public:
 	CString	m_rpyfile;
 	BOOL	m_bOnTop;
 	CString	m_rpyinfo;
-	BOOL	m_bAutocomp;
+	BOOL	m_bAutocomplete;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -54,7 +54,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnOntop();
-	afx_msg void OnAutocomp();
+	afx_msg void OnAutocomplete();
 	afx_msg void OnBrowse();
 	afx_msg void OnCopy();
 	virtual void OnOK();

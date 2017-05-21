@@ -330,7 +330,7 @@ static RPYINFOERR GetStageInfoOffsets(
 
 	// 如果上面的循环超出 maxOffsetCount 所示范围，
 	// 取 DataSize 计算最后一个有效关的数据大小
-	if (i>=maxOffsetCount) 
+	if (i >= maxOffsetCount) 
 		lastpointer = pData + DataSize;
 
 	// 填写最后有效关卡的长度
@@ -350,16 +350,15 @@ static RPYINFOERR GetStageFPSOffsets(
 		TH_FPSINFO* pFPSInfo // 输出参数，接收 FPS 数据和信息。
 )
 {
-	DWORD* const FPSs=(DWORD* const)(pData+offsetStart); //各关FPS信息偏移数组
-	int i;
+	DWORD* const FPSs = (DWORD* const)(pData+offsetStart); //各关FPS信息偏移数组
 	int firstfpsindex = -1; // 第一个有效关卡的索引
 	int lastfpsindex  = -1;  // 最后一个有效关卡的索引
-	RPYINFOERR ret = RPYINFO_OK;
+	RPYINFOERR ret    = RPYINFO_OK;
 
-	pFPSInfo->total_size = 0;
+	pFPSInfo->total_size     = 0;
 	pFPSInfo->total_slowrate = 0.0;
 
-	for (i=0;i<offsetCount;i++) {
+	for (int i=0; i<offsetCount; ++i) {
 		pFPSInfo->pointers[i] = pData + FPSs[i]; //fps信息指针
 		if (pFPSInfo->pointers[i] == pData) { //如果偏移量为0，说明没有此关信息
 			pFPSInfo->pointers[i] = NULL;

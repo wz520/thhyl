@@ -132,9 +132,7 @@ BOOL CDlgComment::UpdateCommentToFile(
 
 	// Write to new file
 	CFile cfFile;
-	if (!cfFile.Open(newfilename, CFile::modeCreate | CFile::modeWrite |
-		CFile::shareExclusive | CFile::typeBinary))
-	{
+	if (!cfFile.Open(newfilename, CFile::modeCreate | CFile::modeWrite | CFile::shareExclusive | CFile::typeBinary)) {
 		MessageBox(CString(_T("打开文件失败：\n\n")) + newfilename, g_title, MB_ICONSTOP);		
 		// 1.70 版这里直接 return 了，造成了内存泄露……
 	}

@@ -46,8 +46,7 @@ int CFileDialogWZ::DoModal()
 	if (m_ofn.Flags & OFN_EXPLORER)
 		pThreadState->m_pAlternateWndInit = this;
 	
-	int nResult;
-	nResult = m_bOpenFileDialog ? ::GetOpenFileName(&m_ofn) : ::GetSaveFileName(&m_ofn);
+	int nResult = m_bOpenFileDialog ? ::GetOpenFileName(&m_ofn) : ::GetSaveFileName(&m_ofn);
 	
 	pThreadState->m_pAlternateWndInit = NULL;
 	

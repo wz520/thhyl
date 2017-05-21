@@ -165,8 +165,8 @@ BOOL CSaveRawDlg::OnInitDialog()
 		CStatic* const pStatic = (CStatic*)(GetDlgItem(IDC_SAVERAWSIZE));
 		CString fmt;
 		fmt.Format(
-				_T("完整raw数据大小 = %d(0x%X)\r\n")
-				_T("原 rpy 文件大小 = %d(0x%X)"),
+				_T("原始数据大小 = %d(0x%X)\r\n")
+				_T("录像文件大小 = %d(0x%X)"),
 			m_pRpyInfoPointers->dwDecompDataSize, m_pRpyInfoPointers->dwDecompDataSize,
 			m_dwRpySize, m_dwRpySize
 		);

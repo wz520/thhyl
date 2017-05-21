@@ -56,7 +56,7 @@ CRPYAnalyzer::CRPYAnalyzer(BYTE* data, DWORD size, UINT DefCode)
 	m_pTHRpyInfo2 = NULL;
 	m_pDecompData = NULL;
 
-	m_pUBMgr = new RPYUserBlockMgr(data, size);
+	m_pUBMgr  = new RPYUserBlockMgr(data, size);
 	m_pInfoUB = NULL;
 }
 
@@ -196,7 +196,7 @@ int CRPYAnalyzer::Analyze()
 
 CString CRPYAnalyzer::GetComment(UINT codepage)
 {
-	return m_pInfoUB->getComment(codepage);
+	return m_pInfoUB->getComment(codepage); // 此处不必检查 m_pInfoUB 的合法性
 }
 
 const BYTE* CRPYAnalyzer::GetDecodedDataPointer(DWORD* pOutDecodeSize) const
@@ -290,10 +290,10 @@ void CRPYAnalyzer::TH6GenInfo()
 		m_info += StrFormat2;
 		
 		//PlayTime, SlowRate
-		extrainfo.nIndex = i;
+		extrainfo.nIndex        = i;
 		extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-		extrainfo.szPlayTime = common_szPlayTime;
-		extrainfo.szSlowRate = NULL;
+		extrainfo.szPlayTime    = common_szPlayTime;
+		extrainfo.szSlowRate    = NULL;
 		THXAddExtraInfo(&extrainfo);
 		
 		//ClearScore
@@ -302,10 +302,10 @@ void CRPYAnalyzer::TH6GenInfo()
 		m_info += StrFormat2;
 	}
 
-	extrainfo.nIndex = -1;
+	extrainfo.nIndex        = -1;
 	extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-	extrainfo.szPlayTime = common_szTotalPlayTime;
-	extrainfo.szSlowRate = NULL;
+	extrainfo.szPlayTime    = common_szTotalPlayTime;
+	extrainfo.szSlowRate    = NULL;
 	THXAddExtraInfo(&extrainfo);
 }
 
@@ -398,10 +398,10 @@ void CRPYAnalyzer::TH7GenInfo()
 		m_info += StrFormat2;
 		
 		//PlayTime, SlowRate
-		extrainfo.nIndex = i;
+		extrainfo.nIndex        = i;
 		extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-		extrainfo.szPlayTime = common_szPlayTime;
-		extrainfo.szSlowRate = common_szSlowRate;
+		extrainfo.szPlayTime    = common_szPlayTime;
+		extrainfo.szSlowRate    = common_szSlowRate;
 		THXAddExtraInfo(&extrainfo);
 		
 		//ClearScore
@@ -409,10 +409,10 @@ void CRPYAnalyzer::TH7GenInfo()
 		m_info += StrFormat2;
 	}
 
-	extrainfo.nIndex = -1;
+	extrainfo.nIndex        = -1;
 	extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-	extrainfo.szPlayTime = common_szTotalPlayTime;
-	extrainfo.szSlowRate = common_szTotalSlowRate;
+	extrainfo.szPlayTime    = common_szTotalPlayTime;
+	extrainfo.szSlowRate    = common_szTotalSlowRate;
 	THXAddExtraInfo(&extrainfo);
 }
 
@@ -472,10 +472,10 @@ void CRPYAnalyzer::TH8GenStageInfo()
 		m_info += StrFormat2;
 		
 		//PlayTime, SlowRate
-		extrainfo.nIndex = i;
+		extrainfo.nIndex        = i;
 		extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-		extrainfo.szPlayTime = common_szPlayTime;
-		extrainfo.szSlowRate = common_szSlowRate;
+		extrainfo.szPlayTime    = common_szPlayTime;
+		extrainfo.szSlowRate    = common_szSlowRate;
 		THXAddExtraInfo(&extrainfo);
 
 		//ClearScore
@@ -483,10 +483,10 @@ void CRPYAnalyzer::TH8GenStageInfo()
 		m_info += StrFormat2;
 	}
 
-	extrainfo.nIndex = -1;
+	extrainfo.nIndex        = -1;
 	extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-	extrainfo.szPlayTime = common_szTotalPlayTime;
-	extrainfo.szSlowRate = common_szTotalSlowRate;
+	extrainfo.szPlayTime    = common_szTotalPlayTime;
+	extrainfo.szSlowRate    = common_szTotalSlowRate;
 	THXAddExtraInfo(&extrainfo);
 }
 
@@ -568,7 +568,7 @@ void CRPYAnalyzer::TH9GenStageInfo()
 				_T("        Score: %14s    %s\r\n"));
 	for (int i=0; i<m_pTHRpyInfo->nStageCount; i++) {
 		//无效数据则不显示
-		if(!ppStageInfo[0][i])
+		if (!ppStageInfo[0][i])
 			continue;
 
 		FormatScore(ppStageInfo[0][i]->dwScores, StrStageScores[0], TRUE, FALSE);
@@ -611,17 +611,17 @@ void CRPYAnalyzer::TH9GenStageInfo()
 		}
 
 		//PlayTime, SlowRate
-		extrainfo.nIndex = i;
+		extrainfo.nIndex        = i;
 		extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-		extrainfo.szPlayTime = _T("     PlayTime: %u(%d:%02d.%03d)\r\n");
-		extrainfo.szSlowRate = common_szSlowRate;
+		extrainfo.szPlayTime    = _T("     PlayTime: %u(%d:%02d.%03d)\r\n");
+		extrainfo.szSlowRate    = common_szSlowRate;
 		THXAddExtraInfo(&extrainfo);
 	}
 
-	extrainfo.nIndex = -1;
+	extrainfo.nIndex        = -1;
 	extrainfo.dwFrameCounts = m_pTHRpyInfo->dwFrameCounts;
-	extrainfo.szPlayTime = common_szTotalPlayTime;
-	extrainfo.szSlowRate = common_szTotalSlowRate;
+	extrainfo.szPlayTime    = common_szTotalPlayTime;
+	extrainfo.szSlowRate    = common_szTotalSlowRate;
 	THXAddExtraInfo(&extrainfo);
 }
 
@@ -650,8 +650,8 @@ void CRPYAnalyzer::THXAddExtraInfo(const THX_EXTRAINFO* pExtraInfo)
 
 	//Total PlayTime
 	if( HasConfigOption(CFG_SHOWPLAYTIME) ) {
-		const DWORD m = dwTotalPlayTime/3600;
-		const DWORD s = dwTotalPlayTime/60%60;
+		const DWORD m  = dwTotalPlayTime/3600;
+		const DWORD s  = dwTotalPlayTime/60%60;
 		const DWORD ms = dwTotalPlayTime%60*1000/60;
 		CString StrFormat;
 		StrFormat.Format(pExtraInfo->szPlayTime, dwTotalPlayTime, m, s, ms);
@@ -684,8 +684,7 @@ void CRPYAnalyzer::THALGenStageInfo()
 
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, FALSE, TRUE, 0);
 
 		StrFormat2.Format(
@@ -716,8 +715,7 @@ void CRPYAnalyzer::TH10GenStageInfo()
 
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE, ppStageInfo[i]->dwContinuedTimes);
 
 		Num2Star(pCurrStage->dwPlayer, strPlayer, 9);
@@ -765,8 +763,7 @@ void CRPYAnalyzer::TH11GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE, ppStageInfo[i]->dwContinuedTimes);
 		
 		Num2Star(pCurrStage->wPlayerInt, strPlayer, 9, pCurrStage->wPlayerDec);
@@ -781,7 +778,7 @@ void CRPYAnalyzer::TH11GenStageInfo()
             dwPowerDec = pCurrStage->dwPower%20*5; // 小数部分
 		}
 
-		// 计算最大得点
+		// 计算最小得点和最大得点
 		const DWORD base_pt = pCurrStage->dwConnect - pCurrStage->dwConnect % 10; // 确保个位为 0
 		const DWORD min_rate = min(pCurrStage->dwGraze/100, 899);
 		const DWORD max_rate = min_rate + 100;
@@ -830,8 +827,7 @@ void CRPYAnalyzer::TH12GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE, ppStageInfo[i]->dwContinuedTimes);
 		
 		Num2Star(pCurrStage->wPlayerInt, strPlayer, 9, pCurrStage->wPlayerDec);
@@ -881,8 +877,7 @@ void CRPYAnalyzer::TH128GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE);
 		
 		StrFormat2.Format(
@@ -935,8 +930,7 @@ void CRPYAnalyzer::TH13GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE);
 
 		if ( pCurrStageRelease->dwPlayerFragmentNormIndex >= lengthof(PlayerFragmentNormList) )
@@ -1002,8 +996,7 @@ void CRPYAnalyzer::TH14GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE, 0);
 		
 		Num2Star(pCurrStage->dwPlayer, strPlayer, 9, pCurrStage->dwPlayerFragment);
@@ -1054,8 +1047,7 @@ void CRPYAnalyzer::TH15GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE, 0);
 		
 		Num2Star(pCurrStage->dwPlayer, strPlayer, 9, pCurrStage->dwPlayerFragment);
@@ -1119,8 +1111,7 @@ void CRPYAnalyzer::TH16GenStageInfo()
 		
 		FormatScore(
 			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
-				? m_pTHRpyInfo2->dwClearScore
-				: ppStageInfo[i+1]->dwScore,
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
 			StrStageScore, TRUE, TRUE, 0);
 		
 		Num2Star(pCurrStage->dwPlayer, strPlayer, 9);
@@ -1169,8 +1160,6 @@ void CRPYAnalyzer::AddSpellPracticeInfo(int SCNum, LPCTSTR filename, BOOL isScen
 {
 	if (SCNum != 0) {
 		CString strfmt;
-		CString strSCName;
-		CString strSCFileName(g_exefullpath);
 
 		if (isScene)
 			strfmt.Format(_T("Scene No. %d"), SCNum);
@@ -1178,6 +1167,8 @@ void CRPYAnalyzer::AddSpellPracticeInfo(int SCNum, LPCTSTR filename, BOOL isScen
 			strfmt.Format(_T("SpellCard No. %d"), SCNum);
 		m_info += strfmt;
 
+		CString strSCName;
+		CString strSCFileName(g_exefullpath);
 		filepath_utils::ChangeFilename(strSCFileName, filename);
 		if ( ::ReadUnicodeFileLine(strSCFileName, SCNum, strSCName) ) {
 			strfmt.Format(_T(" %s"), strSCName);
@@ -1250,10 +1241,10 @@ void CRPYAnalyzer::THXAddExtraInfo2(int nIndex)
 {
 	THX_EXTRAINFO extrainfo = {0};
 	DWORD dwFrameCounts[10] = {0};
-	const int nStageCount = m_pTHRpyInfo2->nStageCount;
 	const int denominator = this->m_header == mgc95 ? 6 : 1; // th95 需要将 keystatesize / 6 才是正确的帧数
 
 	if (nIndex < 0) { // get total
+		const int nStageCount = m_pTHRpyInfo2->nStageCount;
 		for (int i=0; i<nStageCount; ++i) {
 			dwFrameCounts[i] = m_pTHRpyInfo2->pStageInfo.thhdr[i]->dwhdrKeyStateSize / denominator;
 		}
@@ -1266,8 +1257,8 @@ void CRPYAnalyzer::THXAddExtraInfo2(int nIndex)
 		extrainfo.szSlowRate  = common_szSlowRate;
 	}
 
-	extrainfo.pFPSInfo = (TH_FPSINFO*)&m_pTHRpyInfo2->fpsinfo;
-	extrainfo.nIndex = nIndex;
+	extrainfo.pFPSInfo      = (TH_FPSINFO*)&m_pTHRpyInfo2->fpsinfo;
+	extrainfo.nIndex        = nIndex;
 	extrainfo.dwFrameCounts = dwFrameCounts;
 	THXAddExtraInfo(&extrainfo);
 }

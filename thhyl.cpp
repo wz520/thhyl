@@ -18,6 +18,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define delete_then_null(v) ((delete (v)), (v)=NULL)
+
 inline static int MsgBox(LPCTSTR text, UINT options)
 {
 	return ::MessageBox( NULL, text, g_title, options );
@@ -164,7 +166,7 @@ static BOOL IsUnanalyzableRPY(const BYTE* pData, DWORD dwFileSize, CString& strO
 		size_t sizeof_info = sizeof(start_of_info) - 1;
 		pData += 2;
 		dwFileSize -= 2;
-		const BYTE* pStartOfInfo = (const BYTE*)memfind(pData, (size_t)dwFileSize, start_of_info, sizeof_info);
+		const BYTE* pStartOfInfo = static_cast <const BYTE*>(memfind(pData, (size_t)dwFileSize, start_of_info, sizeof_info));
 		if ( pStartOfInfo ) {
 			strOutGameName = _T("东方百花宴/弹幕音乐绘/東方夏夜祭");
 			result = TRUE;
@@ -179,8 +181,7 @@ BYTE* ReadRPYFile(LPCTSTR szFileName, CString& strErrorInfo, HWND hWnd, CFileSta
 	CFile          cfRpyFile;
 	CFileException ex;
 	
-	if ( !cfRpyFile.Open(szFileName, 
-		CFile::modeRead | CFile::shareDenyWrite | CFile::typeBinary, &ex) )
+	if ( !cfRpyFile.Open(szFileName, CFile::modeRead | CFile::shareDenyWrite | CFile::typeBinary, &ex) )
 	{
 		ex.GetErrorMessage(strErrorInfo.GetBuffer(512), 512);
 		strErrorInfo.ReleaseBuffer();
@@ -208,7 +209,7 @@ BYTE* ReadRPYFile(LPCTSTR szFileName, CString& strErrorInfo, HWND hWnd, CFileSta
 			_T("这貌似是 %s 的录像哦……\r\n")
 			_T("但是回映录解析不了喵……＝＿＝\r\n")
 			, strGameName);
-		return delete []pBuf, NULL;
+		return delete []pBuf, static_cast<BYTE*>(NULL);
 	}
 
 	return pBuf;
@@ -234,15 +235,14 @@ void CThhylApp::AnalyzeAndCopy(LPCTSTR szFileName)
 
 	if ( RPYAnalyzer_ret != RPYINFO_UNKNOWNFORMAT ) {
 		strInfo = pRpyInfo->GetFinalInfo();
-		if ( pRpyInfo->m_header!=mgc6 && pRpyInfo->m_header!=mgc7 ) {
-			if ( RPYAnalyzer_ret == RPYINFO_OK ) {
-				CString rpycomment(pRpyInfo->GetComment(cfg.CommentCode));
-				if (!rpycomment.IsEmpty()) {
-					strInfo += CString(_T("\r\n注释：\r\n")) + rpycomment;
-				}
+		if ( RPYAnalyzer_ret == RPYINFO_OK ) {
+			CString rpycomment(pRpyInfo->GetComment(cfg.CommentCode));
+			if (!rpycomment.IsEmpty()) {
+				strInfo += CString(_T("\r\n注释：\r\n")) + rpycomment;
 			}
 		}
 	}
+	delete_then_null(pRpyInfo);
 	
 	//将录像信息复制到剪贴板
 	if (RPYAnalyzer_ret==RPYINFO_OK && !strInfo.IsEmpty()) {
@@ -262,15 +262,13 @@ void CThhylApp::AnalyzeAndCopy(LPCTSTR szFileName)
 		} while (ret==IDRETRY);
 	}
 	else {
-		CString msg;
-
 		if (strInfo.IsEmpty())
 			strInfo = LoadNotRpyString();
 
+		CString msg;
 		msg.Format(_T("%s\n\n%s"), szFileName, strInfo);
 		MsgBox(msg, MB_ICONSTOP);
 	}
 
-	delete pRpyInfo;
 	delete []pBuf;
 }

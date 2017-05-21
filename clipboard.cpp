@@ -10,13 +10,12 @@ BOOL SetClipTextW(LPCWSTR unitext)
 
 	if (OpenClipboard(NULL)) {
 		HGLOBAL hMem;
-		LPWSTR pBuf;
 
 		EmptyClipboard();
 
 		hMem = GlobalAlloc(GMEM_MOVEABLE, (len + 1) * 2 );
 		if (hMem) {
-			pBuf = (LPWSTR)GlobalLock(hMem);
+			LPWSTR pBuf = (LPWSTR)GlobalLock(hMem);
 			if (pBuf) {
 				wcscpy(pBuf, unitext);
 				GlobalUnlock(hMem);

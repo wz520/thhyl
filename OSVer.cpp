@@ -23,6 +23,8 @@ BOOL OSVerAboveXP_SP2()
 
 LPCTSTR OSVerGetOSString()
 {
+	// 在一个GBK编码的文件中，如果多字节字符只有汉字“未知”这两个字，貌似会使很多编辑器会误认为UTF8而导致显示为乱码。
+	// 所以本来这文件应该不用写注释的，不得已写了这两行中文注释 一_,一
 	LPCTSTR os = _T("(未知)");
 	const DWORD minor_ver = ovi_ex.dwMinorVersion;
 
@@ -62,7 +64,7 @@ LPCTSTR OSVerGetOSString()
 			{
 				case 0 :
 					return ovi_ex.wProductType == VER_NT_WORKSTATION
-						? _T("10") : _T("Server Technical Preview");
+						? _T("10") : _T("Server 2016");
 			}
 			break;
 	}

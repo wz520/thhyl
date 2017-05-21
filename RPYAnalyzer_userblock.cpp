@@ -75,7 +75,7 @@ int CRpyInfoUserBlock::analyze()
 	case mgc13:
 	case mgc15:
 	case mgc16:
-	case mgc143: {
+	case mgc143:
 		ret = GetUBRpyInfo();
 		if (ret != RPYINFO_OK) break;
 
@@ -94,7 +94,6 @@ int CRpyInfoUserBlock::analyze()
 		case mgcalco: // 可怜的黄昏酒场，连游戏名都没……
 			m_info.Insert(0, _T("黄昏酒場 "));
 			break;
-		}
 		}
 		break;
 	default:
@@ -133,7 +132,7 @@ int CRpyInfoUserBlock::GetUBRpyInfo()
 
 	if (pUBInfo && pUBInfo->isValid()) {
 		// 转码
-		LPWSTR const pUserDataW = Ansi2Unicode( (LPCSTR)pUBInfo->getData(), m_codepage, NULL, (int)pUBInfo->getDataSize());
+		LPWSTR const pUserDataW = Ansi2Unicode( (LPCSTR)pUBInfo->getData(), m_codepage, NULL, static_cast<int>(pUBInfo->getDataSize()) );
 		
 		if (pUserDataW) {
 			m_info = pUserDataW; //CString=LPWSTR;
