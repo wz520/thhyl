@@ -648,23 +648,19 @@ static bool _GetStageInfo(
 			break;
 		case mgc16:
 			// 目前只允许分析体验版录像。以免将来出现正式版录像时因为录像文件结构发生变化而使程序出错。
-			if (pOutInfo->isTrialVersion()) {
-				nMaxStageCount  = 3;
-				nMaxStageNumber = 3;
-				o.firstStage    = 0xa0;
-				offsetFlags     = 0x40;
+			nMaxStageCount  = pOutInfo->isTrialVersion() ? 3 : 6;
+			nMaxStageNumber = pOutInfo->isTrialVersion() ? 3 : 7;
+			o.firstStage    = 0xa0;
+			offsetFlags     = 0x40;
 
-				// 大部分数据的偏移都比 TH15 少 8 bytes
-				o.slowRate     = 0x84-8;
-				o.stageCount   = 0x88-8;
-				o.ID           = 0x8c-8;
-				o.equipID      = 0x9c;
-				o.difficulty   = 0x94-8;
-				o.lastStage    = 0x98-8;
-				o.stageSizeFix = 0x284;
-			}
-			else
-				return false;
+			// 大部分数据的偏移都比 TH15 少 8 bytes
+			o.slowRate     = 0x84-8;
+			o.stageCount   = 0x88-8;
+			o.ID           = 0x8c-8;
+			o.equipID      = 0x9c;
+			o.difficulty   = 0x94-8;
+			o.lastStage    = 0x98-8;
+			o.stageSizeFix = pOutInfo->isTrialVersion() ? 0x284 : 0x294;
 			break;
 		// no stage info
 		case mgc95:

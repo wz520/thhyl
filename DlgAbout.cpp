@@ -117,7 +117,7 @@ BOOL CDlgAbout::OnInitDialog()
 	const DWORD tid = GetCurrentThreadId();
 	const DWORD tickcount = GetTickCount();
 	abt.Format(
-		_T("%s %d.%d\r\n\r\n")
+		_T("%s %d.%d alpha\r\n\r\n")
 		_T("Written by wz520\r\n")
 		_T("贴吧ID: 天使的枷锁\r\n")
 		_T("邮箱: %s\r\n\r\n")
@@ -128,7 +128,7 @@ BOOL CDlgAbout::OnInitDialog()
 		_T("当前进程 PID: %u(0x%x)\r\n")
 		_T("当前线程 TID: %u(0x%x)\r\n")
 		_T("GetTickCount(): %u(0x%x)\r\n")
-		, g_title, 1, 81
+		, g_title, 1, 82
 		, myemail
 		, updateurl
 
