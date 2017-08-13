@@ -1257,7 +1257,7 @@ void CRPYAnalyzer::THXAddExtraInfo2(int nIndex)
 		extrainfo.szSlowRate  = common_szSlowRate;
 	}
 
-	extrainfo.pFPSInfo      = (TH_FPSINFO*)&m_pTHRpyInfo2->fpsinfo;
+	extrainfo.pFPSInfo      = const_cast<TH_FPSINFO*>(&m_pTHRpyInfo2->fpsinfo);
 	extrainfo.nIndex        = nIndex;
 	extrainfo.dwFrameCounts = dwFrameCounts;
 	THXAddExtraInfo(&extrainfo);

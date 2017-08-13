@@ -114,7 +114,7 @@ static void STDCALL thdecode2_decrypt(
 
 
 // 记录相对于解码数据起始处的偏移
-typedef struct tagRPYOFFSETS {
+struct RPYOFFSETS {
 	int firstStage;        // 第一关关卡数据结构
 	int stageCount;        // 总关卡数
 	int playerName;        // 玩家名
@@ -127,7 +127,42 @@ typedef struct tagRPYOFFSETS {
 	int difficulty;        // 难度
 	int lastStage;         // 最终关卡
 	int stageSizeFix;      // [非偏移]，关卡数据偏移修正值
-}RPYOFFSETS;
+	int flags;			   // 在 custom.exe 中设置的游戏选项
+
+	// 如果 isALor10 不为 false，则表示是 黄昏酒场 或 风神录 的录像
+	RPYOFFSETS(bool isALor10) {
+		this->firstStage       = isALor10 ? 0x64 : 0x70;
+		this->playerName       = 0x00;
+		this->clearTime        = 0x0c;
+		this->isClearTime64bit = isALor10 ? false : true;
+		this->slowRate         = isALor10 ? 0x48 : 0x54;
+		this->stageCount       = isALor10 ? 0x4c : 0x58;
+		this->clearScore       = isALor10 ? 0x10 : 0x14;
+		this->ID               = isALor10 ? 0x50 : 0x5c;
+		this->equipID          = isALor10 ? 0x54 : 0x60;
+		this->difficulty       = isALor10 ? 0x58 : 0x64;
+		this->lastStage        = isALor10 ? 0x5c : 0x68;
+		this->flags            = isALor10 ? 0x44 : 0x50;
+	}
+};
+
+struct INTERNAL_DATA {
+	int nMaxStageCount;
+	int nMaxStageNumber;
+	int nKeyStateElementSize;
+	RPYOFFSETS o;
+
+	INTERNAL_DATA(bool isALor10) : o(isALor10) {
+		nMaxStageCount = 6;
+		nMaxStageNumber = 7;
+		nKeyStateElementSize = 6;
+	}
+
+	void setMaxValuesForTrial() {
+		nMaxStageCount = 3;
+		nMaxStageNumber = 3;
+	}
+};
 
 
 THRPYINFO2::THRPYINFO2() {
@@ -350,7 +385,7 @@ static void GetFPSInfo(int nStageCount, TH_FPSINFO* pInOutFPSInfo)
 	for ( int currStage = 0; currStage < nStageCount; ++currStage ) {
 		const DWORD fpsDataSize  = pInOutFPSInfo->sizes[currStage];
 		const DWORD normalfpssum = fpsDataSize * 60;                 //正常情况应该每个FPS都是60。
-		DWORD       fpssum       = 0;
+		DWORD fpssum = 0;
 		for (DWORD i=0; i<fpsDataSize; ++i)
 			fpssum += (DWORD)pInOutFPSInfo->pointers[currStage][i];
 		pInOutFPSInfo->slowrates[currStage] = 100.00 - ((double)fpssum) / ((double)normalfpssum) * 100.00;
@@ -371,21 +406,18 @@ static void GetFPSInfo(int nStageCount, TH_FPSINFO* pInOutFPSInfo)
 static bool _GetStagePointers(
 		const BYTE* pData,
 		DWORD size,
-		const RPYOFFSETS* o,
-		int nMaxStageNumber,
-		int nMaxStageCount,
-		int nKeyStateElementSize,
+		const INTERNAL_DATA& idata,
 		THRPYINFO2* pOutInfo
 )
 {
 	// o->stageCount 小于 0 则不使用该 offset，假设只有 1 关
-	const int nStageCount = o->stageCount < 0 ? 1 : *(int*)(pData + o->stageCount);
+	const int nStageCount = idata.o.stageCount < 0 ? 1 : *(int*)(pData + idata.o.stageCount);
 	// Stage count should between 1 and nMaxStageCount
-	if ( !BETWEEN(nStageCount,1,nMaxStageCount) )
+	if ( !BETWEEN(nStageCount, 1, idata.nMaxStageCount) )
 		return false;
 	else {
 		// Get the stage structure pointers
-		const BYTE* const pBegin = pData + o->firstStage;
+		const BYTE* const pBegin = pData + idata.o.firstStage;
 		const BYTE* pCurr = pBegin;
 		const BYTE* const pEnd = pData+size;
 		
@@ -396,18 +428,18 @@ static bool _GetStagePointers(
 			// 数据指针有效性检查
 			// 若 o->stageCount <= 0 则不检查 stagenumber
 			if ( pCurr >= pEnd || pCurr < pBegin ||
-				(o->stageCount > 0 && !BETWEEN(pCurrHdr->wStageNumber,1,nMaxStageNumber)) )
+				(idata.o.stageCount > 0 && !BETWEEN(pCurrHdr->wStageNumber, 1, idata.nMaxStageNumber)) )
 				return false;
 			
 			pOutInfo->pStageInfo.v[i] = (void*)(pCurr);
 			
 			// 跳过 keystate 数据便是 fps 数据，一组 keystate 的长度由 nKeyStateElementSize 指定
-			pOutInfo->fpsinfo.pointers[i] = (BYTE*)pCurr + pCurrHdr->dwhdrKeyStateSize*nKeyStateElementSize + o->stageSizeFix;
+			pOutInfo->fpsinfo.pointers[i] = (BYTE*)pCurr + pCurrHdr->dwhdrKeyStateSize*idata.nKeyStateElementSize + idata.o.stageSizeFix;
 
 
 			const int nStageNumberIndex = pCurrHdr->wStageNumber-1;
 			// 填写 stagepointers
-			if (i == 0 && o->stageCount < 0) {
+			if (i == 0 && idata.o.stageCount < 0) {
 				// 95, 125, 143 强制填写在索引 0 上
 				pOutInfo->nStageNumberForHalf = pOutInfo->nSpellPracticeNumber;
 				pOutInfo->stagepointers[0][0].p = (BYTE*)pCurr;
@@ -429,14 +461,14 @@ static bool _GetStagePointers(
 			}
 			else {
 				// 指向下一关起始位置
-				pCurr += pCurrHdr->dwhdrDataSize + o->stageSizeFix;
+				pCurr += pCurrHdr->dwhdrDataSize + idata.o.stageSizeFix;
 				// 下一关起始位置 - fps 数据起始位置 = fps 数据长度
 				pOutInfo->fpsinfo.sizes[i] = pCurr - pOutInfo->fpsinfo.pointers[i];
 			}
 
 			// 填写 fpspointers
 			// 如果是 95,125,143 的 REP，则填写 pOutInfo->nStageNumberForHalf，且将 fpspointers
-			if (i == 0 && o->stageCount < 0) {
+			if (i == 0 && idata.o.stageCount < 0) {
 				pOutInfo->fpspointers[0].p = pOutInfo->fpsinfo.pointers[i];
 				pOutInfo->fpspointers[0].offset = pOutInfo->fpsinfo.pointers[i] - pData;
 				pOutInfo->fpspointers[0].size = pOutInfo->fpsinfo.sizes[i];				
@@ -460,11 +492,13 @@ static bool GetHalfInfo(
 		RPYMGC magic,
 		const BYTE* pData,
 		DWORD size,
-		RPYOFFSETS* o,
+		INTERNAL_DATA& idata,
 		THRPYINFO2* pOutInfo
 )
 {
-	int nKeyStateElementSize = 6;
+	RPYOFFSETS* const o = &idata.o;
+	idata.nKeyStateElementSize = 6;
+	o->flags = 0;  // 若该值为 0 将不调用 SetFlags()
 	o->clearScore = 0x14;
 	o->stageCount = -1;
 
@@ -473,18 +507,18 @@ static bool GetHalfInfo(
 	switch (magic)
 	{
 	case mgc95:
-		nKeyStateElementSize = 1;
+		idata.nKeyStateElementSize = 1;
 		o->firstStage        = 0xec;
 		o->stageSizeFix      = 0x0c;
 		o->playerName        = 0x07;
 		o->isClearTime64bit  = false;
 		o->clearTime         = 0x10;
 		o->slowRate          = 0xe0;
+		o->flags             = 0xdc;
 		pOutInfo->nSpellPracticeNumber = *(WORD*)(pData) + 1;
-		SetFlags(magic, pData, 0xdc, &pOutInfo->wFlags);
 		break;
 	case mgc125:
-		nKeyStateElementSize = 3;
+		idata.nKeyStateElementSize = 3;
 		o->firstStage        = 0x68;
 		o->stageSizeFix      = 0xa0;
 		pOutInfo->nSpellPracticeNumber = *(WORD*)(pData+0x68) + 1;
@@ -496,6 +530,7 @@ static bool GetHalfInfo(
 		o->slowRate     = 0x7c;
 		o->firstStage   = 0xa8;
 		o->stageSizeFix = 0x10c;
+		o->flags        = 0x58;
 		pOutInfo->halfinfo.nMainItemID = *(DWORD*)(pData+0x94);
 		// same as 0xe4, 0x100?
 		pOutInfo->halfinfo.nDayID = *(int*)(pData+0x88);
@@ -509,13 +544,18 @@ static bool GetHalfInfo(
 		pOutInfo->halfinfo.nSubItemCount = *(DWORD*)(pData+0x9c);
 		
 		pOutInfo->nSpellPracticeNumber = *(DWORD*)(pData+0x90);
-
-		SetFlags(magic, pData, 0x58, &pOutInfo->wFlags);
 		break;
+	default:
+		// we should never arrive here
+		return false;
 	}
 
-	// The 4th argument will not be used since o->stageCount = -1
-	if (!_GetStagePointers(pData, size, o, 255, 1, nKeyStateElementSize, pOutInfo))
+	if ( o->flags != 0 )
+		SetFlags(magic, pData, o->flags, &pOutInfo->wFlags);
+
+	idata.nMaxStageNumber = 255;
+	idata.nMaxStageCount = 1;
+	if (!_GetStagePointers(pData, size, idata, pOutInfo))
 		return false;
 
 	SetRPYInfoFromOffsets(pData, o, pOutInfo);
@@ -534,52 +574,32 @@ static bool _GetStageInfo(
 	// is alcostg or th10?
 	const bool isALor10 = magic==mgc10 || magic==mgcalco;
 	const WORD wVersion = pOutInfo->wVersion;
-	RPYOFFSETS o;
-
-	// 这些数据有可能在下面的 switch() 中更改。
-	// 这些是最通用的值。
-	int nMaxStageCount       = 6;
-	int nMaxStageNumber      = 7;
-	int nKeyStateElementSize = 6;
-	int offsetFlags          = isALor10 ? 0x44 : 0x50;
-
-	o.firstStage       = isALor10 ? 0x64 : 0x70;
-	o.playerName       = 0x00;
-	o.clearTime        = 0x0c;
-	o.isClearTime64bit = isALor10 ? false : true;
-	o.slowRate         = isALor10 ? 0x48 : 0x54;
-	o.stageCount       = isALor10 ? 0x4c : 0x58;
-	o.clearScore       = isALor10 ? 0x10 : 0x14;
-	o.ID               = isALor10 ? 0x50 : 0x5c;
-	o.equipID          = isALor10 ? 0x54 : 0x60;
-	o.difficulty       = isALor10 ? 0x58 : 0x64;
-	o.lastStage        = isALor10 ? 0x5c : 0x68;
+	INTERNAL_DATA idata(isALor10);
 
 	switch (magic)
 	{
 		case mgcalco:
-			nMaxStageCount       = 3;
-			nMaxStageNumber      = 3;
-			nKeyStateElementSize = 8;
-			o.firstStage         = 0x60;
-			o.stageSizeFix       = 0x18;
+			idata.setMaxValuesForTrial();
+			idata.nKeyStateElementSize = 8;
+			idata.o.firstStage         = 0x60;
+			idata.o.stageSizeFix       = 0x18;
 			if (wVersion != 3) // unknown version number, not allowed
 				return false;
 			break;
 		case mgc10:
-			o.stageSizeFix = 0x1c4;
+			idata.o.stageSizeFix = 0x1c4;
 			// 部分奇葩的中文版录像貌似每一组 keystate 的长度变成了 3 。
 			// 播放这种录像，会看到右下角 FPS 大多数时候都是 0，这是因为 keystate 长度不对导致 fps 数据取错了。
 			// 这种录像在日文版上播放可能出错，所以没有支持的打算（也可能导致本模块出错）。
 			// nKeyStateElementSize = 3;
 			break;
 		case mgc11:
-			o.stageSizeFix = 0x90; break;
+			idata.o.stageSizeFix = 0x90; break;
 		case mgc128:
 			{
-				nMaxStageCount  = 3;
-				nMaxStageNumber = 16;
-				o.stageSizeFix  = 0x90;
+				idata.nMaxStageCount  = 3;
+				idata.nMaxStageNumber = 16;
+				idata.o.stageSizeFix  = 0x90;
 
 				LPCTSTR const newstagenames[]={
 					_T("A1-1"), _T("A1-2"), _T("A1-3"), _T("A2-2"), _T("A2-3"),
@@ -591,7 +611,7 @@ static bool _GetStageInfo(
 			}
 			break;
 		case mgc12:
-			o.stageSizeFix = 0xa0; break;
+			idata.o.stageSizeFix = 0xa0; break;
 		case mgc13:
 			{
 				const bool isTH14Release = (wVersion == 2) &&
@@ -602,16 +622,16 @@ static bool _GetStageInfo(
 					// treat as release version if forceTH14 is true
 					pOutInfo->wFlags |= forceTH14 ? RPYFLAG2_TH14RELEASE : RPYFLAG2_TH14TRIAL;
 
-					nMaxStageCount  = forceTH14 ? 6 : 3;
-					nMaxStageNumber = forceTH14 ? 7 : 3;
-					o.slowRate      = 0x74;
-					o.stageCount    = 0x78;
-					o.ID            = 0x7c;
-					o.equipID       = 0x80;
-					o.difficulty    = 0x84;
-					o.lastStage     = 0x88;
-					o.firstStage    = 0x94;
-					o.stageSizeFix  = 0xdc;
+					if ( isTH14Trial )
+						idata.setMaxValuesForTrial();
+					idata.o.slowRate      = 0x74;
+					idata.o.stageCount    = 0x78;
+					idata.o.ID            = 0x7c;
+					idata.o.equipID       = 0x80;
+					idata.o.difficulty    = 0x84;
+					idata.o.lastStage     = 0x88;
+					idata.o.firstStage    = 0x94;
+					idata.o.stageSizeFix  = 0xdc;
 
 					// get (Spell Practice Number), release version only
 					if (forceTH14)
@@ -620,62 +640,61 @@ static bool _GetStageInfo(
 				else if (wVersion == 2 && (pOutInfo->dwGameVersion == 0x100 // th13 release
 						|| pOutInfo->dwGameVersion == 0)  // th13 demo by ZUN
 						) {
-					o.stageSizeFix = 0xc4;
-					o.firstStage   = 0x74;
+					idata.o.stageSizeFix = 0xc4;
+					idata.o.firstStage   = 0x74;
 
 					// get (Spell Practice Number)
 					pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x70)) + 1;
 				}
 				else if (wVersion == 1 && pOutInfo->dwGameVersion == 0x1) { // th13 trial
-					o.stageSizeFix = 0xc0;
+					idata.o.stageSizeFix = 0xc0;
 				}
 				else
 					return false; // not supported
 			}
 			break;
 		case mgc15:
-			o.firstStage = 0xa4;
+			idata.o.firstStage = 0xa4;
 
 			// 比其他作品多偏移了 0x30 bytes
-			offsetFlags    = 0x40;
-			o.slowRate     = 0x84;
-			o.stageCount   = 0x88;
-			o.ID           = 0x8c;
-			o.equipID      = 0x90;
-			o.difficulty   = 0x94;
-			o.lastStage    = 0x98;
-			o.stageSizeFix = 0x238;
+			idata.o.flags        = 0x40;
+			idata.o.slowRate     = 0x84;
+			idata.o.stageCount   = 0x88;
+			idata.o.ID           = 0x8c;
+			idata.o.equipID      = 0x90;
+			idata.o.difficulty   = 0x94;
+			idata.o.lastStage    = 0x98;
+			idata.o.stageSizeFix = 0x238;
 			break;
 		case mgc16:
-			// 目前只允许分析体验版录像。以免将来出现正式版录像时因为录像文件结构发生变化而使程序出错。
-			nMaxStageCount  = pOutInfo->isTrialVersion() ? 3 : 6;
-			nMaxStageNumber = pOutInfo->isTrialVersion() ? 3 : 7;
-			o.firstStage    = 0xa0;
-			offsetFlags     = 0x40;
+			if ( pOutInfo->isTrialVersion() )
+				idata.setMaxValuesForTrial();
+			idata.o.firstStage    = 0xa0;
+			idata.o.flags         = 0x40;
 
 			// 大部分数据的偏移都比 TH15 少 8 bytes
-			o.slowRate     = 0x84-8;
-			o.stageCount   = 0x88-8;
-			o.ID           = 0x8c-8;
-			o.equipID      = 0x9c;
-			o.difficulty   = 0x94-8;
-			o.lastStage    = 0x98-8;
-			o.stageSizeFix = pOutInfo->isTrialVersion() ? 0x284 : 0x294;
+			idata.o.slowRate     = 0x84-8;
+			idata.o.stageCount   = 0x88-8;
+			idata.o.ID           = 0x8c-8;
+			idata.o.equipID      = 0x9c;
+			idata.o.difficulty   = 0x94-8;
+			idata.o.lastStage    = 0x98-8;
+			idata.o.stageSizeFix = pOutInfo->isTrialVersion() ? 0x284 : 0x294;
 			break;
 		// no stage info
 		case mgc95:
 		case mgc125:
 		case mgc143:
-			return GetHalfInfo(magic, pData, size, &o, pOutInfo);
+			return GetHalfInfo(magic, pData, size, idata, pOutInfo);
 		default:
 			return false;
 	}
 
-	if (!_GetStagePointers(pData, size, &o, nMaxStageNumber, nMaxStageCount, nKeyStateElementSize, pOutInfo))
+	if (!_GetStagePointers(pData, size, idata, pOutInfo))
 		return false;
 
-	SetFlags(magic, pData, offsetFlags, &pOutInfo->wFlags);
-	SetRPYInfoFromOffsets(pData, &o, pOutInfo);
+	SetFlags(magic, pData, idata.o.flags, &pOutInfo->wFlags);
+	SetRPYInfoFromOffsets(pData, &idata.o, pOutInfo);
 
 	return true;
 }
