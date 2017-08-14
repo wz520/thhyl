@@ -1093,6 +1093,7 @@ void CRPYAnalyzer::TH16GenStageInfo()
 		case 1: strSubWeapon = _T("Summer"); break;
 		case 2: strSubWeapon = _T("Autumn"); break;
 		case 3: strSubWeapon = _T("Winter"); break;
+		case 4: strSubWeapon = _T("Full"); break;
 		default: strSubWeapon = _T("ERROR!"); break;
 		}
 		StrFormat2.Format(_T("Season %s\r\n"), strSubWeapon);
