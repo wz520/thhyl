@@ -197,12 +197,19 @@ public:
 	
 	// pStageInfo: 指向各关数据的指针数组
 	// 原本使用时需要强制转换，现在只需根据实际情况选择其一使用。
+
+	// 用于通过 [玩家索引(0或1)][关卡索引] 来访问 th9 的每一关数据
+	typedef TH9_STAGEINFO* (*TH9_STAGEINFO_BY_PLAYER)[10];
     union pStageInfo {
 		void* v[20];
 		TH6_STAGEINFO* th6[7];  // 1,2,3,4,5,6,EX
 		TH7_STAGEINFO* th7[7];  // 1,2,3,4,5,6,EX/PH
 		TH8_STAGEINFO* th8[9];  // 1,2,3,4A,4B,5,6A,6B,EX
 		TH9_STAGEINFO* th9[20]; // Player1 的 1,2,3,4,5,6,7,8,9,Match，Player2 的 1,2,3,4,5,6,7,8,9,Match, 共 20
+
+		// 建议使用该成员获取TH9的数据。举个栗子：th9_by_player[1][5]=玩家2的第四关数据。
+		// 如果使用上面的 th9，则要写成 th9[15]。
+		TH9_STAGEINFO* th9_by_player[2][10];
 	} pStageInfo;
 
 	// 各关的数据长度，以 byte 为单位。同样有 20 个。

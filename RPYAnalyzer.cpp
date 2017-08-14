@@ -493,13 +493,7 @@ void CRPYAnalyzer::TH8GenStageInfo()
 ////////////////////// TH9 //////////////////
 void CRPYAnalyzer::TH9GenStageInfo()
 {
-	typedef TH9_STAGEINFO* (*PPTH9_STAGEINFO)[10];
-
-	// ppStageInfo[0][0]=player1第一关指针, ppStageInfo[1][0]=player2 第一关指针...
-	// 也可以这样定义:
-	// TH9_STAGEINFO** ppStageInfo = (TH9_STAGEINFO)m_pTHRpyInfo->pStageInfo.th9;
-	// 不过这样的话 player2 的各关指针就要用 ppStageInfo[10+关卡索引] 来取
-	PPTH9_STAGEINFO ppStageInfo = (PPTH9_STAGEINFO)m_pTHRpyInfo->pStageInfo.th9; 
+	THRPYINFO::TH9_STAGEINFO_BY_PLAYER ppStageInfo = m_pTHRpyInfo->pStageInfo.th9_by_player;
 
 	// 对战场所数组（日文版）  【注意】：索引 = m_pTHRpyInfo->cPlace + 2
 	LPCTSTR PlaceListJP[] = { // start from -2
@@ -571,10 +565,13 @@ void CRPYAnalyzer::TH9GenStageInfo()
 		if (!ppStageInfo[0][i])
 			continue;
 
-		FormatScore(ppStageInfo[0][i]->dwScores, StrStageScores[0], TRUE, FALSE);
-		FormatScore(ppStageInfo[1][i]->dwScores, StrStageScores[1], TRUE, FALSE);
-		cChara[0] = ppStageInfo[0][i]->cChara;
-		cChara[1] = ppStageInfo[1][i]->cChara;
+		LPCTSTR szCurrChara[2] = {STR_ERROR, STR_ERROR};
+		for ( int p = 0; p < 2; ++p ) {  // 2 players
+			FormatScore(ppStageInfo[p][i]->dwScores, StrStageScores[p], TRUE, FALSE);
+			cChara[p] = ppStageInfo[p][i]->cChara;
+			if (cChara[p] < 16)
+				szCurrChara[p] = szChara[cChara[p]];
+		}
 		
 		// 如果 player1 是 ⑨，并且开启了“⑨”显示，显示会稍稍错位（向右偏一个字符），
 		// 把 StrFormat 中的 "%17s" 改成 "%16s" 即可修正
@@ -586,7 +583,7 @@ void CRPYAnalyzer::TH9GenStageInfo()
 
 		StrFormat2.Format(StrFormat,
 			m_pTHRpyInfo->stagenames[i],
-			(cChara[0]>=16?STR_ERROR:szChara[cChara[0]]), (cChara[1]>=16?STR_ERROR:szChara[cChara[1]]),
+			szCurrChara[0], szCurrChara[1],
 			ppStageInfo[0][i]->cLives, ppStageInfo[1][i]->cLives,
 			(LPCTSTR)(StrStageScores[0]), (LPCTSTR)(StrStageScores[1])
 		);
@@ -596,15 +593,13 @@ void CRPYAnalyzer::TH9GenStageInfo()
 		// place, for match mode only
 		if (i==9) { // match mode
 			signed char cPlace = ppStageInfo[0][i]->cPlace + 2;
-			LPCTSTR szPlace = NULL;
 			LPCTSTR* const PlaceList = (m_pTHRpyInfo->wFlags & RPYFLAG_CNVER)
 				? PlaceListCN
 				: PlaceListJP;
 
-			if (cPlace>=0 && cPlace<lengthof(PlaceListJP))
-				szPlace = PlaceList[cPlace];
-			else // out of range
-				szPlace = _T("Error");
+			LPCTSTR const szPlace = cPlace>=0 && cPlace<lengthof(PlaceListJP)
+				? PlaceList[cPlace]
+				: _T("Error");  // out of range
 
 			StrFormat2.Format(_T("        Place: %s\r\n"), szPlace);
 			m_info += StrFormat2;
