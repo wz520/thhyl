@@ -912,7 +912,7 @@ void CRPYAnalyzer::TH13GenStageInfo()
 	DWORD const dwBombFragmentNorm = (m_pTHRpyInfo2->wVersion > 1) // 加Bomb碎片的定额根据游戏版本而定
 		? 8 // 正式版
 		: 10; // 体验版 0.01a
-	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th13sc.lst"));
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th13sc.sclist"));
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
 	
 	CString StrFormat2, StrStageScore, strPlayer, strBomb;
@@ -983,7 +983,7 @@ void CRPYAnalyzer::TH14GenStageInfo()
 	TH14_STAGEINFO** ppStageInfo = m_pTHRpyInfo2->pStageInfo.th14;
 	CString StrFormat2, StrStageScore, strPlayer, strBomb;
 
-	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th14sc.lst"));
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th14sc.sclist"));
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
 	
 	for (int i=0; i<m_pTHRpyInfo2->nStageCount; i++) {
@@ -1100,6 +1100,7 @@ void CRPYAnalyzer::TH16GenStageInfo()
 		m_info += StrFormat2;
 	}
 
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th16sc.sclist"));
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
 	
 	for (int i=0; i<m_pTHRpyInfo2->nStageCount; i++) {
@@ -1165,7 +1166,8 @@ void CRPYAnalyzer::AddSpellPracticeInfo(int SCNum, LPCTSTR filename, BOOL isScen
 
 		CString strSCName;
 		CString strSCFileName(g_exefullpath);
-		filepath_utils::ChangeFilename(strSCFileName, filename);
+		CString strSCFileBasePath(_T("sclists\\"));
+		filepath_utils::ChangeFilename(strSCFileName, strSCFileBasePath+filename);
 		if ( ::ReadUnicodeFileLine(strSCFileName, SCNum, strSCName) ) {
 			strfmt.Format(_T(" %s"), strSCName);
 			m_info += strfmt;
@@ -1177,7 +1179,7 @@ void CRPYAnalyzer::AddSpellPracticeInfo(int SCNum, LPCTSTR filename, BOOL isScen
 
 void CRPYAnalyzer::TH95GenInfo()
 {
-	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th95sc.lst"), TRUE);
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th95sc.sclist"), TRUE);
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
 
 	THXAddExtraInfo2(0);
@@ -1185,13 +1187,13 @@ void CRPYAnalyzer::TH95GenInfo()
 
 void CRPYAnalyzer::TH125GenInfo()
 {
-	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th125sc.lst"), TRUE);
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th125sc.sclist"), TRUE);
 	THXAddExtraInfo2(0);
 }
 
 void CRPYAnalyzer::TH143GenInfo()
 {
-	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th143sc.lst"), TRUE);
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th143sc.sclist"), TRUE);
 	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
 
 	LPCTSTR const item_names[] = {

@@ -81,8 +81,10 @@ protected:
 
 	// m_info 中增加信息：如果是 Spell Practice 录像，显示 SpellCard 的编号
 	// 并且如果文件 filename 存在，读取SC名
+	//   NOTE: 查找 filename 时会自动在前面加上“EXE所在目录\sclists”
 	//
-	// 目前支持 th13, th14 的正式版，以及 th95, th125, th143
+	// 目前支持 th13, th14, th16 的正式版，以及 th95, th125, th143
+	// 如果 isScene==TRUE，则用 "Scene" 代替 "SpellCard" 。
 	void AddSpellPracticeInfo(int SCNum, LPCTSTR filename, BOOL isScene=FALSE);
 private:
     BYTE* m_pData;      // RPY数据，解密（非解压）后的内容也存放于此处

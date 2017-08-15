@@ -680,6 +680,7 @@ static bool _GetStageInfo(
 			idata.o.difficulty   = 0x94-8;
 			idata.o.lastStage    = 0x98-8;
 			idata.o.stageSizeFix = pOutInfo->isTrialVersion() ? 0x284 : 0x294;
+			pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x98)) + 1;
 			break;
 		// no stage info
 		case mgc95:
