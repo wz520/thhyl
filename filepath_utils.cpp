@@ -52,18 +52,18 @@ CString& GetFilename(const CString& inFilePath, CString& outFilename)
 }
 
 // Get Dir part from a full path string
-// if no filename part(e.g. not a full path),
-// 'outFilename' will be set to the same string as 'inFilePath'
-CString& GetDirpart(const CString& inFilePath, CString& outFilename, bool bIncludeLastBackSlash)
+// if no dirname part(e.g. not a full path),
+// 'outDirname' will be set to the same string as 'inFilePath'
+CString& GetDir(const CString& inFilePath, CString& outDirname, bool bIncludeLastBackSlash)
 {
 	const int pos_backslash = inFilePath.ReverseFind(_T('\\'));
 	
 	if (pos_backslash != -1) // Found
-		outFilename = inFilePath.Left( bIncludeLastBackSlash ? pos_backslash+1 : pos_backslash );
+		outDirname = inFilePath.Left( bIncludeLastBackSlash ? pos_backslash+1 : pos_backslash );
 	else
-		outFilename = inFilePath;
+		outDirname = inFilePath;
 	
-	return outFilename;
+	return outDirname;
 }
 
 

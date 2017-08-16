@@ -11,7 +11,6 @@
 
 #include "filepath_utils.h"
 
-using namespace filepath_utils;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -114,7 +113,7 @@ BOOL CSaveRawDlg::OnInitDialog()
 					}
 
 					// 文件名
-					GetBasename(m_strFileName, filename);
+					filepath_utils::GetBasename(m_strFileName, filename);
 					filename2.Format(_T("%s_%s%s.bin"), (LPCTSTR)filename, (LPCTSTR)stagename,
 						player == 0 ? _T("") : _T("(P2)")
 						);
@@ -138,7 +137,7 @@ BOOL CSaveRawDlg::OnInitDialog()
 					// 另外 TH6 没有 FPS 数据，也不需要（不能）显示
 					if (player == 0 && m_pRpyInfoBase->fpspointers[i].p != NULL) {
 						// 文件名
-						GetBasename(m_strFileName, filename);
+						filepath_utils::GetBasename(m_strFileName, filename);
 						filename2.Format(_T("%s_%s_FPS.bin"), (LPCTSTR)filename, (LPCTSTR)stagename);
 						pList->InsertItem(nListIndex, filename2);
 						// 关卡
@@ -234,7 +233,7 @@ void CSaveRawDlg::OnOK()
 {
 	TCHAR pszPath[MAX_PATH];
 	CString initpath;
-	GetDirpart(m_strFileName, initpath, false);
+	filepath_utils::GetDir(m_strFileName, initpath, false);
 
 	BROWSEINFO bi;
 	bi.hwndOwner      = this->GetSafeHwnd();
@@ -265,7 +264,7 @@ void CSaveRawDlg::OnOK()
 bool CSaveRawDlg::SaveCheckedFiles(LPCTSTR szDir)
 {
 	CString strDir(szDir);
-	AddDirBkSlash(strDir);
+	filepath_utils::AddDirBkSlash(strDir);
 	
 	const int itemcount = m_list.GetItemCount();
 	bool      result    = true;

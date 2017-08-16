@@ -756,8 +756,12 @@ void CThhylDlg::OnOpenprop()
 void CThhylDlg::OnMenuhelp() 
 {
 	// TODO: Add your command handler code here
-	CString exefullpath = g_exefullpath;
-	filepath_utils::ChangeFileExtension(exefullpath, _T("html"));
+	CString exedir, exefilename;
+	filepath_utils::GetDir(g_exefullpath, exedir);
+	exedir += _T("docs\\");
+	filepath_utils::GetFilename(g_exefullpath, exefilename);
+	filepath_utils::ChangeFileExtension(exefilename, _T("html"));
+	CString exefullpath = exedir + exefilename;
 	
 	if ( (int)::ShellExecute(NULL, NULL, exefullpath, NULL, NULL, SW_SHOWDEFAULT) <= 32 )
 		MessageBox(CString(_T("无法打开帮助文件:\n\n")) + exefullpath, g_title, 16);	
