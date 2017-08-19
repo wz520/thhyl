@@ -11,6 +11,7 @@
 #include "DlgBaseWZ.h"
 #include "FileStatusWZ.h"
 #include "RPYAnalyzer.h"
+#include "FileListWindow.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CThhylDlg dialog
@@ -21,6 +22,8 @@ class CThhylDlg : public CDlgBaseWZ
 public:
 	CString m_strCurrComment;
 	CRPYAnalyzer* m_pRpyAnalyzer;
+	void Analyze();
+	void SpawnInstance(LPCTSTR lpszFileName);
 	CThhylDlg(CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
@@ -91,6 +94,12 @@ protected:
 	afx_msg void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
 	afx_msg void OnExitMenuLoop(BOOL);
 	afx_msg void OnEnterMenuLoop(BOOL);
+	afx_msg void OnOpenfilelist();
+	afx_msg void OnPrevrpyfile();
+	afx_msg void OnNextrpyfile();
+	afx_msg void OnReloadfilelist();
+	afx_msg void OnFirstrpyfile();
+	afx_msg void OnLastrpyfile();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
@@ -99,15 +108,15 @@ private:
 	BOOL m_bNeedReanalyze; // Need re-analyze when main window has been activated
 	BOOL m_bTHX;        // TRUE if the rpy is TH8 or later
 
-	BYTE* m_pRpyData;  // m_pRpyAnalyzer ‰∏ç‰øùÂ≠òÊú™Ëß£Á†ÅÁöÑ RPY Êñá‰ª∂Êï∞ÊçÆÔºå‰ΩøÁî®Ëøô‰∏™‰øùÂ≠ò
-	DWORD m_dwRpySize; // RPY Êñá‰ª∂Â§ßÂ∞è
+	BYTE* m_pRpyData;  // m_pRpyAnalyzer ≤ª±£¥ÊŒ¥Ω‚¬Îµƒ RPY Œƒº˛ ˝æ›£¨ π”√’‚∏ˆ±£¥Ê
+	DWORD m_dwRpySize; // RPY Œƒº˛¥Û–°
+
+	CFileListWindow* m_pWndFileList;
 
 	void ShowPopup(POINT);
-	void SpawnInstance(LPCTSTR lpszFileName);
 	void ConvToFullPath();
 	void CopyOrMoveRpy(LPCTSTR DialogTitle, BOOL bCopy=TRUE);
 	void CopyOrCutFile(BOOL bCopy);
-	void Analyze();
 	void CloseFile(BOOL bSilently=FALSE);
 	void UpdateTitle();
 	int UserIconedMsgBox(

@@ -51,8 +51,13 @@ CString LoadNotRpyString();
 // return GetLastError()
 LONG EnableMaximize(HWND hwnd, LONG lEnable);
 
+
+// 用于下面的 SetControlFontSize() 的 dwFlags 参数
+#define SCFS_INCREMENTAL			(0x01)  // 将 n 看作一个增量，新字体大小 = 原字体大小 + n
+#define SCFS_KEEPOLDHFONT			(0x02)  // 不要 DeleteObject() 原来的 HFONT
 // 如果 pOutLogFont 不为 NULL，接收新的 LOGFONT
-BOOL IncreaseControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont);
+BOOL SetControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont, DWORD dwFlags=0);
+BOOL SetControlFontSize(CWnd* pWnd, int n, LOGFONT* pOutLogFont, DWORD dwFlags=0);
 
 DWORD simple_random();
 

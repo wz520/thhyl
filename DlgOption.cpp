@@ -115,16 +115,15 @@ void CDlgOption::OnOK()
 
 	cfg.CommentCode = m_CommentCodeEdit;
 	cfg.InfoCode    = m_InfoCodeEdit;
-	cfg.dwOptions   =
-		(m_chkDblClk?       CFG_DBLCLK       : 0) |
-		(m_chkMBtn?         CFG_MBTN         : 0) |
-		(m_chkConfirm?      CFG_CONFIRM      : 0) |
-		(m_chkPlayTime?     CFG_SHOWPLAYTIME : 0) |
-		(m_chkSlowRate?     CFG_SHOWSLOWRATE : 0) |
-		(m_chk9?            CFG_9            : 0) |
-		(m_chkCopyOpenDest? CFG_COPYOPENDEST : 0) |
-		(m_chkAnyDrag?      CFG_ANYDRAG      : 0) |
-		(m_chkAutoExit?     CFG_AUTOEXIT     : 0);
+	cfg.set(CFG_DBLCLK, m_chkDblClk);
+	cfg.set(CFG_MBTN, m_chkMBtn);
+	cfg.set(CFG_CONFIRM, m_chkConfirm);
+	cfg.set(CFG_SHOWPLAYTIME, m_chkPlayTime);
+	cfg.set(CFG_SHOWSLOWRATE, m_chkSlowRate);
+	cfg.set(CFG_9, m_chk9);
+	cfg.set(CFG_COPYOPENDEST, m_chkCopyOpenDest);
+	cfg.set(CFG_ANYDRAG, m_chkAnyDrag);
+	cfg.set(CFG_AUTOEXIT, m_chkAutoExit);
 	
 	CDlgBaseWZ::OnOK();
 }

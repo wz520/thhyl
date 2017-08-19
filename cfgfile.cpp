@@ -8,10 +8,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #define CFGHEADER1			(0x464E4F43) //'CONF'
-#define CFGHEADER2_170		(0xCCA2AA03) //Ver Info, before 1.71
+// #define CFGHEADER2_170		(0xCCA2AA03) //Ver Info, before 1.71, ABANDONED
 #define CFGHEADER2			(0xCCD2A5BC) //Ver Info
 // #define CFGOLDLENGTH		116          //.cfg file size before v1.40, ABANDONED
-#define CFGOLDLENGTH		160          //.cfg file size before v1.70
+// #define CFGOLDLENGTH		160          //.cfg file size before v1.70, ABANDONED
+#define CFGOLDLENGTH		164          //.cfg file size before v1.85
 
 CONFIG cfg;
 
@@ -21,9 +22,9 @@ CONFIG::CONFIG() {
 	CommentCodeForEdit     = 0;
 	InfoFont.lfFaceName[0] = 0;  // 无字体
 	dwOptions              = CFG_CONFIRM | CFG_ANYDRAG | CFG_SHOWPLAYTIME | CFG_SHOWSLOWRATE;
-	WinPlace.length        = 0;  // 无效 windowplacement
 	_dontuse               = 0;
 	byteAlpha              = (BYTE)255;
+	WinPlace_FileList.length = WinPlace.length = 0;  // 无效 windowplacement
 }
 
 BOOL CONFIG::loadFont(LOGFONT* pLogFont)
@@ -93,13 +94,8 @@ BOOL LoadConfig()
 
 	//Check counts of bytes read and header
 	if ( (uBytesRead == sizeof(cfgcontents) || uBytesRead == CFGOLDLENGTH)
-			&& cfgcontents.h1==CFGHEADER1 && (cfgcontents.h2==CFGHEADER2 || cfgcontents.h2==CFGHEADER2_170) )
+			&& cfgcontents.h1==CFGHEADER1 && (cfgcontents.h2==CFGHEADER2) )
 	{
-		// 如果是 1.70 版的 CFG，则强制勾选 PlayTime 和 SlowRateByFPS
-		if (cfgcontents.h2 == CFGHEADER2_170) {
-			cfgcontents.cfg.dwOptions |= CFG_SHOWPLAYTIME | CFG_SHOWSLOWRATE;
-		}
-
 		// Use the configuration read from .cfg file
 		cfg = cfgcontents.cfg;
 		return TRUE;

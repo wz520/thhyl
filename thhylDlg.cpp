@@ -79,6 +79,7 @@ CThhylDlg::CThhylDlg(CWnd* pParent /*=NULL*/)
 
 	// Load Accelerator
 	m_hAccel = ::LoadAccelerators(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_ACCEL)); 
+	m_pWndFileList = new CFileListWindow(this);
 }
 
 void CThhylDlg::DoDataExchange(CDataExchange* pDX)
@@ -132,8 +133,12 @@ BEGIN_MESSAGE_MAP(CThhylDlg, CDlgBaseWZ)
 	ON_BN_CLICKED(IDC_COPYFILE, OnCopyfile)
 	ON_COMMAND(IDM_ABOUT, OnAbout)
 	ON_WM_MENUSELECT()
-	ON_WM_EXITMENULOOP()
-	ON_WM_ENTERMENULOOP()
+	ON_BN_CLICKED(IDC_OPENFILELIST, OnOpenfilelist)
+	ON_BN_CLICKED(IDC_PREVRPYFILE, OnPrevrpyfile)
+	ON_BN_CLICKED(IDC_NEXTRPYFILE, OnNextrpyfile)
+	ON_BN_CLICKED(IDC_RELOADFILELIST, OnReloadfilelist)
+	ON_BN_CLICKED(IDC_FIRSTRPYFILE, OnFirstrpyfile)
+	ON_BN_CLICKED(IDC_LASTRPYFILE, OnLastrpyfile)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -161,6 +166,7 @@ BOOL CThhylDlg::OnInitDialog()
 
 	CoInitialize(NULL);
 
+	m_pWndFileList->Create(IDD_FILELIST, this);
 	if (m_rpyfile.IsEmpty()) {
 		m_rpyfile.LoadString(IDS_HINTNOFILE);
 		m_rpyinfo.LoadString(IDS_HINTSTART);
@@ -190,6 +196,11 @@ BOOL CThhylDlg::OnInitDialog()
 	// set button titles to graphical unicode characters
 	((CButton*)GetDlgItem(IDC_CUTFILE))->SetWindowText(_T("\x2704"));
 	((CButton*)GetDlgItem(IDC_COPYFILE))->SetWindowText(_T("\x2750"));
+	((CButton*)GetDlgItem(IDC_RELOADFILELIST))->SetWindowText(_T("\x21bb"));
+
+	// set font size for buttons
+	SetControlFontSize( GetDlgItem(IDC_OPENFILELIST), 12, NULL, SCFS_KEEPOLDHFONT );
+	SetControlFontSize( GetDlgItem(IDC_RELOADFILELIST), 14, NULL, SCFS_KEEPOLDHFONT );
 
 	// 设置 tooltip 
 	m_tooltip.AddTool( GetDlgItem(IDC_RPYFILE), _T("鼠标左键+滚轮可以调整本窗口的不透明度") );
@@ -203,6 +214,13 @@ BOOL CThhylDlg::OnInitDialog()
 	m_tooltip.AddTool( GetDlgItem(IDC_EDITCOMMENT), _T("编辑录像注释（红魔乡和妖妖梦的录像不支持该功能）") );
 	m_tooltip.AddTool( GetDlgItem(IDC_ONTOP), _T("让本窗口总在最前") );
 	m_tooltip.AddTool( GetDlgItem(IDC_AUTOCOMP), _T("手动输入路径时是否显示自动完成的提示框") );
+	m_tooltip.AddTool( GetDlgItem(IDC_OPENFILELIST), _T("切换文件列表的显示") );
+	m_tooltip.AddTool( GetDlgItem(IDC_FIRSTRPYFILE), _T("打开第一个 *.rpy 文件") );
+	m_tooltip.AddTool( GetDlgItem(IDC_PREVRPYFILE), _T("打开上一个 *.rpy 文件") );
+	m_tooltip.AddTool( GetDlgItem(IDC_NEXTRPYFILE), _T("打开下一个 *.rpy 文件") );
+	m_tooltip.AddTool( GetDlgItem(IDC_LASTRPYFILE), _T("打开最后一个 *.rpy 文件") );
+	m_tooltip.AddTool( GetDlgItem(IDC_RELOADFILELIST), _T("刷新文件列表") );
+	m_tooltip.AddTool( GetDlgItem(IDC_FIRSTRPYFILE), _T("打开第一个 *.rpy 文件") );
 	m_tooltip.Activate(TRUE);
 
 	// 设置不透明度
@@ -279,6 +297,9 @@ void CThhylDlg::Analyze()
 	CloseFile(TRUE);
 
 	m_pRpyData = ReadRPYFile(m_rpyfile, strInfo, this->m_hWnd, &m_filestatus, dwRead);
+	if (m_filestatus.IsValid()) {
+		m_pWndFileList->ChangeFilePath(m_rpyfile);
+	}
 	if ( m_pRpyData == NULL ) { 
 		if ( !strInfo.IsEmpty() ) {
 			m_rpyinfo = strInfo;
@@ -319,8 +340,13 @@ void CThhylDlg::Analyze()
 	
 	// 打开成功，将焦点置于“录像信息”框，方便按 Delete 键删除文件。
 	if (m_filestatus.IsValid()) {
-		CEdit* pRpyInfoEdit=(CEdit*)GetDlgItem(IDC_RPYINFO);
+		// 记住原先的前台窗口，因为 SetFocus 还会更改前台窗口，这样不方便在文件列表窗口中使用键盘选择文件
+		CWnd* const pActiveWindow = CWnd::GetActiveWindow();
+		CEdit* const pRpyInfoEdit=(CEdit*)GetDlgItem(IDC_RPYINFO);
 		pRpyInfoEdit->SetFocus();
+		if (pActiveWindow == m_pWndFileList) { // 只有在原先的前台窗口是文件列表窗口时才让它恢复到前台
+			pActiveWindow->SetActiveWindow();
+		}
 	}
 }
 
@@ -465,7 +491,7 @@ void CThhylDlg::OnCopy()
 void CThhylDlg::OnOK() 
 {
 	// TODO: Add extra validation here
-	if (GetDlgItem(IDC_RPYFILE)!=GetFocus())
+	if (GetDlgItem(IDC_RPYFILE) != GetFocus())
 		return;
 
 	UpdateData(TRUE);
@@ -831,7 +857,7 @@ void CThhylDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
 	// TODO: Add your message handler code here and/or call default
 	
-	lpMMI->ptMinTrackSize.x = 410;
+	lpMMI->ptMinTrackSize.x = 540;
 	lpMMI->ptMinTrackSize.y = 240;
 }
 
@@ -918,10 +944,11 @@ BOOL CThhylDlg::DestroyWindow()
 	ZeroMemory(&cfg.WinPlace, sizeof(WINDOWPLACEMENT));
 	cfg.WinPlace.length = sizeof(WINDOWPLACEMENT);
 	GetWindowPlacement(&cfg.WinPlace);
-
 	cfg.byteAlpha = GetWindowAlpha(this->GetSafeHwnd());
-
 	cfg.set(CFG_AUTOCOMP, m_bAutocomplete);
+
+	m_pWndFileList->DestroyWindow();
+	delete_then_null(m_pWndFileList);
 
 	CoUninitialize();
 	
@@ -961,7 +988,7 @@ BOOL CThhylDlg::PreTranslateMessage(MSG* pMsg)
 					const SHORT threshold = HIWORD(pMsg->wParam);
 
 					LOGFONT newlf;
-					IncreaseControlFontSize(hEdit, threshold/WHEEL_DELTA, &newlf);
+					SetControlFontSize(hEdit, threshold/WHEEL_DELTA, &newlf, TRUE);
 					cfg.saveFont(&newlf);
 					return TRUE;
 				}
@@ -1236,4 +1263,75 @@ void CThhylDlg::OnExitMenuLoop(BOOL bIsTrackPopupMenu )
 		s_pEditCtrlInfo->load();
 		delete_then_null(s_pEditCtrlInfo);
 	}
+}
+
+void CThhylDlg::OnOpenfilelist() 
+{
+	// TODO: Add your control notification handler code here
+	// toggle file list
+	if (m_pWndFileList->IsWindowVisible()) {
+		m_pWndFileList->ShowWindow(SW_HIDE);
+	}
+	else {
+		m_pWndFileList->ShowWindow(SW_SHOW);
+		m_pWndFileList->SetActiveWindow();
+	}
+}
+
+void CThhylDlg::OnPrevrpyfile() 
+{
+	// TODO: Add your control notification handler code here
+	CString filepath = m_pWndFileList->GetPreviousFilePath();
+	if (!filepath.IsEmpty()) {
+		m_rpyfile = filepath;
+		Analyze();
+	}
+	else {
+		ShowBalloonMsg( ((CButton*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(), L"O_O", L"前面没有录像了", TTI_WARNING, FALSE);
+	}
+}
+
+void CThhylDlg::OnNextrpyfile() 
+{
+	// TODO: Add your control notification handler code here
+	CString filepath = m_pWndFileList->GetNextFilePath();
+	if (!filepath.IsEmpty()) {
+		m_rpyfile = filepath;
+		Analyze();
+	}
+	else {
+		ShowBalloonMsg( ((CButton*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(), L"O_O", L"后面没有录像了", TTI_WARNING, FALSE);
+	}
+}
+
+void CThhylDlg::OnReloadfilelist() 
+{
+	// TODO: Add your control notification handler code here
+	m_pWndFileList->Refresh();
+}
+
+void CThhylDlg::OnFirstrpyfile() 
+{
+	// TODO: Add your control notification handler code here
+	CString filepath = m_pWndFileList->GetFirstFilePath();
+	if (!filepath.IsEmpty()) {
+		m_rpyfile = filepath;
+		Analyze();
+	}
+	else {
+		ShowBalloonMsg( ((CButton*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(), L">_<b", L"再怎么找也没有啦", TTI_WARNING, FALSE);
+	}	
+}
+
+void CThhylDlg::OnLastrpyfile() 
+{
+	// TODO: Add your control notification handler code here
+	CString filepath = m_pWndFileList->GetLastFilePath();
+	if (!filepath.IsEmpty()) {
+		m_rpyfile = filepath;
+		Analyze();
+	}
+	else {
+		ShowBalloonMsg( ((CButton*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(), L">_<b", L"再怎么找也没有啦", TTI_WARNING, FALSE);
+	}		
 }

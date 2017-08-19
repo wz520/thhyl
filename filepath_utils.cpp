@@ -91,3 +91,22 @@ CString& AddDirBkSlash(CString& str)
 }
 
 }
+
+// ¸ø CString Ìí¼ÓÔËËã·û
+CString& operator /= (CString& lhs, const CString& rhs)
+{
+	CString lastone = lhs.Right(1);
+	if (lastone != _T("\\") && lastone != _T("/")) {
+		lhs += _T("\\");
+	}
+	lhs += rhs;
+	return lhs;
+}
+
+CString operator / (const CString& lhs, const CString& rhs)
+{
+	CString t = lhs;
+	return t /= rhs;
+}
+
+

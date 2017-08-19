@@ -37,6 +37,9 @@ struct CONFIG
 		DWORD _dontuse;
 	};
 
+	// since 1.85
+	WINDOWPLACEMENT WinPlace_FileList;   // 文件列表窗口位置
+
 	CONFIG& operator=(const CONFIG& other);
 
 	CONFIG();

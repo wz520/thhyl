@@ -299,7 +299,8 @@ LONG EnableMaximize(HWND hwnd, LONG lEnable)
 	return GetLastError();
 }
 
-BOOL IncreaseControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont)
+
+BOOL SetControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont, DWORD dwFlags)
 {
 	HFONT const hFont = (HFONT)SendMessage(hwnd, WM_GETFONT, 0, 0);
 	
@@ -311,12 +312,15 @@ BOOL IncreaseControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont)
 		GetObject((HGDIOBJ)hFont, sizeof(lf), &lf);
 
 		HDC hdc = GetDC(hwnd);
-		int point = LogicalToPoint(lf.lfHeight, hdc) + n;
-
-		if ( point > pointmax )
-			point = pointmax;
-		else if ( point < pointmin )
-			point = pointmin;
+		int point = n;
+		if (dwFlags & SCFS_INCREMENTAL) {
+			point = LogicalToPoint(lf.lfHeight, hdc) + n;
+			
+			if ( point > pointmax )
+				point = pointmax;
+			else if ( point < pointmin )
+				point = pointmin;
+		}
 
 		// Set new font to the window
 		{
@@ -325,13 +329,25 @@ BOOL IncreaseControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont)
 			lf.lfHeight = PointToLogical(point, hdc);
 			hNewFont = CreateFontIndirect(&lf);
 			SendMessage(hwnd, WM_SETFONT, (WPARAM)hNewFont, TRUE);
-			DeleteObject(hFont); // delete old font
+			if (!(dwFlags & SCFS_KEEPOLDHFONT)) {
+				DeleteObject(hFont); // delete old font
+			}
 		}
 
 		ReleaseDC(hwnd, hdc);
 		if (pOutLogFont != NULL)
 			memcpy(pOutLogFont, &lf, sizeof(lf));
 		return TRUE;
+	}
+	else
+		return FALSE;
+}
+
+BOOL SetControlFontSize(CWnd* pWnd, int n, LOGFONT* pOutLogFont, DWORD dwFlags)
+{
+	HWND const hWnd = pWnd->GetSafeHwnd();
+	if (hWnd != NULL) {
+		return SetControlFontSize(hWnd, n, pOutLogFont, dwFlags);
 	}
 	else
 		return FALSE;
