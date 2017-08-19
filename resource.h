@@ -67,6 +67,7 @@
 #define IDC_CUTFILE                     1039
 #define IDC_CHK_AUTOEXIT                1040
 #define IDC_EDITABOUT                   1041
+#define IDC_CHK_NOBTOOLTIP              1041
 #define IDC_MYEMAIL                     1042
 #define IDC_UPDATEURL                   1043
 #define IDC_SAVERAW_LIST                1044

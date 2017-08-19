@@ -79,10 +79,12 @@ BOOL CDlgBaseWZ::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: Add extra initialization here
-	m_tooltip.Create(this);
-	m_tooltip.SetDelayTime(10000, 200);
+	DWORD dwStyle = HasConfigOption(CFG_NOBALLOONTOOLTIP)
+		? 0 : TTS_BALLOON | TTS_USEVISUALSTYLE | TTS_NOPREFIX | WS_POPUP;
+	m_tooltip.Create(this,  dwStyle);
 	m_tooltip.SetTipTextColor( 0x0000ff );
 	m_tooltip.SetTipBkColor( 0x00ffff );
+	m_tooltip.SetMaxTipWidth(0);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

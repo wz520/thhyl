@@ -34,6 +34,7 @@ public:
 	BOOL	m_chkCopyOpenDest;
 	BOOL	m_chkAnyDrag;
 	BOOL	m_chkAutoExit;
+	BOOL	m_chkNoBTooltip;
 	//}}AFX_DATA
 
 

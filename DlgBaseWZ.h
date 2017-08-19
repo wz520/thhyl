@@ -9,6 +9,10 @@
 // DlgBaseWZ.h : header file
 //
 
+#ifndef TTS_USEVISUALSTYLE
+# define TTS_USEVISUALSTYLE (0x100)
+#endif
+
 /////////////////////////////////////////////////////////////////////////////
 // CDlgBaseWZ dialog
 

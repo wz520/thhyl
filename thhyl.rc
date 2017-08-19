@@ -135,6 +135,8 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,127,162,105,10
     CONTROL         "文件不存在时自动退出*",IDC_CHK_AUTOEXIT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,127,177,105,9
+    CONTROL         "不使用气泡风格的提示*",IDC_CHK_NOBTOOLTIP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,127,194,105,9
 END
 
 IDD_COMMENT DIALOG DISCARDABLE  0, 0, 242, 143

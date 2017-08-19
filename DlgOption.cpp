@@ -31,6 +31,7 @@ CDlgOption::CDlgOption(CWnd* pParent /*=NULL*/)
 	m_chkCopyOpenDest = HasConfigOption(CFG_COPYOPENDEST);
 	m_chkAnyDrag      = HasConfigOption(CFG_ANYDRAG);
 	m_chkAutoExit     = HasConfigOption(CFG_AUTOEXIT);
+	m_chkNoBTooltip   = HasConfigOption(CFG_NOBALLOONTOOLTIP);
 	//}}AFX_DATA_INIT
 }
 
@@ -52,6 +53,7 @@ void CDlgOption::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHK_COPYOPENDEST, m_chkCopyOpenDest);
 	DDX_Check(pDX, IDC_CHK_ANYDRAG, m_chkAnyDrag);
 	DDX_Check(pDX, IDC_CHK_AUTOEXIT, m_chkAutoExit);
+	DDX_Check(pDX, IDC_CHK_NOBTOOLTIP, m_chkNoBTooltip);
 	//}}AFX_DATA_MAP
 }
 
@@ -86,6 +88,7 @@ BOOL CDlgOption::OnInitDialog()
 	m_tooltip.AddTool( GetDlgItem(IDC_CHK_COPYOPENDEST), _T("使用菜单中的“复制到...”功能复制文件成功后自动打开目标文件") );
 	m_tooltip.AddTool( GetDlgItem(IDC_CHK_ANYDRAG), _T("鼠标指针位于窗口的任意位置都可拖动窗口") );
 	m_tooltip.AddTool( GetDlgItem(IDC_CHK_AUTOEXIT), _T("使用“删除”命令删除文件成功，或当检测到打开的录像文件不再存在时自动退出程序") );
+	m_tooltip.AddTool( GetDlgItem(IDC_CHK_NOBTOOLTIP), _T("若勾选，则使用普通风格的工具提示【※只对新窗口有效】") );
 	m_tooltip.Activate(TRUE);
 	
 	return FALSE;  // return TRUE unless you set the focus to a control
@@ -124,6 +127,7 @@ void CDlgOption::OnOK()
 	cfg.set(CFG_COPYOPENDEST, m_chkCopyOpenDest);
 	cfg.set(CFG_ANYDRAG, m_chkAnyDrag);
 	cfg.set(CFG_AUTOEXIT, m_chkAutoExit);
+	cfg.set(CFG_NOBALLOONTOOLTIP, m_chkNoBTooltip);
 	
 	CDlgBaseWZ::OnOK();
 }

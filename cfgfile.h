@@ -17,6 +17,7 @@
 #define CFG_COPYOPENDEST		0x10000000  // open dest file after copying
 #define CFG_ANYDRAG				0x8000000
 #define CFG_AUTOEXIT			0x4000000   // auto exit if opened rpy no longer exists
+#define CFG_NOBALLOONTOOLTIP	0x2000000   // do not use balloon style tool tip
 
 struct CONFIG
 {
