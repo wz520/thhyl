@@ -34,6 +34,7 @@ struct CONFIG
 	union {
 		struct {
 			BYTE byteAlpha;
+			BYTE byteAlphaForFileList;
 		};
 		DWORD _dontuse;
 	};

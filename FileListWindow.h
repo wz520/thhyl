@@ -44,6 +44,7 @@ public:
 	//{{AFX_VIRTUAL(CFileListWindow)
 	public:
 	virtual BOOL DestroyWindow();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -57,6 +58,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
+	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
@@ -66,6 +68,7 @@ private:
 	CString GetFileItemText(); // return emtpy string if nothing or the root node is selected.
 	HTREEITEM TV_GetLastFileItem();
 	CThhylDlg* m_pWndMain;
+	HACCEL m_hAccel;
 };
 
 //{{AFX_INSERT_LOCATION}}

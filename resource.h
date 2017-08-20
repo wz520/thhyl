@@ -24,6 +24,7 @@
 #define IDS_DLGFILTERALL                24
 #define IDD_THHYL_DIALOG                102
 #define IDR_MAINFRAME                   128
+#define IDR_ACCEL_FILELIST              129
 #define IDI_REIMU                       130
 #define IDR_POPMENU                     131
 #define IDD_OPTION                      134

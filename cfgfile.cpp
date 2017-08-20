@@ -23,7 +23,7 @@ CONFIG::CONFIG() {
 	InfoFont.lfFaceName[0] = 0;  // 无字体
 	dwOptions              = CFG_CONFIRM | CFG_ANYDRAG | CFG_SHOWPLAYTIME | CFG_SHOWSLOWRATE;
 	_dontuse               = 0;
-	byteAlpha              = (BYTE)255;
+	byteAlphaForFileList = byteAlpha = (BYTE)255;
 	WinPlace_FileList.length = WinPlace.length = 0;  // 无效 windowplacement
 }
 

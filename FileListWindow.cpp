@@ -6,6 +6,7 @@
 #include "FileListWindow.h"
 #include "filepath_utils.h"
 #include "cfgfile.h"
+#include "globalxp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,6 +26,7 @@ CFileListWindow::CFileListWindow(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	m_pWndMain = dynamic_cast<CThhylDlg*>(pParent);
 	ASSERT(m_pWndMain != NULL);
+	m_hAccel = ::LoadAccelerators(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_ACCEL_FILELIST)); 
 }
 
 
@@ -40,6 +42,7 @@ void CFileListWindow::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CFileListWindow, CDialog)
 	//{{AFX_MSG_MAP(CFileListWindow)
 	ON_WM_SIZE()
+	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -64,14 +67,12 @@ BOOL CFileListWindow::OnInitDialog()
 	if (cfg.WinPlace_FileList.length == sizeof(WINDOWPLACEMENT)) {
 		SetWindowPlacement(&cfg.WinPlace_FileList);
 	}
+	if (cfg.byteAlphaForFileList == 0) cfg.byteAlphaForFileList = 255;   // 第一次升级到 1.85 时 alpha 应该为 0，必须修正为 255
+	SetWindowAlpha(this->m_hWnd, cfg.byteAlphaForFileList);
 
 	m_filetree.SetBkColor(0x000000);
 	m_filetree.SetTextColor(0x00FFFF);
 	this->Clear();
-
-// 	if (cfg.dwStatus & CFGSTATUS_FILELISTOPENING) {
-// 		this->ShowWindow(SW_SHOW);
-// 	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -193,7 +194,6 @@ void CFileListWindow::Refresh()
 		return;
 	}
 	
-	// m_filetree.InsertItem(m_strDir);
 	m_filetree.SetItemText(m_filetree.GetRootItem(), m_strDir);
 	
 	// Search
@@ -256,15 +256,8 @@ BOOL CFileListWindow::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 				break;
 			}
 		case NM_DBLCLK:
-			{
-				OnOK();
-			}
+			OnOK();
 			return TRUE;
-		case TVN_KEYDOWN:
-			{
-				// MessageBox(_T("aaaa"));
-			}
-			break;
 		}
 	}
 
@@ -286,8 +279,59 @@ BOOL CFileListWindow::DestroyWindow()
 	cfg.WinPlace_FileList.length = sizeof(WINDOWPLACEMENT);
 	GetWindowPlacement(&cfg.WinPlace_FileList);
 	cfg.WinPlace_FileList.showCmd = IsWindowVisible() ? SW_SHOW : SW_HIDE;
-	
-	// cfg.setStatus(CFGSTATUS_FILELISTOPENING, this->IsWindowVisible());
+	cfg.byteAlphaForFileList = GetWindowAlpha(this->m_hWnd);
 
 	return CDialog::DestroyWindow();
+}
+
+
+#define IDTIMER_RESETTITLE				(42)
+
+BOOL CFileListWindow::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (m_hAccel) {
+		if (::TranslateAccelerator(m_hWnd, m_hAccel, pMsg))
+			return TRUE;
+
+		// other keys
+		switch (pMsg->message)
+		{
+		case WM_MOUSEWHEEL:
+			{
+				const WORD vKey = LOWORD(pMsg->wParam);
+				
+				if ( (vKey & MK_LBUTTON) ) {
+					// 鼠标左键+鼠标滚轮: 设置不透明度
+					const HWND hWnd = this->GetSafeHwnd();
+					const SHORT threshold = HIWORD(pMsg->wParam);
+					
+					IncreaseWindowAlpha(hWnd, threshold/WHEEL_DELTA*5);
+					CString strMsg;
+					const int alpha = (int)GetWindowAlpha(hWnd);
+					strMsg.Format(_T("文件列表 - 当前的不透明度 = %d/255(%.2f%%)"), alpha, (double)(alpha)*100/255 );
+					SetWindowText(strMsg);
+					SetTimer(IDTIMER_RESETTITLE, 1000, NULL);
+					return TRUE;
+				}
+			}
+		}
+	}
+	
+	return CDialog::PreTranslateMessage(pMsg);
+}
+
+void CFileListWindow::OnTimer(UINT nIDEvent) 
+{
+	// TODO: Add your message handler code here and/or call default
+
+	switch(nIDEvent)
+	{
+	case IDTIMER_RESETTITLE:
+		SetWindowText(_T("文件列表"));
+		KillTimer(IDTIMER_RESETTITLE);
+		break;
+	}
+	
+	CDialog::OnTimer(nIDEvent);
 }

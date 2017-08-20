@@ -207,8 +207,8 @@ BOOL CThhylDlg::OnInitDialog()
 	// 设置 tooltip 
 	m_tooltip.AddTool( GetDlgItem(IDC_RPYFILE), _T("鼠标左键+滚轮可以调整本窗口的不透明度") );
 	m_tooltip.AddTool( GetDlgItem(IDC_RPYINFO), _T("Ctrl+滚轮可以调整录像信息框的字体大小") );
-	m_tooltip.AddTool( GetDlgItem(IDC_BROWSE), _T("打开录像文件[CTRL+B 或 CTRL+O]") );
-	m_tooltip.AddTool( GetDlgItem(IDC_CLOSEFILE), _T("关闭录像文件[CTRL+L 或 CTRL+W]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_BROWSE), _T("打开录像文件[CTRL+O]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_CLOSEFILE), _T("关闭录像文件[CTRL+W]") );
 	m_tooltip.AddTool( GetDlgItem(IDC_CUTFILE), _T("剪切[F9]") );
 	m_tooltip.AddTool( GetDlgItem(IDC_COPYFILE), _T("复制[F10]") );
 	m_tooltip.AddTool( GetDlgItem(IDC_CHGFONT), _T("更改录像信息框的字体") );
@@ -216,13 +216,12 @@ BOOL CThhylDlg::OnInitDialog()
 	m_tooltip.AddTool( GetDlgItem(IDC_EDITCOMMENT), _T("编辑录像注释（红魔乡和妖妖梦的录像不支持该功能）") );
 	m_tooltip.AddTool( GetDlgItem(IDC_ONTOP), _T("让本窗口总在最前") );
 	m_tooltip.AddTool( GetDlgItem(IDC_AUTOCOMP), _T("手动输入路径时是否显示自动完成的提示框") );
-	m_tooltip.AddTool( GetDlgItem(IDC_OPENFILELIST), _T("切换文件列表的显示") );
-	m_tooltip.AddTool( GetDlgItem(IDC_FIRSTRPYFILE), _T("打开第一个 *.rpy 文件") );
-	m_tooltip.AddTool( GetDlgItem(IDC_PREVRPYFILE), _T("打开上一个 *.rpy 文件") );
-	m_tooltip.AddTool( GetDlgItem(IDC_NEXTRPYFILE), _T("打开下一个 *.rpy 文件") );
-	m_tooltip.AddTool( GetDlgItem(IDC_LASTRPYFILE), _T("打开最后一个 *.rpy 文件") );
-	m_tooltip.AddTool( GetDlgItem(IDC_RELOADFILELIST), _T("刷新文件列表") );
-	m_tooltip.AddTool( GetDlgItem(IDC_FIRSTRPYFILE), _T("打开第一个 *.rpy 文件") );
+	m_tooltip.AddTool( GetDlgItem(IDC_OPENFILELIST), _T("切换文件列表的显示[CTRL+L]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_FIRSTRPYFILE), _T("打开第一个 *.rpy 文件[ALT+HOME 或 CTRL+ALT+B]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_PREVRPYFILE), _T("打开上一个 *.rpy 文件[ALT+PAGEUP 或 CTRL+B]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_NEXTRPYFILE), _T("打开下一个 *.rpy 文件[ALT+PAGEDOWN 或 CTRL+F]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_LASTRPYFILE), _T("打开最后一个 *.rpy 文件[ALT+END 或 CTRL+ALT+F]") );
+	m_tooltip.AddTool( GetDlgItem(IDC_RELOADFILELIST), _T("刷新文件列表[SHIFT+F5]") );
 	m_tooltip.Activate(TRUE);
 
 	// 设置不透明度

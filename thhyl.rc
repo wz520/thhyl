@@ -328,8 +328,8 @@ IDR_POPMENU MENU DISCARDABLE
 BEGIN
     POPUP "Pop"
     BEGIN
-        MENUITEM "打开录像(&O)...\tCTRL+B,CTRL+O", IDM_OPEN
-        MENUITEM "关闭录像(&L)\tCTRL+L,CTRL+W", IDC_CLOSEFILE
+        MENUITEM "打开录像(&O)...\tCTRL+B", IDM_OPEN
+        MENUITEM "关闭录像(&L)\tCTRL+W", IDC_CLOSEFILE
         MENUITEM "复制信息(&C)",                IDM_MENUCOPY
         POPUP "编码(&N)"
         BEGIN
@@ -350,7 +350,7 @@ BEGIN
         MENUITEM "剪切(&Y)\tF9",                IDC_CUTFILE
         MENUITEM "复制(&U)\tF10",               IDC_COPYFILE
         MENUITEM SEPARATOR
-        MENUITEM "打开文件夹(&F)\tCtrl+F",      IDM_OPENFOLDER
+        MENUITEM "打开文件夹(&F)\tCtrl+Alt+O",      IDM_OPENFOLDER
         MENUITEM "移动/重命名到(&M)...\tF6",    IDM_FILEMOVETO
         MENUITEM "复制到(&P)...\tF5",           IDM_FILECOPYTO
         MENUITEM "删除(&D)\tF8,Delete",         IDM_FILEDELETE
@@ -377,10 +377,9 @@ END
 
 IDR_ACCEL ACCELERATORS DISCARDABLE 
 BEGIN
-    "F",            IDM_OPENFOLDER,         VIRTKEY, CONTROL, NOINVERT
+    "O",            IDM_OPENFOLDER,         VIRTKEY, CONTROL, ALT, NOINVERT
     "R",            IDM_SAVERAW,            VIRTKEY, CONTROL, NOINVERT
     "R",            IDM_SAVERAWPART,        VIRTKEY, CONTROL, ALT, NOINVERT
-    "B",            IDM_OPEN,               VIRTKEY, CONTROL, NOINVERT
     "O",            IDM_OPEN,               VIRTKEY, CONTROL, NOINVERT
     "S",            IDC_OPEN_SH_ALICE,      VIRTKEY, CONTROL, NOINVERT
     VK_F1,          IDM_CHANGEENCODESTART,  VIRTKEY, NOINVERT
@@ -389,13 +388,26 @@ BEGIN
     VK_F4,          33003,                  VIRTKEY, NOINVERT
     VK_F5,          IDM_FILECOPYTO,         VIRTKEY, NOINVERT
     VK_F6,          IDM_FILEMOVETO,         VIRTKEY, NOINVERT
-    "L",            IDC_CLOSEFILE,          VIRTKEY, CONTROL, NOINVERT
     "W",            IDC_CLOSEFILE,          VIRTKEY, CONTROL, NOINVERT
     VK_F9,          IDC_CUTFILE,            VIRTKEY, NOINVERT
     VK_F10,         IDC_COPYFILE,           VIRTKEY, NOINVERT
     VK_RETURN,      IDM_OPENPROP,           VIRTKEY, ALT, NOINVERT
+    VK_HOME,        IDC_FIRSTRPYFILE,       VIRTKEY, ALT, NOINVERT
+    "B",            IDC_FIRSTRPYFILE,       VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_PRIOR,       IDC_PREVRPYFILE,        VIRTKEY, ALT, NOINVERT
+    "B",            IDC_PREVRPYFILE,        VIRTKEY, CONTROL, NOINVERT
+    VK_NEXT,        IDC_NEXTRPYFILE,        VIRTKEY, ALT, NOINVERT
+    "F",            IDC_NEXTRPYFILE,        VIRTKEY, CONTROL, NOINVERT
+    VK_END,         IDC_LASTRPYFILE,        VIRTKEY, ALT, NOINVERT
+    "F",            IDC_LASTRPYFILE,        VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_F5,          IDC_RELOADFILELIST,     VIRTKEY, SHIFT, NOINVERT
+    "L",            IDC_OPENFILELIST,       VIRTKEY, CONTROL, NOINVERT
 END
 
+IDR_ACCEL_FILELIST ACCELERATORS DISCARDABLE 
+BEGIN
+    "L",            IDCANCEL,       VIRTKEY, CONTROL, NOINVERT
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -431,7 +443,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     IDS_TH67DECERROR        "这貌似是 %s 的录像哦，但解析失败。可能的原因：\r\n1. 录像版本太老了（比如 妖妖梦 C63 体验版 的录像文件格式与正式版完全不同，本版本暂不支持）\r\n2. 文件已损坏！"
     IDS_ISNOTRPY            "文件分析失败，可能的原因：\r\n1. 根本就不是东方STG的录像；\r\n2. 可能是东方STG的游戏录像，但所属游戏比【东方天空璋】还要新。此版本暂不支持这样的录像；\r\n3. #@；\r\n4. 解码函数娘傲娇了；\r\n5. 解码函数娘在解码的过程中被紫妈神隐了；\r\n6. ..."
-    IDS_HINTSTART           "如何打开录像文件？\r\n* 从资源管理器中拖动录像文件到本窗口上然后松手；\r\n* 点击浏览按钮；\r\n* 在上面的框中输入完整路径回车。\r\n\r\n支持的录像格式：\r\nTH06-TH15（红魔乡、妖妖梦、永夜抄、花映冢、文花帖、风神录、地灵殿、星莲船、文花帖DS、妖精大战争、神灵庙、辉针城、弹幕天邪鬼、绀珠传、天空璋），黄昏酒场。\r\n\r\n使用右下角的 【菜单】按钮->【文件关联】 可以设置/解除 .rpy 文件与本程序的关联。\r\n\r\n建立关联后，如果双击 .rpy 文件的同时按住 ScrollLock 键，则程序会将录像信息复制到剪贴板后自动退出。\r\n\r\n要获取更详细的使用说明请点击【菜单】按钮 -> 【帮助】。\r\n"
+    IDS_HINTSTART           "如何打开录像文件？\r\n* 从资源管理器中拖动录像文件到本窗口上然后松手；\r\n* 点击“▲”按钮；\r\n* 在上面的框中输入完整路径回车。\r\n\r\n支持的录像格式：\r\nTH06-TH15（红魔乡、妖妖梦、永夜抄、花映冢、文花帖、风神录、地灵殿、星莲船、文花帖DS、妖精大战争、神灵庙、辉针城、弹幕天邪鬼、绀珠传、天空璋），黄昏酒场。\r\n\r\n使用右下角的 【菜单】按钮->【文件关联】 可以设置/解除 .rpy 文件与本程序的关联。\r\n\r\n建立关联后，如果双击 .rpy 文件的同时按住 ScrollLock 键，则程序会将录像信息复制到剪贴板后自动退出。\r\n\r\n要获取更详细的使用说明请点击【菜单】按钮 -> 【帮助】。\r\n"
     IDS_CONVCODEERROR       "Ansi2Unicode() error: "
     IDS_CONVTOANSIERROR     "Unicode2Ansi() error: "
     IDS_DLGFILTERALL        "所有文件 (*.*)|*.*||"
