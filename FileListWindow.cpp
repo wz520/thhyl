@@ -18,6 +18,8 @@ static char THIS_FILE[] = __FILE__;
 // CFileListWindow dialog
 
 
+static LPCTSTR s_title = _T("文件列表");
+
 CFileListWindow::CFileListWindow(CWnd* pParent /*=NULL*/)
 	: CDialog(CFileListWindow::IDD, pParent)
 {
@@ -70,7 +72,7 @@ BOOL CFileListWindow::OnInitDialog()
 	if (cfg.byteAlphaForFileList == 0) cfg.byteAlphaForFileList = 255;   // 第一次升级到 1.85 时 alpha 应该为 0，必须修正为 255
 	SetWindowAlpha(this->m_hWnd, cfg.byteAlphaForFileList);
 
-	m_filetree.SetBkColor(0x000000);
+	m_filetree.SetBkColor(0x223344);
 	m_filetree.SetTextColor(0x00FFFF);
 	this->Clear();
 
@@ -255,6 +257,29 @@ BOOL CFileListWindow::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 				
 				break;
 			}
+		case TVN_SELCHANGING:
+			// if (m_pWndMain->GetDialogCount() > 1) {
+			if (!m_pWndMain->IsWindowEnabled()) {
+				CString const strMessage = _T("现在不可以打开其他文件，因为有其他对话框正在使用已打开的文件。\r\n\r\n请关闭这些对话框后重试。");
+				MessageBox(strMessage, s_title, MB_ICONEXCLAMATION);
+				/* // TODO: 解决在当前窗口置顶时，难以看到新窗口
+				LPNMTREEVIEW const pnmtv = (LPNMTREEVIEW)lParam;
+				CString strFilename = m_strDir / m_filetree.GetItemText(pnmtv->itemNew.hItem);
+				CString strMessage = _T("不可更改打开的文件。因为有其他对话框正在使用已打开的文件。\r\n\r\n是否要在新窗口中打开刚刚选择的这个文件？\r\n\r\n");
+				strMessage += strFilename;
+				const int mbret = MessageBox(strMessage, s_title, MB_ICONEXCLAMATION | MB_YESNO);
+				if (mbret == IDYES) {
+					if (!m_strDir.IsEmpty())
+						m_pWndMain->SpawnInstance( strFilename );
+					else
+						MessageBox(_T("ERR100"), s_title, MB_ICONSTOP);  // this should not happen
+				}
+				*/
+
+				*pResult = static_cast<LRESULT>(TRUE);
+				return TRUE;
+			}
+			break;
 		case NM_DBLCLK:
 			OnOK();
 			return TRUE;
@@ -309,7 +334,7 @@ BOOL CFileListWindow::PreTranslateMessage(MSG* pMsg)
 					IncreaseWindowAlpha(hWnd, threshold/WHEEL_DELTA*5);
 					CString strMsg;
 					const int alpha = (int)GetWindowAlpha(hWnd);
-					strMsg.Format(_T("文件列表 - 当前的不透明度 = %d/255(%.2f%%)"), alpha, (double)(alpha)*100/255 );
+					strMsg.Format(_T("%s - 当前的不透明度 = %d/255(%.2f%%)"), s_title, alpha, (double)(alpha)*100/255 );
 					SetWindowText(strMsg);
 					SetTimer(IDTIMER_RESETTITLE, 1000, NULL);
 					return TRUE;
@@ -328,7 +353,7 @@ void CFileListWindow::OnTimer(UINT nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDTIMER_RESETTITLE:
-		SetWindowText(_T("文件列表"));
+		SetWindowText(s_title);
 		KillTimer(IDTIMER_RESETTITLE);
 		break;
 	}

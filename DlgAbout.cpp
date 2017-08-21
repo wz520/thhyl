@@ -31,6 +31,7 @@ CDlgAbout::CDlgAbout(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CDlgAbout)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
+	m_dlgopt |= DLGWZ_OPT_NOCHANGECOUNT;
 }
 
 
@@ -106,7 +107,7 @@ BOOL CDlgAbout::OnInitDialog()
 	CDlgBaseWZ::OnInitDialog();
 
 	// TODO: Add extra initialization here
-	m_dlgopt = DLGWZ_OPT_ALWAYSANYDRAG;
+	m_dlgopt |= DLGWZ_OPT_ALWAYSANYDRAG;
 
 	m_tooltip.AddTool( GetDlgItem(IDC_UPDATEURL), updateurl );
 	m_tooltip.AddTool( GetDlgItem(IDC_MYEMAIL), myemail );

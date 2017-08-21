@@ -134,7 +134,7 @@ BEGIN_MESSAGE_MAP(CThhylDlg, CDlgBaseWZ)
 	ON_COMMAND(IDM_ABOUT, OnAbout)
 	ON_WM_MENUSELECT()
 	ON_WM_EXITMENULOOP()
-	ON_WM_ENTERMENULOOP()	
+	ON_WM_ENTERMENULOOP()
 	ON_BN_CLICKED(IDC_OPENFILELIST, OnOpenfilelist)
 	ON_BN_CLICKED(IDC_PREVRPYFILE, OnPrevrpyfile)
 	ON_BN_CLICKED(IDC_NEXTRPYFILE, OnNextrpyfile)
@@ -1047,8 +1047,8 @@ void CThhylDlg::OnSaveraw()
 		// dump
 		if (!m_pRpyAnalyzer->DumpRPYData( dlg.GetPathName() ))
 			// dumping is not supported?
-			// for current version, this should not happen.
-			MessageBox(_T("ERR01"), g_title, MB_ICONEXCLAMATION);
+			// for current version, this may happen for th15 trial rpy.
+			MessageBox(_T("对不起，当前版本不支持保存该录像文件的原始数据。"), g_title, MB_ICONSTOP);
 	}
 }
 

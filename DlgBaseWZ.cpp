@@ -13,6 +13,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// int CDlgBaseWZ::s_dialogcount = 0;
+
 /////////////////////////////////////////////////////////////////////////////
 // CDlgBaseWZ dialog
 
@@ -85,6 +87,8 @@ BOOL CDlgBaseWZ::OnInitDialog()
 	m_tooltip.SetTipTextColor( 0x0000ff );
 	m_tooltip.SetTipBkColor( 0x00ffff );
 	m_tooltip.SetMaxTipWidth(0);
+
+	// if (!(m_dlgopt & DLGWZ_OPT_NOCHANGECOUNT)) AddRefCount();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -98,4 +102,10 @@ void CDlgBaseWZ::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if (HasConfigOption(CFG_ANYDRAG) || (m_dlgopt & DLGWZ_OPT_ALWAYSANYDRAG) )
 		PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
+}
+
+BOOL CDlgBaseWZ::DestroyWindow() 
+{
+	// if (!(m_dlgopt & DLGWZ_OPT_NOCHANGECOUNT)) DecRefCount();
+	return CDialog::DestroyWindow();
 }

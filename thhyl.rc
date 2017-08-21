@@ -65,8 +65,8 @@ END
 //
 
 IDD_THHYL_DIALOG DIALOGEX 0, 0, 345, 270
-STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
-    WS_SYSMENU | WS_THICKFRAME
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
 EXSTYLE WS_EX_ACCEPTFILES | WS_EX_APPWINDOW
 CAPTION "东方回映录"
 FONT 9, "新宋体"
@@ -191,7 +191,7 @@ BEGIN
 END
 
 IDD_FILELIST DIALOGEX 0, 0, 198, 99
-STYLE WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_TOOLWINDOW | WS_EX_STATICEDGE
 CAPTION "文件列表"
 FONT 9, "新宋体"
@@ -328,8 +328,8 @@ IDR_POPMENU MENU DISCARDABLE
 BEGIN
     POPUP "Pop"
     BEGIN
-        MENUITEM "打开录像(&O)...\tCTRL+B", IDM_OPEN
-        MENUITEM "关闭录像(&L)\tCTRL+W", IDC_CLOSEFILE
+        MENUITEM "打开录像(&O)...\tCTRL+O",     IDM_OPEN
+        MENUITEM "关闭录像(&L)\tCTRL+W",        IDC_CLOSEFILE
         MENUITEM "复制信息(&C)",                IDM_MENUCOPY
         POPUP "编码(&N)"
         BEGIN
@@ -350,7 +350,7 @@ BEGIN
         MENUITEM "剪切(&Y)\tF9",                IDC_CUTFILE
         MENUITEM "复制(&U)\tF10",               IDC_COPYFILE
         MENUITEM SEPARATOR
-        MENUITEM "打开文件夹(&F)\tCtrl+Alt+O",      IDM_OPENFOLDER
+        MENUITEM "打开文件夹(&F)\tCtrl+Alt+O",  IDM_OPENFOLDER
         MENUITEM "移动/重命名到(&M)...\tF6",    IDM_FILEMOVETO
         MENUITEM "复制到(&P)...\tF5",           IDM_FILECOPYTO
         MENUITEM "删除(&D)\tF8,Delete",         IDM_FILEDELETE
@@ -406,8 +406,9 @@ END
 
 IDR_ACCEL_FILELIST ACCELERATORS DISCARDABLE 
 BEGIN
-    "L",            IDCANCEL,       VIRTKEY, CONTROL, NOINVERT
+    "L",            IDCANCEL,               VIRTKEY, CONTROL, NOINVERT
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
