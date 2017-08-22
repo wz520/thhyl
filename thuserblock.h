@@ -105,6 +105,9 @@ public:
 private:
 	RPYUserBlock* newuserblock(int i, const RPYUBHeader* pHeader);
 	RPYUserBlock* m_pUserBlocks[MAXUSERBLOCKCOUNT];
+
+	// ¿½±´¸³Öµ
+	RPYUserBlockMgr& operator = (const RPYUserBlockMgr& another);
 };
 
 #endif /* __THUSERBLOCK_H__537E773A_ */

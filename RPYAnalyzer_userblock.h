@@ -34,6 +34,9 @@ private:
 	UINT m_codepage;
 	BOOL m_isCNVer;
 	CString m_info;
+
+	CRpyInfoUserBlock& operator = (const CRpyInfoUserBlock& another);
+	CRpyInfoUserBlock(const CRpyInfoUserBlock& another);
 };
 
 #endif /* __RPYINFO_USERBLOCK_H__55D1958B_ */

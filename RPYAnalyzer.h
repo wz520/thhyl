@@ -101,6 +101,9 @@ private:
     
 	RPYUserBlockMgr* m_pUBMgr;   // userblock 管理器
 	CRpyInfoUserBlock* m_pInfoUB;   // 从 userblock 中获取文本格式的录像信息和录像注释
+
+	CRPYAnalyzer& operator = (const CRPYAnalyzer& another);
+	CRPYAnalyzer(const CRPYAnalyzer& another);
 };
 
 
