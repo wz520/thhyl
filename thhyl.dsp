@@ -209,6 +209,11 @@ SOURCE=.\thhylDlg.cpp
 SOURCE=.\thuserblock.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
+# Begin Source File
+
+SOURCE=.\WindowGluer.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -324,6 +329,10 @@ SOURCE=.\thhylDlg.h
 # Begin Source File
 
 SOURCE=.\thuserblock.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\WindowGluer.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

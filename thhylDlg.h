@@ -12,6 +12,7 @@
 #include "FileStatusWZ.h"
 #include "RPYAnalyzer.h"
 #include "FileListWindow.h"
+#include "WindowGluer.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CThhylDlg dialog
@@ -22,6 +23,7 @@ class CThhylDlg : public CDlgBaseWZ
 public:
 	CString m_strCurrComment;
 	CRPYAnalyzer* m_pRpyAnalyzer;
+	CWindowGluer* m_pWindowGluer;
 	void Analyze();
 	void SpawnInstance(LPCTSTR lpszFileName);
 	CThhylDlg(CWnd* pParent = NULL);	// standard constructor
@@ -44,6 +46,7 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 // Implementation

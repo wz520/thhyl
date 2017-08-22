@@ -76,6 +76,8 @@ BOOL CFileListWindow::OnInitDialog()
 	m_filetree.SetTextColor(0x00FFFF);
 	this->Clear();
 
+	m_pWndMain->m_pWindowGluer->addFollower(m_hWnd);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -359,4 +361,12 @@ void CFileListWindow::OnTimer(UINT nIDEvent)
 	}
 	
 	CDialog::OnTimer(nIDEvent);
+}
+
+LRESULT CFileListWindow::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (m_pWndMain->m_pWindowGluer->handleFollowerMessage(this->GetSafeHwnd(), message, wParam, lParam)) return 0;
+	
+	return CDialog::WindowProc(message, wParam, lParam);
 }

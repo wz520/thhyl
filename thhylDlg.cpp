@@ -76,6 +76,7 @@ CThhylDlg::CThhylDlg(CWnd* pParent /*=NULL*/)
 	m_pRpyAnalyzer = NULL;
 	m_dwRpySize = 0;
 	m_bNeedReanalyze = TRUE;
+	m_pWindowGluer = NULL;
 
 	// Load Accelerator
 	m_hAccel = ::LoadAccelerators(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_ACCEL)); 
@@ -168,6 +169,7 @@ BOOL CThhylDlg::OnInitDialog()
 
 	CoInitialize(NULL);
 
+	m_pWindowGluer = new CWindowGluer(this->GetSafeHwnd(), 1);
 	m_pWndFileList->Create(IDD_FILELIST, this);
 	if (m_rpyfile.IsEmpty()) {
 		m_rpyfile.LoadString(IDS_HINTNOFILE);
@@ -950,6 +952,7 @@ BOOL CThhylDlg::DestroyWindow()
 
 	m_pWndFileList->DestroyWindow();
 	delete_then_null(m_pWndFileList);
+	delete_then_null(m_pWindowGluer);
 
 	CoUninitialize();
 	
@@ -1335,4 +1338,12 @@ void CThhylDlg::OnLastrpyfile()
 	else {
 		ShowBalloonMsg( ((CButton*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(), L">_<b", L"再怎么找也没有啦", TTI_WARNING, FALSE);
 	}		
+}
+
+LRESULT CThhylDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (m_pWindowGluer->handleMessage(message, wParam, lParam)) return 0;
+	
+	return CDlgBaseWZ::WindowProc(message, wParam, lParam);
 }

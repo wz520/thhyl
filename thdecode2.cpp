@@ -130,7 +130,7 @@ struct RPYOFFSETS {
 	int flags;			   // 在 custom.exe 中设置的游戏选项
 
 	// 如果 isALor10 不为 false，则表示是 黄昏酒场 或 风神录 的录像
-	RPYOFFSETS(bool isALor10) {
+	explicit RPYOFFSETS(bool isALor10) {
 		this->firstStage       = isALor10 ? 0x64 : 0x70;
 		this->playerName       = 0x00;
 		this->clearTime        = 0x0c;
@@ -152,7 +152,7 @@ struct INTERNAL_DATA {
 	int nKeyStateElementSize;
 	RPYOFFSETS o;
 
-	INTERNAL_DATA(bool isALor10) : o(isALor10) {
+	explicit INTERNAL_DATA(bool isALor10) : o(isALor10) {
 		nMaxStageCount = 6;
 		nMaxStageNumber = 7;
 		nKeyStateElementSize = 6;
@@ -216,7 +216,7 @@ static unsigned char *STDCALL thdecode2_decompress(const unsigned char * const p
 				if ( !v4 )
 					v4 = 0x80;
 			}
-			while ( v13 != v5 );
+			while ( v13 != (unsigned int)v5 );
 			*(pDecompData++) = v11;
 			workarea[v22] = v11;
 			v22 = (v22 + 1) & 0x1FFF;
