@@ -90,7 +90,7 @@ void CFileListWindow::ChangeDir(const CString& strNewDir)
 	}
 }
 
-CString CFileListWindow::GetFirstFilePath()
+CString CFileListWindow::GetFirstFilePath() const
 {
 	HTREEITEM const hRoot = m_filetree.GetRootItem();
 	HTREEITEM const hChild = m_filetree.GetChildItem(hRoot);
@@ -101,7 +101,7 @@ CString CFileListWindow::GetFirstFilePath()
 		return _T("");
 }
 
-CString CFileListWindow::GetPreviousFilePath()
+CString CFileListWindow::GetPreviousFilePath() const
 {
 	HTREEITEM const hSelected = m_filetree.GetSelectedItem();
 	if (hSelected != NULL && hSelected != m_filetree.GetRootItem()) {
@@ -113,7 +113,7 @@ CString CFileListWindow::GetPreviousFilePath()
 	return _T("");
 }
 
-CString CFileListWindow::GetNextFilePath()
+CString CFileListWindow::GetNextFilePath() const
 {
 	HTREEITEM const hSelected = m_filetree.GetSelectedItem();
 	if (hSelected != NULL && hSelected != m_filetree.GetRootItem()) {
@@ -125,7 +125,7 @@ CString CFileListWindow::GetNextFilePath()
 	return _T("");
 }
 
-CString CFileListWindow::GetLastFilePath()
+CString CFileListWindow::GetLastFilePath() const
 {
 	HTREEITEM const hLastFileItem = this->TV_GetLastFileItem();
 	if (hLastFileItem != NULL) {
@@ -135,7 +135,7 @@ CString CFileListWindow::GetLastFilePath()
 		return _T("");
 }
 
-bool CFileListWindow::SelectFileItemByText(const CString& text)
+HTREEITEM CFileListWindow::FindFileItemByText(const CString& text) const
 {
 	HTREEITEM const hRoot = m_filetree.GetRootItem();
 	HTREEITEM hWantedItem = m_filetree.GetChildItem(hRoot);
@@ -145,10 +145,16 @@ bool CFileListWindow::SelectFileItemByText(const CString& text)
 		}
 		hWantedItem = m_filetree.GetNextSiblingItem(hWantedItem);
 	}
-	
-	if (hWantedItem != NULL) {
+
+	return hWantedItem;
+}
+
+bool CFileListWindow::SelectFileItemByText(const CString& text)
+{
+	HTREEITEM const result = FindFileItemByText(text);
+	if ( result ) {
 		// Select file item if we found
-		m_filetree.SelectItem(hWantedItem);
+		m_filetree.SelectItem(result);
 		return true;
 	}
 	else
@@ -156,7 +162,7 @@ bool CFileListWindow::SelectFileItemByText(const CString& text)
 }
 
 
-CString CFileListWindow::GetFileItemText()
+CString CFileListWindow::GetFileItemText() const
 {
 	HTREEITEM const hSelected = m_filetree.GetSelectedItem();
 	if (hSelected != NULL && hSelected != m_filetree.GetRootItem()) {
@@ -166,7 +172,7 @@ CString CFileListWindow::GetFileItemText()
 		return _T("");
 }
 
-HTREEITEM CFileListWindow::TV_GetLastFileItem()
+HTREEITEM CFileListWindow::TV_GetLastFileItem() const
 {
 	HTREEITEM const hRoot = m_filetree.GetRootItem();
 	HTREEITEM hChild = m_filetree.GetChildItem(hRoot);
@@ -217,7 +223,7 @@ void CFileListWindow::Refresh()
 }
 
 
-CString CFileListWindow::GetFilePath()
+CString CFileListWindow::GetFilePath() const
 {
 	CString filename = this->GetFileItemText();
 	if (filename.IsEmpty()) {
@@ -228,6 +234,26 @@ CString CFileListWindow::GetFilePath()
 	}
 }
 
+CString CFileListWindow::PrepareForDeleteFile()
+{
+	// 先获取下面的
+	CString newfilepath = GetNextFilePath();
+	CString newitemtext;
+	if ( newfilepath.IsEmpty() ) {
+		newfilepath = GetPreviousFilePath(); // 如果下面没有，获取上面的
+	}
+	if ( !newfilepath.IsEmpty() ) {
+		filepath_utils::GetFilename(newfilepath, newitemtext);
+	}
+	Refresh(); // 刷新一下
+	// 如果刷新后，前一个或后一个文件也没有了（可能从外部删除了）
+	// 或者刷新前删除的就是最后一个文件
+	// 那么返回第一个文件
+	if ( newitemtext.IsEmpty() || FindFileItemByText(newitemtext) == NULL )
+		return GetFirstFilePath();
+	else
+		return newfilepath;
+}
 
 void CFileListWindow::Clear()
 {

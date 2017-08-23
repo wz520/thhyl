@@ -23,11 +23,13 @@ public:
 	void ChangeFilePath(const CString& strFilePath);
 	void Refresh();
 	void ChangeDir(const CString& szNewDir);
-	CString GetFirstFilePath();
-	CString GetPreviousFilePath();
-	CString GetNextFilePath();
-	CString GetLastFilePath();
-	CString GetFilePath(); // get filepath from the selected item text, returns empty string if nothing is selected
+	CString GetFirstFilePath() const;
+	CString GetPreviousFilePath() const;
+	CString GetNextFilePath() const;
+	CString GetLastFilePath() const;
+	CString GetFilePath() const; // get filepath from the selected item text, returns empty string if nothing is selected
+	// return a filepath that is suggested to be selected after deleting the current file
+	CString PrepareForDeleteFile();
 	void Clear();
 	CFileListWindow(CWnd* pParent = NULL);   // standard constructor
 
@@ -66,8 +68,9 @@ private:
 	CString m_strDir;
 
 	bool SelectFileItemByText(const CString& text);  // return true if the item is successfully selected, false otherwise
-	CString GetFileItemText(); // return emtpy string if nothing or the root node is selected.
-	HTREEITEM TV_GetLastFileItem();
+	HTREEITEM FindFileItemByText(const CString& text) const;
+	CString GetFileItemText() const; // return emtpy string if nothing or the root node is selected.
+	HTREEITEM TV_GetLastFileItem() const;
 	CThhylDlg* m_pWndMain;
 	HACCEL m_hAccel;
 };

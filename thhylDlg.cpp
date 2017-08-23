@@ -659,6 +659,7 @@ void CThhylDlg::OnFiledelete()
 	SHFILEOPSTRUCT fos = {0};
 
 	const bool bPressed = IsKeyDown(VK_SHIFT);
+	const CString newfilepath = m_pWndFileList->PrepareForDeleteFile();
 
 	//Perform delete operation via Shell
 	{
@@ -682,8 +683,16 @@ void CThhylDlg::OnFiledelete()
 	if (ret==0 && !fos.fAnyOperationsAborted) { //É¾³ý³É¹¦
 		if (HasConfigOption(CFG_AUTOEXIT))
 			OnCancel();
-		else
-			CloseFile();
+		else {
+			m_pWndFileList->Refresh();
+			if (newfilepath == m_rpyfile) {
+				CloseFile();
+			}
+			else {
+				m_rpyfile = newfilepath;
+				Analyze();
+			}
+		}
 	}
 }
 
