@@ -342,7 +342,7 @@ BEGIN
         POPUP "文件列表(&L)"
         BEGIN
             MENUITEM "切换显示(&O)\tCtrl+L",         IDC_OPENFILELIST
-            MENUITEM "归位(&S)",         IDM_RESETFILELISTPOS
+            MENUITEM "重置窗口(&S)",         IDM_RESETFILELISTPOS
 			MENUITEM SEPARATOR
             MENUITEM "首(&F)\tAlt+Home,Ctrl+Alt+B",   IDC_FIRSTRPYFILE
             MENUITEM "前(&P)\tAlt+PageUp,Ctrl+B",   IDC_PREVRPYFILE
