@@ -102,6 +102,7 @@
 #define IDM_SAVERAW                     32782
 #define IDM_ABOUT                       32783
 #define IDM_SAVERAWPART                 32784
+#define IDM_RESETFILELISTPOS            32785
 #define IDM_CHANGEENCODESTART           33000
 
 // Next default values for new objects
@@ -109,7 +110,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        144
-#define _APS_NEXT_COMMAND_VALUE         32785
+#define _APS_NEXT_COMMAND_VALUE         32786
 #define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

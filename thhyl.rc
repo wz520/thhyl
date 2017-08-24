@@ -328,8 +328,8 @@ IDR_POPMENU MENU DISCARDABLE
 BEGIN
     POPUP "Pop"
     BEGIN
-        MENUITEM "打开录像(&O)...\tCTRL+O",     IDM_OPEN
-        MENUITEM "关闭录像(&L)\tCTRL+W",        IDC_CLOSEFILE
+        MENUITEM "打开录像(&O)...\tCtrl+O",     IDM_OPEN
+        MENUITEM "关闭录像(&L)\tCtrl+W",        IDC_CLOSEFILE
         MENUITEM "复制信息(&C)",                IDM_MENUCOPY
         POPUP "编码(&N)"
         BEGIN
@@ -338,6 +338,18 @@ BEGIN
             MENUITEM "繁体中文 &Big5\tF3",          33002
             MENUITEM SEPARATOR
             MENUITEM "系统默认(&D)\tF4",            33003
+        END
+        POPUP "文件列表(&L)"
+        BEGIN
+            MENUITEM "切换显示(&O)\tCtrl+L",         IDC_OPENFILELIST
+            MENUITEM "归位(&S)",         IDM_RESETFILELISTPOS
+			MENUITEM SEPARATOR
+            MENUITEM "首(&F)\tAlt+Home,Ctrl+Alt+B",   IDC_FIRSTRPYFILE
+            MENUITEM "前(&P)\tAlt+PageUp,Ctrl+B",   IDC_PREVRPYFILE
+            MENUITEM "后(&N)\tAlt+PageDown,Ctrl+F",   IDC_NEXTRPYFILE
+            MENUITEM "末(&L)\tAlt+End,Ctrl+Alt+F",   IDC_LASTRPYFILE
+			MENUITEM SEPARATOR
+            MENUITEM "刷新(&R)\tShift+F5",         IDC_RELOADFILELIST
         END
         POPUP "保存原始数据(&R)"
         BEGIN

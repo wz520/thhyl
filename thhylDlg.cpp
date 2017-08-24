@@ -42,6 +42,8 @@
 
 LWSTDAPI SHAutoComplete(HWND hwndEdit, DWORD dwFlags);
 
+#define lengthof(arr)					(sizeof(arr)/sizeof(arr[0]))
+
 ///////////////// END SHAutoComplete /////////////////////////////////////////
 
 
@@ -127,6 +129,7 @@ BEGIN_MESSAGE_MAP(CThhylDlg, CDlgBaseWZ)
 	ON_COMMAND(IDM_MENUHELP, OnMenuhelp)
 	ON_COMMAND(IDM_SAVERAW, OnSaveraw)
 	ON_COMMAND(IDM_SAVERAWPART, OnSaverawpart)
+	ON_COMMAND(IDM_RESETFILELISTPOS, OnResetfilelistpos)
 	ON_WM_ACTIVATE()
 	ON_WM_ACTIVATEAPP()
 	ON_BN_CLICKED(IDC_CLOSEFILE, OnClosefile)
@@ -218,12 +221,14 @@ BOOL CThhylDlg::OnInitDialog()
 	m_tooltip.AddTool( GetDlgItem(IDC_EDITCOMMENT), _T("编辑录像注释（红魔乡和妖妖梦的录像不支持该功能）") );
 	m_tooltip.AddTool( GetDlgItem(IDC_ONTOP), _T("让本窗口总在最前") );
 	m_tooltip.AddTool( GetDlgItem(IDC_AUTOCOMP), _T("手动输入路径时是否显示自动完成的提示框") );
-	m_tooltip.AddTool( GetDlgItem(IDC_OPENFILELIST), _T("切换文件列表的显示[CTRL+L]") );
-	m_tooltip.AddTool( GetDlgItem(IDC_FIRSTRPYFILE), _T("打开第一个 *.rpy 文件[ALT+HOME 或 CTRL+ALT+B]") );
-	m_tooltip.AddTool( GetDlgItem(IDC_PREVRPYFILE), _T("打开上一个 *.rpy 文件[ALT+PAGEUP 或 CTRL+B]") );
-	m_tooltip.AddTool( GetDlgItem(IDC_NEXTRPYFILE), _T("打开下一个 *.rpy 文件[ALT+PAGEDOWN 或 CTRL+F]") );
-	m_tooltip.AddTool( GetDlgItem(IDC_LASTRPYFILE), _T("打开最后一个 *.rpy 文件[ALT+END 或 CTRL+ALT+F]") );
-	m_tooltip.AddTool( GetDlgItem(IDC_RELOADFILELIST), _T("刷新文件列表[SHIFT+F5]") );
+	// --- 文件列表按钮的 tooltip
+	UINT res_ids[] = {IDC_OPENFILELIST, IDC_FIRSTRPYFILE, IDC_PREVRPYFILE, IDC_NEXTRPYFILE, IDC_LASTRPYFILE, IDC_RELOADFILELIST};
+	for (int i = 0; i<lengthof(res_ids); ++i) {
+		const UINT id = res_ids[i];
+		CString strID;
+		strID.LoadString(id);
+		m_tooltip.AddTool( GetDlgItem(id), strID );
+	}
 	m_tooltip.Activate(TRUE);
 
 	// 设置不透明度
@@ -668,7 +673,7 @@ void CThhylDlg::OnFiledelete()
 
 		_tcscpy(rpyfile, m_rpyfile);
 		rpyfile[len-1]=_T('\0');
-
+		
 		fos.hwnd   = this->m_hWnd;
 		fos.wFunc  = FO_DELETE;
 		fos.pFrom  = rpyfile;
@@ -1347,6 +1352,13 @@ void CThhylDlg::OnLastrpyfile()
 	else {
 		ShowBalloonMsg( ((CButton*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd(), L">_<b", L"再怎么找也没有啦", TTI_WARNING, FALSE);
 	}		
+}
+
+void CThhylDlg::OnResetfilelistpos()
+{
+	m_pWndFileList->SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+	m_pWndFileList->ShowWindow(SW_SHOW);
+	m_pWndFileList->SetActiveWindow();
 }
 
 LRESULT CThhylDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 

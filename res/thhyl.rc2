@@ -18,6 +18,14 @@ BEGIN
 	IDC_CLOSEFILE		"回到程序启动时的画面"
 	IDM_MENUCOPY		"将录像信息复制到剪贴板"
 
+	IDC_OPENFILELIST		"切换文件列表的显示[CTRL+L]"
+	IDM_RESETFILELISTPOS	"将文件列表窗口的位置重置到屏幕左上角。\r\n如果文件列表窗口怎么也显示不出来，可以试试这一项。"
+	IDC_FIRSTRPYFILE		"打开第一个文件[ALT+HOME 或 CTRL+ALT+B]"
+	IDC_PREVRPYFILE			"打开上一个文件[ALT+PAGEUP 或 CTRL+B]"
+	IDC_NEXTRPYFILE			"打开下一个文件[ALT+PAGEDOWN 或 CTRL+F]"
+	IDC_LASTRPYFILE			"打开最后一个文件[ALT+END 或 CTRL+ALT+F]"
+	IDC_RELOADFILELIST		"刷新文件列表[SHIFT+F5]"
+
 	IDM_SAVERAW			"导出REP文件的原始数据"
 	IDM_SAVERAWPART		"选取部分REP文件的原始数据，分别存入不同的文件中"
 	IDC_OPEN_SH_ALICE	"文花帖DS之后的游戏存档和REP的集中存放地"

@@ -88,6 +88,7 @@ protected:
 	afx_msg void OnMenuhelp();
 	afx_msg void OnSaveraw();
 	afx_msg void OnSaverawpart();
+	afx_msg void OnResetfilelistpos();
 	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
 	afx_msg void OnActivateApp(BOOL bActive, HTASK hTask);
 	afx_msg void OnClosefile();
