@@ -29,12 +29,15 @@
 ## 下载及更新历史
 
 * [Release](https://github.com/wz520/thhyl/releases)
+* [更早的更新历史](docs/oldchangelog.md)
 
 ## 编译
 
 * 请参看 [docs/!COMPILE.txt](docs/!COMPILE.txt)
 
-## 其他东方STG相关工具
+## 更早的版本以及其他东方STG相关工具
 
-* <https://www.zybuluo.com/wz520/note/15842>
+* 本仓库没有收录早于 1.80 的版本。
+	- 早于 1.80 版的源代码、二进制发行包，以及我编写的其他东方STG相关工具可在这里找到：
+		+ <https://www.zybuluo.com/wz520/note/15842>
 
