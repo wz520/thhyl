@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "resource.h"
 #include "RPYAnalyzer_userblock.h"
-#include "cpconv.h"
+#include "indep/cpconv.h"
 #include "RPYAnalyzer_common.h"
 #include "RPYAnalyzer_formatter.h"
 #include "global.h"

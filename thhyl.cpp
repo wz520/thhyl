@@ -7,8 +7,8 @@
 #include "thhylDlg.h"
 #include "RPYAnalyzer.h"
 #include "global.h"
-#include "clipboard.h"
-#include "OSVer.h"
+#include "indep/clipboard.h"
+#include "indep/OSVer.h"
 
 #include "filepath_utils.h"
 

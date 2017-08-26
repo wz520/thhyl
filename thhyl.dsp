@@ -97,7 +97,7 @@ SOURCE=.\cfgfile.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\clipboard.cpp
+SOURCE=.\indep\clipboard.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -106,7 +106,7 @@ SOURCE=.\CommonDlgWZ.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cpconv.cpp
+SOURCE=.\indep\cpconv.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -143,17 +143,17 @@ SOURCE=.\global.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\globalxp.cpp
+SOURCE=.\indep\globalxp.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\OSVer.cpp
+SOURCE=.\indep\OSVer.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\Registry.cpp
+SOURCE=.\indep\Registry.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -211,7 +211,7 @@ SOURCE=.\thuserblock.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\WindowGluer.cpp
+SOURCE=.\indep\WindowGluer.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
@@ -224,7 +224,7 @@ SOURCE=.\cfgfile.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\clipboard.h
+SOURCE=.\indep\clipboard.h
 # End Source File
 # Begin Source File
 
@@ -232,7 +232,7 @@ SOURCE=.\CommonDlgWZ.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cpconv.h
+SOURCE=.\indep\cpconv.h
 # End Source File
 # Begin Source File
 
@@ -268,15 +268,15 @@ SOURCE=.\global.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\globalxp.h
+SOURCE=.\indep\globalxp.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\OSVer.h
+SOURCE=.\indep\OSVer.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Registry.h
+SOURCE=.\indep\Registry.h
 # End Source File
 # Begin Source File
 
@@ -332,7 +332,7 @@ SOURCE=.\thuserblock.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\WindowGluer.h
+SOURCE=.\indep\WindowGluer.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
@@ -361,15 +361,15 @@ SOURCE=.\res\yx.ico
 # End Group
 # Begin Source File
 
-SOURCE=".\!COMPILE.txt"
+SOURCE=".\docs\!COMPILE.txt"
 # End Source File
 # Begin Source File
 
-SOURCE=".\!FILELIST.txt"
+SOURCE=".\docs\!FILELIST.txt"
 # End Source File
 # Begin Source File
 
-SOURCE=".\!THANKS.txt"
+SOURCE=".\docs\!THANKS.txt"
 # End Source File
 # Begin Source File
 

@@ -12,7 +12,7 @@
 #include "FileStatusWZ.h"
 #include "RPYAnalyzer.h"
 #include "FileListWindow.h"
-#include "WindowGluer.h"
+#include "indep/WindowGluer.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CThhylDlg dialog

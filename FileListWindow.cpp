@@ -6,7 +6,7 @@
 #include "FileListWindow.h"
 #include "filepath_utils.h"
 #include "cfgfile.h"
-#include "globalxp.h"
+#include "indep/globalxp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

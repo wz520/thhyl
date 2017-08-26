@@ -3,7 +3,7 @@
 #include "thhyl.h"
 #include "RPYAnalyzer.h"
 #include "global.h"
-#include "cpconv.h"
+#include "indep/cpconv.h"
 
 #include "RPYAnalyzer_common.h"
 #include "RPYAnalyzer_formatter.h"

@@ -6,7 +6,7 @@
 #include "thhyl.h"
 #include "DlgAbout.h"
 #include "global.h"
-#include "OSVer.h"
+#include "indep/OSVer.h"
 
 #pragma comment (lib, "winmm.lib")
 

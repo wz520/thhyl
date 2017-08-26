@@ -6,7 +6,7 @@
 #include "thhyl.h"
 #include "global.h"
 #include "DlgComment.h"
-#include "cpconv.h"
+#include "indep/cpconv.h"
 
 #include "thuserblock.h"
 #include "CommonDlgWZ.h"
