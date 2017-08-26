@@ -38,6 +38,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "thdecode1.h"
 #include "thkeyinfo.h"

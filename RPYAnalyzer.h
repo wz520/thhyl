@@ -2,6 +2,7 @@
 #define _RPYINFO874_H
 
 #include "RPYAnalyzer_common.h"
+#include "RPYAnalyzer_userblock.h"
 
 #define MINRPYSIZE						(0x60)
 

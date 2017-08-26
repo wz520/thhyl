@@ -3,7 +3,6 @@
 
 #include "thcommon.h"
 #include "thuserblock.h"
-#include "RPYAnalyzer_userblock.h"
 
 // Touhou decode routines for
 // TH6, TH7, TH8, TH9
