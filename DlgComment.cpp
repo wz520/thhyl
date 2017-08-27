@@ -8,7 +8,7 @@
 #include "DlgComment.h"
 #include "indep/cpconv.h"
 
-#include "thuserblock.h"
+#include "thdecode/thuserblock.h"
 #include "CommonDlgWZ.h"
 
 #ifdef _DEBUG

@@ -179,17 +179,17 @@ SOURCE=.\StdAfx.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\thcommon.cpp
+SOURCE=.\thdecode\thcommon.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\thdecode1.cpp
+SOURCE=.\thdecode\thdecode1.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\thdecode2.cpp
+SOURCE=.\thdecode\thdecode2.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -206,7 +206,7 @@ SOURCE=.\thhylDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\thuserblock.cpp
+SOURCE=.\thdecode\thuserblock.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -308,15 +308,15 @@ SOURCE=.\StdAfx.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\thcommon.h
+SOURCE=.\thdecode\thcommon.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\thdecode1.h
+SOURCE=.\thdecode\thdecode1.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\thdecode2.h
+SOURCE=.\thdecode\thdecode2.h
 # End Source File
 # Begin Source File
 
@@ -328,7 +328,7 @@ SOURCE=.\thhylDlg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\thuserblock.h
+SOURCE=.\thdecode\thuserblock.h
 # End Source File
 # Begin Source File
 

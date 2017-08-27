@@ -10,8 +10,8 @@
 
 #include "StdAfx.h"
 
-#include "thcommon.h"
-#include "thuserblock.h"
+#include "thdecode/thcommon.h"
+#include "thdecode/thuserblock.h"
 
 
 class CRpyInfoUserBlock{

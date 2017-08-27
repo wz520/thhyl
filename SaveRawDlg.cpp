@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "thhyl.h"
-#include "thcommon.h"
 #include "SaveRawDlg.h"
 #include "global.h"
 #include "cfgfile.h"

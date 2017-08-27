@@ -1,7 +1,7 @@
 #if !defined(AFX_SAVERAWDLG_H__ADEE1FB7_CA37_467B_8E18_2A7D332A0AC8__INCLUDED_)
 #define AFX_SAVERAWDLG_H__ADEE1FB7_CA37_467B_8E18_2A7D332A0AC8__INCLUDED_
 
-#include "thcommon.h"	// Added by ClassView
+#include "thdecode/thcommon.h"	// Added by ClassView
 #include "RPYAnalyzer_common.h"
 #include "DlgBaseWZ.h"
 

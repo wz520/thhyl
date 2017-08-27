@@ -1,8 +1,8 @@
 #ifndef __RPYINFO_COMMON_H__55D17A39_
 #     define __RPYINFO_COMMON_H__55D17A39_
 
-#include "thdecode1.h"
-#include "thdecode2.h"
+#include "thdecode/thdecode1.h"
+#include "thdecode/thdecode2.h"
 
 // Error value
 #define RPYINFO_THHYL_CONVCODEERROR		10	// ANSI->UNICODE error
