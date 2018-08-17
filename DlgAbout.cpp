@@ -129,7 +129,7 @@ BOOL CDlgAbout::OnInitDialog()
 		_T("当前进程 PID: %u(0x%x)\r\n")
 		_T("当前线程 TID: %u(0x%x)\r\n")
 		_T("GetTickCount(): %u(0x%x)\r\n")
-		, g_title, 1, 82
+		, g_title, 1, 86
 		, myemail
 		, updateurl
 

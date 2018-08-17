@@ -436,22 +436,15 @@ static bool _GetStagePointers(
 			// 跳过 keystate 数据便是 fps 数据，一组 keystate 的长度由 nKeyStateElementSize 指定
 			pOutInfo->fpsinfo.pointers[i] = (BYTE*)pCurr + pCurrHdr->dwhdrKeyStateSize*idata.nKeyStateElementSize + idata.o.stageSizeFix;
 
-
-			const int nStageNumberIndex = pCurrHdr->wStageNumber-1;
+			const bool isHalf = i == 0 && idata.o.stageCount < 0;  // 是否是 half(95, 125, 143, 165)
+			const int nStageNumberIndex = isHalf ? 0 : pCurrHdr->wStageNumber-1;  // 如果是 half，则让关卡索引强制为 0（因为只有 1 关）
 			// 填写 stagepointers
-			if (i == 0 && idata.o.stageCount < 0) {
-				// 95, 125, 143 强制填写在索引 0 上
-				pOutInfo->nStageNumberForHalf = pOutInfo->nSpellPracticeNumber;
-				pOutInfo->stagepointers[0][0].p = (BYTE*)pCurr;
-				pOutInfo->stagepointers[0][0].offset = pCurr - pData;
-				pOutInfo->stagepointers[0][0].size = pOutInfo->fpsinfo.pointers[i] - pCurr;
+			if (isHalf) {
+				pOutInfo->nStageNumberForHalf = pOutInfo->nSpellPracticeNumber;  // 填写 spell card 编号作为 stage number
 			}
-			else {
-				// 由于 wStageNumber 从 1 开始，作为索引使用必须 -1
-				pOutInfo->stagepointers[0][nStageNumberIndex].p = (BYTE*)pCurr;
-				pOutInfo->stagepointers[0][nStageNumberIndex].offset = pCurr - pData;
-				pOutInfo->stagepointers[0][nStageNumberIndex].size = pOutInfo->fpsinfo.pointers[i] - pCurr;
-			}
+			pOutInfo->stagepointers[0][nStageNumberIndex].p = (BYTE*)pCurr;
+			pOutInfo->stagepointers[0][nStageNumberIndex].offset = pCurr - pData;
+			pOutInfo->stagepointers[0][nStageNumberIndex].size = pOutInfo->fpsinfo.pointers[i] - pCurr;
  
 			// datasize 应该大于 keystatesize，
 			// 如果小于，则把它直接视作 fps 数据的长度，th95 便是如此
@@ -467,17 +460,9 @@ static bool _GetStagePointers(
 			}
 
 			// 填写 fpspointers
-			// 如果是 95,125,143 的 REP，则填写 pOutInfo->nStageNumberForHalf，且将 fpspointers
-			if (i == 0 && idata.o.stageCount < 0) {
-				pOutInfo->fpspointers[0].p = pOutInfo->fpsinfo.pointers[i];
-				pOutInfo->fpspointers[0].offset = pOutInfo->fpsinfo.pointers[i] - pData;
-				pOutInfo->fpspointers[0].size = pOutInfo->fpsinfo.sizes[i];				
-			}
-			else {
-				pOutInfo->fpspointers[nStageNumberIndex].p = pOutInfo->fpsinfo.pointers[i];
-				pOutInfo->fpspointers[nStageNumberIndex].offset = pOutInfo->fpsinfo.pointers[i] - pData;
-				pOutInfo->fpspointers[nStageNumberIndex].size = pOutInfo->fpsinfo.sizes[i];
-			}
+			pOutInfo->fpspointers[nStageNumberIndex].p = pOutInfo->fpsinfo.pointers[i];
+			pOutInfo->fpspointers[nStageNumberIndex].offset = pOutInfo->fpsinfo.pointers[i] - pData;
+			pOutInfo->fpspointers[nStageNumberIndex].size = pOutInfo->fpsinfo.sizes[i];
 		}
 		
 		GetFPSInfo(nStageCount, &pOutInfo->fpsinfo);
@@ -487,7 +472,7 @@ static bool _GetStagePointers(
 }
 
 
-// get info for TH95, TH125, TH143
+// get info for TH95, TH125, TH143, TH165
 static bool GetHalfInfo(
 		RPYMGC magic,
 		const BYTE* pData,
@@ -502,7 +487,7 @@ static bool GetHalfInfo(
 	o->clearScore = 0x14;
 	o->stageCount = -1;
 
-	if (pOutInfo->wVersion != 1) return false;
+	bool isVersionValid = pOutInfo->wVersion == 1;
 
 	switch (magic)
 	{
@@ -545,8 +530,25 @@ static bool GetHalfInfo(
 		
 		pOutInfo->nSpellPracticeNumber = *(DWORD*)(pData+0x90);
 		break;
+	case mgc165:
+		o->clearTime    = 0x14;
+		o->clearScore   = 0x1c;
+		o->slowRate     = 0x84;
+		o->firstStage   = 0xa0;
+		o->stageSizeFix = 0xe0;
+		// o->flags        = 0x58;
+		pOutInfo->halfinfo.nDayID = *(int*)(pData+0x8c);
+		pOutInfo->halfinfo.nSceneID = *(int*)(pData+0x90);
+		pOutInfo->nSpellPracticeNumber = *(DWORD*)(pData+0x94) + 1;
+		pOutInfo->halfinfo.nSkillLevel = *(DWORD*)(pData+0x98);
+		isVersionValid = pOutInfo->wVersion == 2;
+		break;
 	default:
 		// we should never arrive here
+		return false;
+	}
+
+	if ( !isVersionValid ) {
 		return false;
 	}
 
@@ -686,6 +688,7 @@ static bool _GetStageInfo(
 		case mgc95:
 		case mgc125:
 		case mgc143:
+		case mgc165:
 			return GetHalfInfo(magic, pData, size, idata, pOutInfo);
 		default:
 			return false;
@@ -771,6 +774,7 @@ BYTE* ReplayDecode2(
 		case mgc143:
 		case mgc15:
 		case mgc16:
+		case mgc165:
 			CALL_DECRYPT(0x5c, 0xe1, 0x400); CALL_DECRYPT(0x7d, 0x3a, 0x100);
 			break;
 		default:

@@ -67,6 +67,7 @@ protected:
 	void TH95GenInfo();
 	void TH125GenInfo();
 	void TH143GenInfo();
+	void TH165GenInfo();
 
     //以下TH8以后专用
 

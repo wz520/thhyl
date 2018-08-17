@@ -285,7 +285,11 @@ typedef struct tagTHHALF_INFO {
 	// Item ID and count, currently available for TH143 only.
 	int nDayID;   // zero based, need +1 for showing
 	int nSceneID; // zero based, need +1 for showing
-	DWORD nMainItemID;
+	
+	union {
+		DWORD nMainItemID; // for th143
+		DWORD nSkillLevel; // for th165
+	};
 	DWORD nMainItemCount;
 	DWORD nSubItemID;
 	DWORD nSubItemCount;

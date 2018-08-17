@@ -210,8 +210,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,8,2,874
- PRODUCTVERSION 1,8,2,874
+ FILEVERSION 1,8,6,891
+ PRODUCTVERSION 1,8,6,891
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -229,14 +229,14 @@ BEGIN
             VALUE "Comments", "东方.rpy文件信息查看器\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "东方STG录像信息查看器\0"
-            VALUE "FileVersion", "1.82\0"
+            VALUE "FileVersion", "1.86\0"
             VALUE "InternalName", "thhyl\0"
             VALUE "LegalCopyright", "wz520\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "thhyl.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "东方回映录\0"
-            VALUE "ProductVersion", "1.82\0"
+            VALUE "ProductVersion", "1.86\0"
             VALUE "SpecialBuild", "\0"
         END
     END

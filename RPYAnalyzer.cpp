@@ -134,6 +134,7 @@ int CRPYAnalyzer::GenInfoWrapper2()
 		{mgc15,   TH15GenStageInfo},
 		{mgc16,   TH16GenStageInfo},
 		{mgc143,  TH143GenInfo}, // no stageinfo
+		{mgc165,  TH165GenInfo}, // no stageinfo
 		{mgcalco, THALGenStageInfo}
 	};
 	int ret = RPYINFO_UNKNOWNFORMAT;
@@ -1229,6 +1230,22 @@ void CRPYAnalyzer::TH143GenInfo()
 		, mainName, m_pTHRpyInfo2->halfinfo.nMainItemCount
 		, mainPower, (LPCTSTR)strMainPower
 		, subName, m_pTHRpyInfo2->halfinfo.nSubItemCount
+	);
+	m_info += strfmt;
+
+	THXAddExtraInfo2(0);
+}
+
+void CRPYAnalyzer::TH165GenInfo()
+{
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th165.sclist"), TRUE);
+	// AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
+
+	CString strfmt;
+	strfmt.Format(
+		_T("³¬ÄÜÁ¦LV: %u\r\n")
+	
+		, m_pTHRpyInfo2->halfinfo.nSkillLevel
 	);
 	m_info += strfmt;
 
