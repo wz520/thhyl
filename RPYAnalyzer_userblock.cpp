@@ -66,6 +66,7 @@ int CRpyInfoUserBlock::analyze()
 	case mgc95:
 	case mgc125:
 	case mgcalco:
+	case mgc165:
 		bAddZero = FALSE;
 		// no break
 	case mgc10:
@@ -76,7 +77,6 @@ int CRpyInfoUserBlock::analyze()
 	case mgc15:
 	case mgc16:
 	case mgc143:
-	case mgc165:
 		ret = GetUBRpyInfo();
 		if (ret != RPYINFO_OK) break;
 
