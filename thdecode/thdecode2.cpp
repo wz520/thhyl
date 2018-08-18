@@ -541,6 +541,7 @@ static bool GetHalfInfo(
 		pOutInfo->halfinfo.nSceneID = *(int*)(pData+0x90);
 		pOutInfo->nSpellPracticeNumber = *(DWORD*)(pData+0x94) + 1;
 		pOutInfo->halfinfo.nSkillLevel = *(DWORD*)(pData+0x98);
+		pOutInfo->halfinfo.bRetried = *(BOOL*)(pData+0x9c);
 		isVersionValid = pOutInfo->wVersion == 2;
 		break;
 	default:

@@ -294,6 +294,12 @@ typedef struct tagTHHALF_INFO {
 	DWORD nSubItemID;
 	DWORD nSubItemCount;
 	DWORD nMainItemPower; // should /10 to get result.  %10 should == 0
+
+	// for th165.
+	// 
+	// If this flag is set, the player retried at least once.
+	// And, in the scenes that have dialogs, some dialogs will be omitted.
+	BOOL bRetried; 
 }THHALF_INFO;
 
 struct THRPYINFO2 : public THRPYINFO_BASE {
