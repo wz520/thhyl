@@ -1239,12 +1239,12 @@ void CRPYAnalyzer::TH143GenInfo()
 void CRPYAnalyzer::TH165GenInfo()
 {
 	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th165.sclist"), TRUE);
-	// AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
+	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
 
 	CString strfmt;
 	strfmt.Format(
 		_T("超能力LV: %u\r\n")
-		_T("重来过: %s\r\n")
+		_T("重来过: %s\r\n\r\n")
 	
 		, m_pTHRpyInfo2->halfinfo.nSkillLevel
 		, m_pTHRpyInfo2->halfinfo.bRetried ? _T("是") : _T("否")

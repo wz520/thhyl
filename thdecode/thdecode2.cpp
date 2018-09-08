@@ -536,7 +536,7 @@ static bool GetHalfInfo(
 		o->slowRate     = 0x84;
 		o->firstStage   = 0xa0;
 		o->stageSizeFix = 0xe0;
-		// o->flags        = 0x58;
+		o->flags        = 0x48;
 		pOutInfo->halfinfo.nDayID = *(int*)(pData+0x8c);
 		pOutInfo->halfinfo.nSceneID = *(int*)(pData+0x90);
 		pOutInfo->nSpellPracticeNumber = *(DWORD*)(pData+0x94) + 1;
