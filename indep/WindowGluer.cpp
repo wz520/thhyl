@@ -3,6 +3,14 @@
 #define delete_array_then_null(v) ((delete[] (v)), (v)=NULL)
 #define BETWEEN(n,min,max) ((n)>=(min) && (n)<=(max))
 
+
+inline bool IsKeyDown(int vKey)
+{
+	return (GetAsyncKeyState(vKey) & 0x8000) ? true : false;
+}
+
+
+
 // utility functions
 
 // 判断rect1和rect2是否紧挨着
@@ -155,6 +163,39 @@ bool CWindowGluer::handleFollowerMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 				pRectThis->bottom -= distance; // 调整对边的距离
 				result = true;
 			}
+		}
+		break;
+	}
+
+	return result;
+}
+
+
+
+bool CWindowGluer::handleSwitchMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	bool result = false;
+	switch(uMsg) {
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case VK_F6:
+			if ( IsKeyDown(VK_CONTROL) ) {
+				for ( int i = 0; i < m_nObjectCount; ++i ) {
+					if (m_pWindows->all[i] == hWnd) {
+						const int nIndexOfNextWindow = i >= m_nObjectCount - 1
+							? 0
+							: i+1;
+						const HWND hWndOfNextWindow = m_pWindows->all[nIndexOfNextWindow];
+						if ( IsWindow(hWndOfNextWindow) && IsWindowVisible(hWndOfNextWindow) ) {
+							SetForegroundWindow(hWndOfNextWindow);
+						}
+						break;
+					}
+				}
+				result = true;  // 只要按了正确的热键，就总是返回 true
+			}
+			break;
 		}
 		break;
 	}

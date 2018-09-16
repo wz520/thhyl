@@ -26,11 +26,35 @@ public:
 	// 子窗口在自己的 WindowProc 中调用本方法，能实现靠近主窗口时吸附主窗口的效果
 	// 返回 true 表示处理了 uMsg 消息，调用者通常应该尽快 return 0。
 	bool handleFollowerMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	// 主窗口或子窗口在自己的【PreTranslateMessage()】中调用本方法，能实现按 CTRL+F6 将已添加到本类的窗口为轮流切换为活动窗口
+	// 返回 true 表示处理了 uMsg 消息，调用者通常应该尽快 return TRUE。
+	bool handleSwitchMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	// 吸附力，值越大吸附力越强，默认值是 10
 	// 目前不能分别为每个窗口指定不同的值（一般也没这个必要吧……）
 	LONG m_lGluePower;
-	
+
+	// typedefs
+	// [1],[2] are just placeholders, may vary depend on m_nFollowersCount
+	union GLUE_WINDOWS {
+		struct {
+			HWND main;
+			HWND follower[1];
+		};
+		struct {
+			HWND all[2];
+		};
+	};
+	union GLUE_RECTS {
+		struct {
+			RECT main;
+			RECT follower[1];
+		};
+		struct {
+			RECT all[2];
+		};
+	};
+
 private:
 	CWindowGluer& operator = (const CWindowGluer& another);
 	CWindowGluer(const CWindowGluer& another);
@@ -41,25 +65,8 @@ private:
 	int m_nFollowersCount;
 	int m_nObjectCount;     // means (followers + main), so always == (m_nFollowersCount + 1)
 
-	// [1],[2] is just a placeholder, may vary depend on m_nFollowersCount
-	union GLUE_WINDOWS {
-		struct {
-			HWND main;
-			HWND follower[1];
-		};
-		struct {
-			HWND all[2];
-		};
-	}*m_pWindows;
-	union GLUE_RECTS {
-		struct {
-			RECT main;
-			RECT follower[1];
-		};
-		struct {
-			RECT all[2];
-		};
-	}*m_pRects;
+	GLUE_WINDOWS *m_pWindows;
+	GLUE_RECTS *m_pRects;
 
 	bool *m_pIsGluedFollower;  // 判断某个子窗口是否需要和主窗口一起移动
 };

@@ -981,6 +981,8 @@ BOOL CThhylDlg::PreTranslateMessage(MSG* pMsg)
 		if (::TranslateAccelerator(m_hWnd, m_hAccel, pMsg))
 			return TRUE;
 
+		if (m_pWindowGluer->handleSwitchMessage(this->GetSafeHwnd(), pMsg->message, pMsg->wParam, pMsg->lParam)) return TRUE;
+
 		// other keys
 		switch (pMsg->message)
 		{
