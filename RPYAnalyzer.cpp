@@ -1244,7 +1244,7 @@ void CRPYAnalyzer::TH165GenInfo()
 	CString strfmt;
 	strfmt.Format(
 		_T("超能力LV: %u\r\n")
-		_T("重来过: %s\r\n\r\n")
+		_T("重來過: %s\r\n\r\n")
 	
 		, m_pTHRpyInfo2->halfinfo.nSkillLevel
 		, m_pTHRpyInfo2->halfinfo.bRetried ? _T("是") : _T("否")
