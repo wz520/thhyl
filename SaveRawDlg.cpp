@@ -230,7 +230,6 @@ int CALLBACK BrowseCallBackFun(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpDat
 
 void CSaveRawDlg::OnOK()
 {
-	TCHAR pszPath[MAX_PATH];
 	CString initpath;
 	filepath_utils::GetDir(m_strFileName, initpath, false);
 
@@ -247,6 +246,7 @@ void CSaveRawDlg::OnOK()
 	LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
 	bool bSuccess = false;
 	if (pidl != NULL) {
+		TCHAR pszPath[MAX_PATH];
 		if (SHGetPathFromIDList(pidl, pszPath)) {
 			bSuccess = SaveCheckedFiles(pszPath);
 		}

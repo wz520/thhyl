@@ -247,7 +247,7 @@ void CRPYAnalyzer::TH6GenInfo()
 
 	// 整体信息
 	m_info.Format(
-		_T("遊戲: 東方紅魔郷 %u.%02u\r\n")
+		_T("遊戲: 東方紅魔郷 %lu.%02lu\r\n")
 		_T("玩家: %s\r\n日期: %s\r\n")
 		_T("角色: %s\r\n難度: %s\r\n")
 		_T("分數: %s\r\n掉幀: %f%%\r\n"),
@@ -547,8 +547,8 @@ void CRPYAnalyzer::TH9GenStageInfo()
 		StrFormat2.Format(
 				_T("Player1 Charge Type: %s\r\n")
 				_T("Player2 Charge Type: %s\r\n")
-				, szChargeType[m_pTHRpyInfo->wFlags&RPYFLAG_P1CHARGE ? 1 : 0]
-				, szChargeType[m_pTHRpyInfo->wFlags&RPYFLAG_P2CHARGE ? 1 : 0]
+				, szChargeType[(m_pTHRpyInfo->wFlags & RPYFLAG_P1CHARGE) ? 1 : 0]
+				, szChargeType[(m_pTHRpyInfo->wFlags & RPYFLAG_P2CHARGE) ? 1 : 0]
 		);
 		m_info += StrFormat2;
 	}
@@ -719,9 +719,9 @@ void CRPYAnalyzer::TH10GenStageInfo()
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
-			_T("        Power:%5d.%02d(%u)\r\n")
-			_T("         信仰:%8d\r\n")
-			_T("       連擊槽:%8d\r\n")
+			_T("        Power:%5lu.%02lu(%lu)\r\n")
+			_T("         信仰:%8lu\r\n")
+			_T("       連擊槽:%8lu\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -784,10 +784,10 @@ void CRPYAnalyzer::TH11GenStageInfo()
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
-			_T("        Power:%5u.%02u(%u)\r\n")
-			_T("        Graze:%8u\r\n")
-			_T("     最小得點:%8u(%u×%u.%02u)\r\n")
-			_T("     最大得點:%8u(%u×%u.%02u)\r\n")
+			_T("        Power:%5lu.%02lu(%lu)\r\n")
+			_T("        Graze:%8lu\r\n")
+			_T("     最小得點:%8lu(%lu×%lu.%02lu)\r\n")
+			_T("     最大得點:%8lu(%lu×%lu.%02lu)\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -834,9 +834,9 @@ void CRPYAnalyzer::TH12GenStageInfo()
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
 			_T("         Bomb: %s\r\n")
-			_T("        Power:%9d.%02d\r\n")
-			_T("        Graze:%12d\r\n")
-			_T("     最大得點:%9d.%02d\r\n")
+			_T("        Power:%9lu.%02lu\r\n")
+			_T("        Graze:%12lu\r\n")
+			_T("     最大得點:%9lu.%02lu\r\n")
 			_T("          UFO:      %s\r\n")
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
@@ -878,11 +878,11 @@ void CRPYAnalyzer::TH128GenStageInfo()
 		
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
-			_T("         幹勁:%11d.%02d%%\r\n")
-			_T("       凍結力:%10d.%03d%%\r\n")
-			_T("     完美凍結:%11d.%02d%%\r\n")
+			_T("         幹勁:%11lu.%02lu%%\r\n")
+			_T("       凍結力:%10lu.%03lu%%\r\n")
+			_T("     完美凍結:%11lu.%02lu%%\r\n")
 			_T("     凍結面積:%14f%%\r\n")
-			_T("        LEVEL:%15d\r\n")
+			_T("        LEVEL:%15lu\r\n")
 			_T("         座標:%15d/%d(%d/%d)\r\n")
 
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -947,13 +947,13 @@ void CRPYAnalyzer::TH13GenStageInfo()
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
-			_T("  Player 碎片:%12d/%d\r\n")
+			_T("  Player 碎片:%12lu/%lu\r\n")
 			_T("         Bomb: %s\r\n")
-			_T("    Bomb 碎片:%12d/%d\r\n")
-			_T("        Power:%9d.%02d\r\n")
-			_T("        Graze:%12d\r\n")
-			_T("     最大得點:%9d.%02d\r\n")
-			_T("       靈界槽:%12d\r\n")
+			_T("    Bomb 碎片:%12lu/%lu\r\n")
+			_T("        Power:%9lu.%02lu\r\n")
+			_T("        Graze:%12lu\r\n")
+			_T("     最大得點:%9lu.%02lu\r\n")
+			_T("       靈界槽:%12lu\r\n")
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -1002,11 +1002,11 @@ void CRPYAnalyzer::TH14GenStageInfo()
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
 			_T("         Bomb: %s\r\n")
-			_T("     1UPCount:%12d\r\n")
-			_T("  Non2.0Bonus:%12d\r\n")
-			_T("        Power:%9d.%02d\r\n")
-			_T("        Graze:%12d\r\n")
-			_T("     最大得點:%9d.%02d\r\n")
+			_T("     1UPCount:%12lu\r\n")
+			_T("  Non2.0Bonus:%12lu\r\n")
+			_T("        Power:%9lu.%02lu\r\n")
+			_T("        Graze:%12lu\r\n")
+			_T("     最大得點:%9lu.%02lu\r\n")
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -1053,10 +1053,10 @@ void CRPYAnalyzer::TH15GenStageInfo()
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
 			_T("         Bomb: %s\r\n")
-			_T("     1UPCount:%12d\r\n")
-			_T("        Power:%9d.%02d\r\n")
-			_T("        Graze:%12d\r\n")
-			_T("     最大得點:%9d.%02d\r\n")
+			_T("     1UPCount:%12lu\r\n")
+			_T("        Power:%9lu.%02lu\r\n")
+			_T("        Graze:%12lu\r\n")
+			_T("     最大得點:%9lu.%02lu\r\n")
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -1123,11 +1123,11 @@ void CRPYAnalyzer::TH16GenStageInfo()
 			_T("\r\nStage %s:\r\n")
 			_T("       Player: %s\r\n")
 			_T("         Bomb: %s\r\n")
-			_T("     1UPCount:%12d\r\n")
-			_T("        Power:%9d.%02d\r\n")
-			_T("        Graze:%12d\r\n")
-			_T("       季節槽:%12.3f(%d/%d)\r\n")
-			_T("     最大得點:%9d.%02d\r\n")
+			_T("     1UPCount:%12lu\r\n")
+			_T("        Power:%9lu.%02lu\r\n")
+			_T("        Graze:%12lu\r\n")
+			_T("       季節槽:%12.3f(%lu/%lu)\r\n")
+			_T("     最大得點:%9lu.%02lu\r\n")
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
@@ -1216,16 +1216,16 @@ void CRPYAnalyzer::TH143GenInfo()
 	case 0: case 2: case 6: case 7: // time
 		strMainPower.Format(_T("(%.2fs)"), (double)mainPower / 60.0); break;
 	case 1: // photography range
-		strMainPower.Format(_T("(%u%%)"), mainPower); break;
+		strMainPower.Format(_T("(%lu%%)"), mainPower); break;
 	case 5: // range
 		strMainPower.Format(_T("(%.0f%%)"), (double)mainPower / 1.28); break;
 	}
 
 	CString strfmt;
 	strfmt.Format(
-		_T("主道具: %s(%u)\r\n")
-		_T("能力值: %u%s\r\n")
-		_T("副道具: %s(%u)\r\n\r\n")
+		_T("主道具: %s(%lu)\r\n")
+		_T("能力值: %lu%s\r\n")
+		_T("副道具: %s(%lu)\r\n\r\n")
 	
 		, mainName, m_pTHRpyInfo2->halfinfo.nMainItemCount
 		, mainPower, (LPCTSTR)strMainPower
@@ -1243,7 +1243,7 @@ void CRPYAnalyzer::TH165GenInfo()
 
 	CString strfmt;
 	strfmt.Format(
-		_T("超能力LV: %u\r\n")
+		_T("超能力LV: %lu\r\n")
 		_T("重來過: %s\r\n\r\n")
 	
 		, m_pTHRpyInfo2->halfinfo.nSkillLevel

@@ -37,8 +37,8 @@ CWindowGluer::~CWindowGluer()
 
 void CWindowGluer::init()
 {
-	m_pWindows = (GLUE_WINDOWS*)(new HWND[m_nObjectCount]);
-	m_pRects = (GLUE_RECTS*)(new RECT[m_nObjectCount]);
+	m_pWindows = reinterpret_cast<GLUE_WINDOWS*>(new HWND[m_nObjectCount]);
+	m_pRects = reinterpret_cast<GLUE_RECTS*>(new RECT[m_nObjectCount]);
 	m_pIsGluedFollower = new bool[m_nFollowersCount];
 	int i;
 	for ( i = 0; i < m_nObjectCount; ++i ) {

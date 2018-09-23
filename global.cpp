@@ -324,10 +324,9 @@ BOOL SetControlFontSize(HWND hwnd, int n, LOGFONT* pOutLogFont, DWORD dwFlags)
 
 		// Set new font to the window
 		{
-			HFONT hNewFont = NULL;
-
 			lf.lfHeight = PointToLogical(point, hdc);
-			hNewFont = CreateFontIndirect(&lf);
+
+			HFONT hNewFont = CreateFontIndirect(&lf);
 			SendMessage(hwnd, WM_SETFONT, (WPARAM)hNewFont, TRUE);
 			if (!(dwFlags & SCFS_KEEPOLDHFONT)) {
 				DeleteObject(hFont); // delete old font

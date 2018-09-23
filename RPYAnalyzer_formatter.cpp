@@ -88,9 +88,9 @@ void FormatScore(UINT64 inScore64, CString &outScore, BOOL bAddZero,
 	d += dwContinuedTimes;
 
 	if (inScore64<10000)
-		outScore.Format(_T("0ƒ|0Èf%04uüc"), d);
+		outScore.Format(_T("0ƒ|0Èf%04luüc"), d);
 	else
-		outScore.Format(_T("%uƒ|%04uÈf%04uüc"), e, w, d);
+		outScore.Format(_T("%luƒ|%04luÈf%04luüc"), e, w, d);
 
 	if (bAddLeadingBlank && e<10)
 		outScore.Insert(0, _T(' '));

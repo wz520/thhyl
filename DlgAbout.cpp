@@ -125,10 +125,10 @@ BOOL CDlgAbout::OnInitDialog()
 		_T("更新地址：\r\n%s\r\nhttp://pan.baidu.com/s/1ntt4845\r\n\r\n")
 		_T("-----------------------------------------------\r\n")
 		_T("操作系统: Windows %s %s %s\r\n")
-		_T("处理器数量: %u\r\n")
-		_T("当前进程 PID: %u(0x%x)\r\n")
-		_T("当前线程 TID: %u(0x%x)\r\n")
-		_T("GetTickCount(): %u(0x%x)\r\n")
+		_T("处理器数量: %lu\r\n")
+		_T("当前进程 PID: %lu(0x%lx)\r\n")
+		_T("当前线程 TID: %lu(0x%lx)\r\n")
+		_T("GetTickCount(): %lu(0x%lx)\r\n")
 		, g_title, 1, 86
 		, myemail
 		, updateurl

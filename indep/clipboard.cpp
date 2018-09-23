@@ -32,18 +32,13 @@ BOOL SetClipTextW(LPCWSTR unitext)
 
 BOOL CopyFileToClipboardW(LPCWSTR szFileName, BOOL bCopy)
 {
-    UINT      uDropEffect;
     DROPFILES stDrop;
-    HGLOBAL   hGblEffect    = NULL;
-    LPDWORD   lpdDropEffect = NULL;
 
     HGLOBAL   hGblFiles     = NULL;
     LPWSTR    lpwData       = NULL;
-    BOOL      ret           = FALSE;
-    uDropEffect = RegisterClipboardFormat(_T("Preferred DropEffect"));
-
-    hGblEffect = GlobalAlloc(GMEM_ZEROINIT | GMEM_MOVEABLE | GMEM_DDESHARE, sizeof(DWORD));
-    lpdDropEffect = (LPDWORD)GlobalLock(hGblEffect);
+    UINT      uDropEffect   = RegisterClipboardFormat(_T("Preferred DropEffect"));
+    HGLOBAL   hGblEffect    = GlobalAlloc(GMEM_ZEROINIT | GMEM_MOVEABLE | GMEM_DDESHARE, sizeof(DWORD));
+    LPDWORD   lpdDropEffect = (LPDWORD)GlobalLock(hGblEffect);
 	if (lpdDropEffect) {
 		*lpdDropEffect = bCopy ? DROPEFFECT_COPY : DROPEFFECT_MOVE;
 		GlobalUnlock(hGblEffect);
@@ -69,12 +64,11 @@ BOOL CopyFileToClipboardW(LPCWSTR szFileName, BOOL bCopy)
 		SetClipboardData(CF_HDROP, hGblFiles);
 		SetClipboardData(uDropEffect, hGblEffect);
 		CloseClipboard();
-		ret = TRUE;
+		return TRUE;
 	}
 	else {
 		if (hGblFiles) GlobalFree(hGblFiles);
 		if (hGblEffect) GlobalFree(hGblEffect);
+		return FALSE;
 	}
-
-	return ret;
 }

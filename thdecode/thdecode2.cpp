@@ -143,6 +143,8 @@ struct RPYOFFSETS {
 		this->difficulty       = isALor10 ? 0x58 : 0x64;
 		this->lastStage        = isALor10 ? 0x5c : 0x68;
 		this->flags            = isALor10 ? 0x44 : 0x50;
+
+		this->stageSizeFix     = -1;
 	}
 };
 

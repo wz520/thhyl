@@ -49,8 +49,11 @@ struct CONFIG
 	BOOL loadFont(LOGFONT* pLogFont);
 	void saveFont(LOGFONT* pLogFont);
 
-	BOOL has(DWORD dwOption) const {return this->dwOptions & dwOption ? TRUE : FALSE;}
+	BOOL has(DWORD dwOption) const {return (this->dwOptions & dwOption) ? TRUE : FALSE;}
 	void set(DWORD dwOption, BOOL bState);
+
+private:
+	CONFIG(const CONFIG& another);
 };
 
 extern CONFIG cfg;
