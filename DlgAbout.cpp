@@ -118,7 +118,7 @@ BOOL CDlgAbout::OnInitDialog()
 	const DWORD tid = GetCurrentThreadId();
 	const DWORD tickcount = GetTickCount();
 	abt.Format(
-		_T("%s %d.%d alpha\r\n\r\n")
+		_T("%s %d.%d\r\n\r\n")
 		_T("Written by wz520\r\n")
 		_T("Ìù°ÉID: ÌìÊ¹µÄ¼ÏËø\r\n")
 		_T("ÓÊÏä: %s\r\n\r\n")
