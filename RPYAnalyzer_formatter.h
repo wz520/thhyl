@@ -23,12 +23,15 @@ void CopyInfoLine(LPWSTR lpszDest, LPCWSTR lpszSrc);
 // 转换“时刻”为“AM/PM xx:xx”格式，返回 strGameTime
 CString& TH8FormatGameTime(int nGameTime, CString& strGameTime);
 //转换TH12的UFOStock为汉字显示
-void TH12FormatUFOStock(DWORD UFOStock[], CString& outStrUFOStock);
+void TH12FormatUFOStock(const DWORD UFOStock[], CString& outStrUFOStock);
 
 // 转换TH16的季节槽为 子机+槽的百分比形式
 // dwOutNorm：输出参数，返回下一次增加子机所需季节槽数值
 // 返回负数表示输入有误
 double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm);
+
+// 转换 TH17 屏幕左下角的道具灵为汉字显示
+CString& TH17FormatSpiritStock(const DWORD spirits[], CString& outStrSpiritStock);
 
 }
 

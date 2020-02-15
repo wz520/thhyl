@@ -133,6 +133,7 @@ int CRPYAnalyzer::GenInfoWrapper2()
 		{mgc13,   TH13GenStageInfo}, // include 13,14
 		{mgc15,   TH15GenStageInfo},
 		{mgc16,   TH16GenStageInfo},
+		{mgc17,   TH17GenStageInfo},
 		{mgc143,  TH143GenInfo}, // no stageinfo
 		{mgc165,  TH165GenInfo}, // no stageinfo
 		{mgcalco, THALGenStageInfo}
@@ -145,9 +146,9 @@ int CRPYAnalyzer::GenInfoWrapper2()
 			m_pDecompData = ReplayDecode2(m_pData, m_nDataSize, m_pTHRpyInfo2);
 			if ( m_pDecompData ) {
 
-#if 0
+#if 1
 # ifdef _DEBUG
-				DumpRPYData(_T("d:\\rpyraw.bin"));
+				DumpRPYData(_T("c:\\rpyraw.bin"));
 # endif
 #endif
 
@@ -1137,6 +1138,59 @@ void CRPYAnalyzer::TH16GenStageInfo()
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
 			, dblSubWeapon, pCurrStage->dwSeasonGauge, dwSeasonNorm
+			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
+			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
+		);
+		
+		m_info += StrFormat2;
+
+		THXAddExtraInfo2(i);
+
+		//ClearScore
+		StrFormat2.Format(_T("  Clear Score:%s\r\n"), (LPCTSTR)(StrStageScore));
+		m_info += StrFormat2;
+	}
+	THXAddExtraInfo2(-1);
+}
+
+void CRPYAnalyzer::TH17GenStageInfo()
+{
+	TH17_STAGEINFO**       ppStageInfo    = m_pTHRpyInfo2->pStageInfo.th17;
+	
+	CString StrFormat2, StrStageScore, strPlayer, strBomb, strSpiritStock;
+
+	AddSpellPracticeInfo(m_pTHRpyInfo2->nSpellPracticeNumber, _T("th17.sclist"));
+	AddGameOptionsInfo(m_pTHRpyInfo2->wFlags);
+	
+	for (int i=0; i<m_pTHRpyInfo2->nStageCount; i++) {
+		TH17_STAGEINFO* const pCurrStage = ppStageInfo[i];
+		
+		FormatScore(
+			(i == m_pTHRpyInfo2->nStageCount-1) //最后一关取 dwClearScore
+				? m_pTHRpyInfo2->dwClearScore : ppStageInfo[i+1]->dwScore,
+			StrStageScore, TRUE, TRUE, 0);
+		
+		Num2Star(pCurrStage->dwPlayer, strPlayer, 9, pCurrStage->dwPlayerFragment);
+		Num2Star(pCurrStage->dwBomb, strBomb, 9, pCurrStage->dwBombFragment);
+
+		StrFormat2.Format(
+			_T("\r\nStage %s:\r\n")
+			_T("       Player: %s\r\n")
+			_T("         Bomb: %s\r\n")
+			_T("     1UPCount:%12lu\r\n")
+			_T("        Power:%9lu.%02lu\r\n")
+			_T("        Graze:%12lu\r\n")
+			_T("       道具靈:  %s\r\n")
+			_T("     最大得點:%9lu.%02lu\r\n")
+			_T("         座標:%12d/%d(%d/%d)\r\n")
+			
+			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
+			, strPlayer
+			, strBomb
+			, pCurrStage->dw1upCount
+			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
+			, pCurrStage->dwGraze
+			, TH17FormatSpiritStock(pCurrStage->dwSpirits, strSpiritStock)
 			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);

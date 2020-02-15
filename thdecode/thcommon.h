@@ -66,7 +66,8 @@ typedef enum tagRPYMGC {
 	mgc143  = '341t',
 	mgc15   = 'r51t',
 	mgc16   = 'r61t',
-	mgc165  = '651t'
+	mgc165  = '651t',
+	mgc17   = 'r71t'
 }RPYMGC;
 
 // FPS 数据相关结构

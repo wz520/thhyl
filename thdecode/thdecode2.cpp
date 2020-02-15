@@ -687,6 +687,21 @@ static bool _GetStageInfo(
 			idata.o.stageSizeFix = pOutInfo->isTrialVersion() ? 0x284 : 0x294;
 			pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x98)) + 1;
 			break;
+		case mgc17:
+			idata.o.firstStage    = 0xa0;
+			idata.o.flags         = 0x44;
+
+			idata.o.slowRate     = 0x80;
+			idata.o.stageCount   = 0x84;
+			idata.o.ID           = 0x88;
+			idata.o.equipID      = 0x8c;
+			idata.o.difficulty   = 0x90;
+			idata.o.lastStage    = 0x94;
+			idata.o.stageSizeFix = 0x158;
+			pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x9c)) + 1;
+
+			idata.o.clearScore   = 0x18;
+			break;
 		// no stage info
 		case mgc95:
 		case mgc125:
@@ -778,6 +793,7 @@ BYTE* ReplayDecode2(
 		case mgc15:
 		case mgc16:
 		case mgc165:
+		case mgc17:
 			CALL_DECRYPT(0x5c, 0xe1, 0x400); CALL_DECRYPT(0x7d, 0x3a, 0x100);
 			break;
 		default:

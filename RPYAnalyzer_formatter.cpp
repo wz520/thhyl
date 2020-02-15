@@ -25,11 +25,11 @@ CString& TH8FormatGameTime(int nGameTime, CString& strGameTime)
 	return strGameTime;
 }
 
-void TH12FormatUFOStock(DWORD UFOStock[], CString& outStrUFOStock)
+void TH12FormatUFOStock(const DWORD UFOStock[], CString& outStrUFOStock)
 {
 	TCHAR   szUFOHZ[4] = _T("ø’ø’ø’");
 	LPCTSTR szUFOHZMap = _T("ø’∫Ï¿∂¬Ã");
-	for (int i=0; i<3; i++)
+	for (int i=0; i<3; ++i)
 		szUFOHZ[i] = (UFOStock[i] > 3)
 			? _T('ŒÛ')
 			: szUFOHZMap[UFOStock[i]];
@@ -67,18 +67,31 @@ double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm)
 
 	return result;
 }
+CString& TH17FormatSpiritStock(const DWORD spirits[], CString& outStrSpiritStock)
+{
+	const DWORD stock_count = 5;
+	const DWORD stock_type_count = 14;
 
-void FormatScore(const CString &inScore, CString &outScore, BOOL bAddZero,
-						  BOOL bAddLeadingBlank, DWORD dwContinuedTimes
-)
+	TCHAR szSpiritHZ[stock_count+1] = {0};  // +1 is for '\0'
+	LPCTSTR szSpiritHZMap = _T("ø’¿«Ã°’£”√¸£–µ„Úÿ≈£º¶πÍ€˙¬Ì»˝");
+	for ( int i = 0; i < stock_count; ++i ) {
+		szSpiritHZ[i] = (spirits[i] > stock_type_count)
+			? _T('ŒÛ')
+			: szSpiritHZMap[ spirits[i] ];
+	}
+
+	outStrSpiritStock = szSpiritHZ;
+	return outStrSpiritStock;
+}
+
+
+void FormatScore(const CString &inScore, CString &outScore, BOOL bAddZero, BOOL bAddLeadingBlank, DWORD dwContinuedTimes)
 {
 	const UINT64 u64Score = _ttoi64(inScore);
 	FormatScore(u64Score, outScore, bAddZero, bAddLeadingBlank, dwContinuedTimes);
 }
 
-void FormatScore(UINT64 inScore64, CString &outScore, BOOL bAddZero,
-						  BOOL bAddLeadingBlank, DWORD dwContinuedTimes
-)
+void FormatScore(UINT64 inScore64, CString &outScore, BOOL bAddZero, BOOL bAddLeadingBlank, DWORD dwContinuedTimes)
 {
 	if (bAddZero) inScore64 *= 10;
 
