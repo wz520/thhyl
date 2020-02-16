@@ -40,9 +40,7 @@ void TH12FormatUFOStock(const DWORD UFOStock[], CString& outStrUFOStock)
 double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm)
 {
 	// 增加子机所需值列表（用于体验版，不知正式版是否有变化）
-	DWORD arrSubWeapon[] = {
-		0, 100, 230, 390, 590, 840, 1140
-	};
+	DWORD arrSubWeapon[] = { 0, 100, 230, 390, 590, 840, 1140 };
 	double result = -1.00;
 	DWORD const dwLastNorm = arrSubWeapon[lengthof(arrSubWeapon)-1];
 
@@ -67,7 +65,7 @@ double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm)
 
 	return result;
 }
-CString& TH17FormatSpiritStock(const DWORD spirits[], CString& outStrSpiritStock)
+CString& TH17FormatSpiritStock(DWORD dwSpiritCount, const DWORD spirits[], CString& outStrSpiritStock)
 {
 	const DWORD stock_count = 5;
 	const DWORD stock_type_count = 14;
@@ -75,9 +73,11 @@ CString& TH17FormatSpiritStock(const DWORD spirits[], CString& outStrSpiritStock
 	TCHAR szSpiritHZ[stock_count+1] = {0};  // +1 is for '\0'
 	LPCTSTR szSpiritHZMap = _T("空狼獭鹫Ｓ命Ｐ点水牛鸡龟埴马三");
 	for ( int i = 0; i < stock_count; ++i ) {
-		szSpiritHZ[i] = (spirits[i] > stock_type_count)
-			? _T('误')
-			: szSpiritHZMap[ spirits[i] ];
+		szSpiritHZ[i] = (i >= dwSpiritCount)
+			? szSpiritHZMap[0]
+			: (spirits[i] > stock_type_count)
+				? _T('误')
+				: szSpiritHZMap[ spirits[i] ];
 	}
 
 	outStrSpiritStock = szSpiritHZ;

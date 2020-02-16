@@ -134,6 +134,7 @@ int CRPYAnalyzer::GenInfoWrapper2()
 		{mgc15,   TH15GenStageInfo},
 		{mgc16,   TH16GenStageInfo},
 		{mgc17,   TH17GenStageInfo},
+		{mgc17tr, TH17GenStageInfo},
 		{mgc143,  TH143GenInfo}, // no stageinfo
 		{mgc165,  TH165GenInfo}, // no stageinfo
 		{mgcalco, THALGenStageInfo}
@@ -1190,7 +1191,7 @@ void CRPYAnalyzer::TH17GenStageInfo()
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
-			, TH17FormatSpiritStock(pCurrStage->dwSpirits, strSpiritStock)
+			, TH17FormatSpiritStock(pCurrStage->dwSpiritCount, pCurrStage->dwSpirits, strSpiritStock)
 			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);

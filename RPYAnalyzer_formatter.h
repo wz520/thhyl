@@ -31,7 +31,7 @@ void TH12FormatUFOStock(const DWORD UFOStock[], CString& outStrUFOStock);
 double TH16FormatSeasonGauge(DWORD dwSeasonGauge, DWORD& dwOutNorm);
 
 // 转换 TH17 屏幕左下角的道具灵为汉字显示
-CString& TH17FormatSpiritStock(const DWORD spirits[], CString& outStrSpiritStock);
+CString& TH17FormatSpiritStock(DWORD dwSpiritCount, const DWORD spirits[], CString& outStrSpiritStock);
 
 }
 

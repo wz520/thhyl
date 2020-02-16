@@ -688,8 +688,9 @@ static bool _GetStageInfo(
 			pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x98)) + 1;
 			break;
 		case mgc17:
-			idata.o.firstStage    = 0xa0;
-			idata.o.flags         = 0x44;
+		case mgc17tr:
+			idata.o.firstStage   = 0xa0;
+			idata.o.flags        = 0x44;
 
 			idata.o.slowRate     = 0x80;
 			idata.o.stageCount   = 0x84;
@@ -793,6 +794,7 @@ BYTE* ReplayDecode2(
 		case mgc15:
 		case mgc16:
 		case mgc165:
+		case mgc17tr:
 		case mgc17:
 			CALL_DECRYPT(0x5c, 0xe1, 0x400); CALL_DECRYPT(0x7d, 0x3a, 0x100);
 			break;

@@ -280,7 +280,6 @@ typedef struct tagTH16_STAGEINFO {
 }TH16_STAGEINFO;
 
 
-// NOTE: ÃÂ—È∞ÊŒ¥≤‚ ‘
 typedef struct tagTH17_STAGEINFO {
     THHDR_STAGEINFO hdr;
 

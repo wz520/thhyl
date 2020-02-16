@@ -67,6 +67,7 @@ typedef enum tagRPYMGC {
 	mgc15   = 'r51t',
 	mgc16   = 'r61t',
 	mgc165  = '651t',
+	mgc17tr = 't71t',
 	mgc17   = 'r71t'
 }RPYMGC;
 
