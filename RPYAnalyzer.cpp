@@ -228,7 +228,7 @@ void CRPYAnalyzer::TH6GenInfo()
 	TH6_RPYINFO*    const pGeneralInfo = &m_pTHRpyInfo->GeneralInfo.th6;
 	TH6_STAGEINFO**       ppStageInfo  = m_pTHRpyInfo->pStageInfo.th6;
 
-	CString StrFormat2, StrLives, StrBomb, StrScore, StrStageScores;
+	CString StrFormat2, StrBomb, StrScore, StrStageScores;
 
 	const UINT CharaId[4] = { IDS_RMA, IDS_RMB, IDS_MRSA, IDS_MRSB };
 	const UINT RankId[5] = { IDS_EASY, IDS_NORMAL, IDS_HARD, IDS_LUNATIC, IDS_EXTRA };
@@ -255,9 +255,9 @@ void CRPYAnalyzer::TH6GenInfo()
 		_T("分數: %s\r\n掉幀: %f%%\r\n"),
 
 		(DWORD)(pGeneralInfo->cGameMajorVersion), (DWORD)(pGeneralInfo->cGameMinorVersion)
-		,StrPlayer, StrDate
-		,StrChara, StrRank
-		,StrScore, pGeneralInfo->fDrop
+		,(LPCTSTR)StrPlayer, (LPCTSTR)StrDate
+		,(LPCTSTR)StrChara, (LPCTSTR)StrRank
+		,(LPCTSTR)StrScore, pGeneralInfo->fDrop
 	);
 
 	// Start to get stage info
@@ -271,7 +271,7 @@ void CRPYAnalyzer::TH6GenInfo()
 
 		FormatScore(pCurrStage->dwScores, StrStageScores, FALSE, TRUE);
 
-		Num2Star(pCurrStage->cLives, StrLives, 8);
+		Num2Star(pCurrStage->cLives, StrPlayer, 8);
 		Num2Star(pCurrStage->cBombs, StrBomb, 8);
 
 		StrFormat2.Format(
@@ -284,7 +284,7 @@ void CRPYAnalyzer::TH6GenInfo()
 
 			,m_pTHRpyInfo->stagenames[i]
 			,(int)pCurrStage->cPowers
-			,(LPCTSTR)StrLives
+			,(LPCTSTR)StrPlayer
 			,(LPCTSTR)StrBomb
 			,(int)pCurrStage->cPlayRank
 			,(int)pCurrStage->wPoints
@@ -319,7 +319,7 @@ void CRPYAnalyzer::TH7GenInfo()
 	TH7_RPYINFO*    const pGeneralInfo = &m_pTHRpyInfo->GeneralInfo.th7;
 	TH7_STAGEINFO**       ppStageInfo  = m_pTHRpyInfo->pStageInfo.th7;
 
-	CString StrFormat2, StrLives, StrBomb, StrScore, StrStageScores;
+	CString StrFormat2, StrBomb, StrScore, StrStageScores;
 
 	const UINT CharaId[6] = { IDS_RMA, IDS_RMB, IDS_MRSA, IDS_MRSB, IDS_SKYA, IDS_SKYB };
 	const UINT RankId[6] = { IDS_EASY, IDS_NORMAL, IDS_HARD, IDS_LUNATIC, IDS_EXTRA, IDS_PH };
@@ -348,10 +348,10 @@ void CRPYAnalyzer::TH7GenInfo()
 		_T("角色: %s\r\n難度: %s\r\n")
 		_T("分數: %s\r\n掉幀: %f%%\r\n"),
 			
-		StrVersion
-		,StrPlayer, StrDate
-		,StrChara, StrRank
-		,StrScore, pGeneralInfo->fDrop
+		(LPCTSTR)StrVersion
+		,(LPCTSTR)StrPlayer, (LPCTSTR)StrDate
+		,(LPCTSTR)StrChara, (LPCTSTR)StrRank
+		,(LPCTSTR)StrScore, pGeneralInfo->fDrop
 	);
 
 	AddGameOptionsInfo(m_pTHRpyInfo->wFlags, TRUE);
@@ -367,7 +367,7 @@ void CRPYAnalyzer::TH7GenInfo()
 
 		FormatScore(pCurrStage->dwScores, StrStageScores, TRUE, TRUE);
 
-		Num2Star(pCurrStage->cLives, StrLives, 8);
+		Num2Star(pCurrStage->cLives, StrPlayer, 8);
 		Num2Star(pCurrStage->cBombs, StrBomb, 8);
 
 		StrFormat2.Format(
@@ -385,7 +385,7 @@ void CRPYAnalyzer::TH7GenInfo()
 
 			,m_pTHRpyInfo->stagenames[i]
 			,(int)pCurrStage->cPowers
-			,(LPCTSTR)StrLives
+			,(LPCTSTR)StrPlayer
 			,(LPCTSTR)StrBomb
 			,(int)pCurrStage->cPlayRank
 			,pCurrStage->nPoints
@@ -425,7 +425,7 @@ void CRPYAnalyzer::TH8GenStageInfo()
 {
 	TH8_STAGEINFO** ppStageInfo = m_pTHRpyInfo->pStageInfo.th8;
 
-	CString StrFormat2, StrStageScores, StrLives, StrBomb, strGameTime;
+	CString StrFormat2, StrStageScores, StrPlayer, StrBomb, strGameTime;
 
 	THX_EXTRAINFO extrainfo = {0};
 	extrainfo.pFPSInfo = &m_pTHRpyInfo->fpsinfo;
@@ -440,7 +440,7 @@ void CRPYAnalyzer::TH8GenStageInfo()
 
 		FormatScore(pCurrStage->dwScores, StrStageScores, TRUE, TRUE);
 
-		Num2Star(pCurrStage->cLives, StrLives, 8);
+		Num2Star(pCurrStage->cLives, StrPlayer, 8);
 		Num2Star(pCurrStage->cBombs, StrBomb, 8);
 
 		StrFormat2.Format(
@@ -459,7 +459,7 @@ void CRPYAnalyzer::TH8GenStageInfo()
 
 			,m_pTHRpyInfo->stagenames[i]
 			,(int)pCurrStage->cPowers
-			,(LPCTSTR)StrLives
+			,(LPCTSTR)StrPlayer
 			,(LPCTSTR)StrBomb
 			,(int)pCurrStage->cPlayRank
 			,pCurrStage->nPoints
@@ -727,7 +727,7 @@ void CRPYAnalyzer::TH10GenStageInfo()
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
+			, (LPCTSTR)strPlayer
 			, pCurrStage->dwPower/20, pCurrStage->dwPower%20*5, pCurrStage->dwPower
 			, pCurrStage->dwFaith*10
 			, pCurrStage->dwComboGauge
@@ -793,7 +793,7 @@ void CRPYAnalyzer::TH11GenStageInfo()
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
+			, (LPCTSTR)strPlayer
 			, dwPowerInt, dwPowerDec, pCurrStage->dwPower
 			, pCurrStage->dwGraze
 			, min_pt, pCurrStage->dwConnect, min_rate/100, min_rate%100
@@ -843,12 +843,12 @@ void CRPYAnalyzer::TH12GenStageInfo()
 			_T("         座標:%8d/%d(%d/%d)\r\n")
 
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
-			, strBomb
+			, (LPCTSTR)strPlayer
+			, (LPCTSTR)strBomb
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
 			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
-			, strUFOStock
+			, (LPCTSTR)strUFOStock
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);
 		
@@ -959,9 +959,9 @@ void CRPYAnalyzer::TH13GenStageInfo()
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
+			, (LPCTSTR)strPlayer
 			, pCurrStageRelease->dwPlayerFragment, dwPlayerFragmentNorm
-			, strBomb
+			, (LPCTSTR)strBomb
 			, pCurrStageRelease->dwBombFragment, dwBombFragmentNorm
 			, pCurrStageRelease->dwPower/100, pCurrStageRelease->dwPower%100
 			, pCurrStage->dwGraze
@@ -1012,8 +1012,8 @@ void CRPYAnalyzer::TH14GenStageInfo()
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
-			, strBomb
+			, (LPCTSTR)strPlayer
+			, (LPCTSTR)strBomb
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwNon20Bonus
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
@@ -1062,8 +1062,8 @@ void CRPYAnalyzer::TH15GenStageInfo()
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
-			, strBomb
+			, (LPCTSTR)strPlayer
+			, (LPCTSTR)strBomb
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
@@ -1090,16 +1090,16 @@ void CRPYAnalyzer::TH16GenStageInfo()
 
 	// 自带录像信息中缺少子机季节
 	{
-		CString strSubWeapon;
-		switch(m_pTHRpyInfo2->dwEquipID) {
-		case 0: strSubWeapon = _T("Spring"); break;
-		case 1: strSubWeapon = _T("Summer"); break;
-		case 2: strSubWeapon = _T("Autumn"); break;
-		case 3: strSubWeapon = _T("Winter"); break;
-		case 4: strSubWeapon = _T("Full"); break;
-		default: strSubWeapon = _T("ERROR!"); break;
+		LPCTSTR szSubWeapon;
+		switch (m_pTHRpyInfo2->dwEquipID) {
+		case 0: szSubWeapon = _T("Spring"); break;
+		case 1: szSubWeapon = _T("Summer"); break;
+		case 2: szSubWeapon = _T("Autumn"); break;
+		case 3: szSubWeapon = _T("Winter"); break;
+		case 4: szSubWeapon = _T("Full"); break;
+		default: szSubWeapon = _T("ERROR!"); break;
 		}
-		StrFormat2.Format(_T("Season %s\r\n"), strSubWeapon);
+		StrFormat2.Format(_T("Season %s\r\n"), szSubWeapon);
 		m_info += StrFormat2;
 	}
 
@@ -1133,8 +1133,8 @@ void CRPYAnalyzer::TH16GenStageInfo()
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
-			, strBomb
+			, (LPCTSTR)strPlayer
+			, (LPCTSTR)strBomb
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
@@ -1186,12 +1186,12 @@ void CRPYAnalyzer::TH17GenStageInfo()
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			
 			, m_pTHRpyInfo2->stagenames[pCurrStage->hdr.wStageNumber-1]
-			, strPlayer
-			, strBomb
+			, (LPCTSTR)strPlayer
+			, (LPCTSTR)strBomb
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
-			, TH17FormatSpiritStock(pCurrStage->dwSpiritCount, pCurrStage->dwSpirits, strSpiritStock)
+			, (LPCTSTR)TH17FormatSpiritStock(pCurrStage->dwSpiritCount, pCurrStage->dwSpirits, strSpiritStock)
 			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);
