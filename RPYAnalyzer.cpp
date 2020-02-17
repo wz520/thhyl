@@ -1181,7 +1181,7 @@ void CRPYAnalyzer::TH17GenStageInfo()
 			_T("     1UPCount:%12lu\r\n")
 			_T("        Power:%9lu.%02lu\r\n")
 			_T("        Graze:%12lu\r\n")
-			_T("       道具靈:  %s\r\n")
+			_T("         靈槽:  %s\r\n")
 			_T("     最大得點:%9lu.%02lu\r\n")
 			_T("         座標:%12d/%d(%d/%d)\r\n")
 			

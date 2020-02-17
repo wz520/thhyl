@@ -439,7 +439,7 @@ static bool _GetStagePointers(
 			pOutInfo->fpsinfo.pointers[i] = (BYTE*)pCurr + pCurrHdr->dwhdrKeyStateSize*idata.nKeyStateElementSize + idata.o.stageSizeFix;
 
 			const bool isHalf = i == 0 && idata.o.stageCount < 0;  // 是否是 half(95, 125, 143, 165)
-			const int nStageNumberIndex = isHalf ? 0 : pCurrHdr->wStageNumber-1;  // 如果是 half，则让关卡索引强制为 0（因为只有 1 关）
+			const int nStageNumberIndex = isHalf ? 0 : pCurrHdr->wStageNumber-1;  // 如果是 half（小数点作），则让关卡索引强制为 0（因为只有 1 关）
 			// 填写 stagepointers
 			if (isHalf) {
 				pOutInfo->nStageNumberForHalf = pOutInfo->nSpellPracticeNumber;  // 填写 spell card 编号作为 stage number

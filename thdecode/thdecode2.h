@@ -302,7 +302,7 @@ typedef struct tagTH17_STAGEINFO {
     DWORD dwBombFragment;   // offset 0x88
     DWORD _u6[3];           // offset 0x8c
 
-	// 本作新要素：道具灵
+	// 本作新要素：灵槽
 	DWORD dwSpiritCount;    // offset 0x98
 	DWORD dwSpirits[5];     // offset 0x9c
 }TH17_STAGEINFO;
@@ -399,16 +399,16 @@ public:
     // just free() the pointer returned by ReplayDecode2()
 	union {
 		void* v[6]; 
-		THAL_STAGEINFO* alco[6];
-		TH10_STAGEINFO* th10[6];
-		TH11_STAGEINFO* th11[6];
-		TH12_STAGEINFO* th12[6];
+		THAL_STAGEINFO*  alco[6];
+		TH10_STAGEINFO*  th10[6];
+		TH11_STAGEINFO*  th11[6];
+		TH12_STAGEINFO*  th12[6];
 		TH128_STAGEINFO* th128[3];
-		TH13_STAGEINFO* th13[6];
-		TH14_STAGEINFO* th14[6];
-		TH15_STAGEINFO* th15[6];
-		TH16_STAGEINFO* th16[6];
-		TH17_STAGEINFO* th17[6];
+		TH13_STAGEINFO*  th13[6];
+		TH14_STAGEINFO*  th14[6];
+		TH15_STAGEINFO*  th15[6];
+		TH16_STAGEINFO*  th16[6];
+		TH17_STAGEINFO*  th17[6];
 		THHDR_STAGEINFO* thhdr[6];
 	 } pStageInfo;
 
