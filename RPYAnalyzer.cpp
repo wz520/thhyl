@@ -1173,6 +1173,7 @@ void CRPYAnalyzer::TH17GenStageInfo()
 		
 		Num2Star(pCurrStage->dwPlayer, strPlayer, 9, pCurrStage->dwPlayerFragment);
 		Num2Star(pCurrStage->dwBomb, strBomb, 9, pCurrStage->dwBombFragment);
+		TH17FormatSpiritStock(pCurrStage->dwSpiritCount, pCurrStage->dwSpirits, strSpiritStock);
 
 		StrFormat2.Format(
 			_T("\r\nStage %s:\r\n")
@@ -1181,7 +1182,7 @@ void CRPYAnalyzer::TH17GenStageInfo()
 			_T("     1UPCount:%12lu\r\n")
 			_T("        Power:%9lu.%02lu\r\n")
 			_T("        Graze:%12lu\r\n")
-			_T("         ì`²Û:  %s\r\n")
+			_T("         ì`²Û:  %s(%d/%d)\r\n")
 			_T("     ×î´óµÃüc:%9lu.%02lu\r\n")
 			_T("         ×ù˜Ë:%12d/%d(%d/%d)\r\n")
 			
@@ -1191,7 +1192,7 @@ void CRPYAnalyzer::TH17GenStageInfo()
 			, pCurrStage->dw1upCount
 			, pCurrStage->dwPower/100, pCurrStage->dwPower%100
 			, pCurrStage->dwGraze
-			, (LPCTSTR)TH17FormatSpiritStock(pCurrStage->dwSpiritCount, pCurrStage->dwSpirits, strSpiritStock)
+			, (LPCTSTR)strSpiritStock, pCurrStage->nRoaringTime, pCurrStage->nMaxRoaringTime
 			, pCurrStage->dwMaxScore/100, pCurrStage->dwMaxScore%100
 			, pCurrStage->nPosX, pCurrStage->nPosY, transPosX(pCurrStage->nPosX), transPosY(pCurrStage->nPosY)
 		);

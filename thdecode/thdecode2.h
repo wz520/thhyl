@@ -283,28 +283,42 @@ typedef struct tagTH16_STAGEINFO {
 typedef struct tagTH17_STAGEINFO {
     THHDR_STAGEINFO hdr;
 
-    int   nPosX;            // /128+224, player position X, offset 0x0c
-    int   nPosY;            // /128+16
-    DWORD _u1[8];           // offset 0x14
-	DWORD dwScore;			// offset 0x34
-    DWORD _u2[3];           // offset 0x38
-    DWORD dwGraze;          // offset 0x44
-    DWORD _u3[5];           // offset 0x48
-    DWORD dwMaxScore;       // offset 0x5c
-    DWORD _u4[2];           // offset 0x60
-    DWORD dwPower;          // offset 0x68
-    DWORD _u5[3];           // offset 0x6c
-    DWORD dwPlayer;         // offset 0x78
-    DWORD dwPlayerFragment; // offset 0x7c
-    DWORD dw1upCount;       // offset 0x80
+    int   nPosX;                // /128+224, player position X, offset 0x0c
+    int   nPosY;                // /128+16
+    DWORD _u1[8];               // offset 0x14
+	DWORD dwScore;			    // offset 0x34
+    DWORD _u2[3];               // offset 0x38
+    DWORD dwGraze;              // offset 0x44
+    DWORD _u3[5];               // offset 0x48
+    DWORD dwMaxScore;           // offset 0x5c
+    DWORD _u4[2];               // offset 0x60
+    DWORD dwPower;              // offset 0x68
+    DWORD _u5[3];               // offset 0x6c
+    DWORD dwPlayer;             // offset 0x78
+    DWORD dwPlayerFragment;     // offset 0x7c
+    DWORD dw1upCount;           // offset 0x80
 
-    DWORD dwBomb;           // offset 0x84
-    DWORD dwBombFragment;   // offset 0x88
-    DWORD _u6[3];           // offset 0x8c
+    DWORD dwBomb;               // offset 0x84
+    DWORD dwBombFragment;       // offset 0x88
+    DWORD _u6[3];               // offset 0x8c
 
 	// 本作新要素：灵槽
-	DWORD dwSpiritCount;    // offset 0x98
-	DWORD dwSpirits[5];     // offset 0x9c
+	DWORD dwSpiritCount;        // offset 0x98
+	DWORD dwSpirits[5];         // offset 0x9c
+	DWORD _u10[11];             // offset 0xb0
+	int   _nRoaringTimeMinus1;  // offset 0xdc   // 总是比下面的 nRoaringTime 小 1，用途未知。
+
+	// 咆哮模式的剩余时间（单位：帧）。
+	// 不处于咆哮模式时，该值可能为 0，也可能为 -1 。（因为自机射击时会加快该值的减少速度（每帧-2）。当该值还剩 1 时再 -2，自然就是 -1 了）
+	int   nRoaringTime;         // offset 0xe0   
+
+	float fRoaringTime;         // offset 0xe4   // 该值与 nRoaringTime 相同，只不过是 float 类型的。
+	DWORD _u11[2];              // offset 0xe8
+
+	// nRoaringTime 的最大值。
+	// 每次进入咆哮模式时会根据进入时的条件（比如是否是暴走咆哮、数量最多的灵是否与自机动物灵相同等等）而变化。
+	// 如果当前不处于咆哮模式，则应该是上次的咆哮模式的最大值（因为咆哮模式结束并不会将该值清零）
+	int   nMaxRoaringTime;      // offset 0xf0
 }TH17_STAGEINFO;
 
 
