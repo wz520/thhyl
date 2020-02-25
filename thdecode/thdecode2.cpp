@@ -659,6 +659,8 @@ static bool _GetStageInfo(
 			}
 			break;
 		case mgc15:
+			// ** Currently the trial version of th15 is not supported **
+			// Once supported, setMaxValuesForTrial() should be called for such replays.
 			idata.o.firstStage = 0xa4;
 
 			// 比其他作品多偏移了 0x30 bytes
@@ -687,8 +689,10 @@ static bool _GetStageInfo(
 			idata.o.stageSizeFix = pOutInfo->isTrialVersion() ? 0x284 : 0x294;
 			pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x98)) + 1;
 			break;
-		case mgc17:
 		case mgc17tr:
+			idata.setMaxValuesForTrial();
+			// no break
+		case mgc17:
 			idata.o.firstStage   = 0xa0;
 			idata.o.flags        = 0x44;
 
