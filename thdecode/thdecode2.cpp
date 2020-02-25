@@ -625,7 +625,7 @@ static bool _GetStageInfo(
 				const bool isTH14Trial = pOutInfo->isTrialVersion(); // th14 trial
 				if ( forceTH14 && ( isTH14Release || isTH14Trial ) ) { 
 					// treat as release version if forceTH14 is true
-					pOutInfo->wFlags |= forceTH14 ? RPYFLAG2_TH14RELEASE : RPYFLAG2_TH14TRIAL;
+					pOutInfo->wFlags |= isTH14Release ? RPYFLAG2_TH14RELEASE : RPYFLAG2_TH14TRIAL;
 
 					if ( isTH14Trial )
 						idata.setMaxValuesForTrial();
@@ -639,7 +639,7 @@ static bool _GetStageInfo(
 					idata.o.stageSizeFix  = 0xdc;
 
 					// get (Spell Practice Number), release version only
-					if (forceTH14)
+					if (isTH14Release)
 						pOutInfo->nSpellPracticeNumber = *((int*)(pData+0x90)) + 1;
 				}
 				else if (wVersion == 2 && (pOutInfo->dwGameVersion == 0x100 // th13 release
