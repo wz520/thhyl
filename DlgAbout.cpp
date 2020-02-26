@@ -91,8 +91,7 @@ static DWORD calcbit1count(DWORD n)
 	n = (n&0x33333333) + ((n>>2)&0x33333333);
 	n = (n&0x0f0f0f0f) + ((n>>4)&0x0f0f0f0f);
 	n = (n&0x00ff00ff) + ((n>>8)&0x00ff00ff);
-	n = (n&0x0000ffff) + ((n>>16)&0x0000ffff);
-	return n;
+	return (n&0x0000ffff) + ((n>>16)&0x0000ffff);
 }
 
 static DWORD GetCPUCount()
@@ -118,11 +117,11 @@ BOOL CDlgAbout::OnInitDialog()
 	const DWORD tid = GetCurrentThreadId();
 	const DWORD tickcount = GetTickCount();
 	abt.Format(
-		_T("%s %d.%d alpha\r\n\r\n")
-		_T("Written by wz520\r\n")
+		_T("%s %d.%02d alpha\r\n\r\n")
+		_T("Written by %c%c%u\r\n")
 		_T("贴吧ID: 天使的枷锁\r\n")
 		_T("邮箱: %s\r\n\r\n")
-		_T("更新地址：\r\n%s\r\nhttp://pan.baidu.com/s/1ntt4845\r\n\r\n")
+		_T("更新地址：\r\n%s\r\nhttps://pan.baidu.com/s/1pKRLyTd  (码：f928)\r\n\r\n")
 		_T("-----------------------------------------------\r\n")
 		_T("操作系统: Windows %s %s %s\r\n")
 		_T("处理器数量: %lu\r\n")
@@ -130,6 +129,7 @@ BOOL CDlgAbout::OnInitDialog()
 		_T("当前线程 TID: %lu(0x%lx)\r\n")
 		_T("GetTickCount(): %lu(0x%lx)\r\n")
 		, g_title, 1, 87
+		, _T('w'), _T('z'), 520
 		, myemail
 		, updateurl
 
