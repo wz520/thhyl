@@ -24,7 +24,7 @@ public:
 	CString m_strCurrComment;
 	CRPYAnalyzer* m_pRpyAnalyzer;
 	CWindowGluer* m_pWindowGluer;
-	void Analyze();
+	void Analyze(BOOL bMustRefreshFileList=FALSE);
 	void SpawnInstance(LPCTSTR lpszFileName);
 	CThhylDlg(CWnd* pParent = NULL);	// standard constructor
 

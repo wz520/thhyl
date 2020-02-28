@@ -82,9 +82,9 @@ BOOL CFileListWindow::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CFileListWindow::ChangeDir(const CString& strNewDir)
+void CFileListWindow::ChangeDir(const CString& strNewDir, BOOL bMustRefresh)
 {
-	if (m_strDir != strNewDir) {
+	if (bMustRefresh || m_strDir != strNewDir) {
 		m_strDir = strNewDir;
 		Refresh();
 	}
@@ -184,11 +184,11 @@ HTREEITEM CFileListWindow::TV_GetLastFileItem() const
 	return hMaybeLast;
 }
 
-void CFileListWindow::ChangeFilePath(const CString& strFilePath)
+void CFileListWindow::ChangeFilePath(const CString& strFilePath, BOOL bMustRefresh)
 {
 	CString dir_part;
 	filepath_utils::GetDir(strFilePath, dir_part, false);
-	this->ChangeDir(dir_part);
+	this->ChangeDir(dir_part, bMustRefresh);
 
 	CString filename_part;
 	filepath_utils::GetFilename(strFilePath, filename_part);

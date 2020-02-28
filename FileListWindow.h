@@ -20,9 +20,9 @@ class CFileListWindow : public CDialog
 {
 // Construction
 public:
-	void ChangeFilePath(const CString& strFilePath);
+	void ChangeFilePath(const CString& strFilePath, BOOL bMustRefresh=FALSE);
 	void Refresh();
-	void ChangeDir(const CString& szNewDir);
+	void ChangeDir(const CString& szNewDir, BOOL bMustRefresh=FALSE);
 	CString GetFirstFilePath() const;
 	CString GetPreviousFilePath() const;
 	CString GetNextFilePath() const;

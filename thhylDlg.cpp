@@ -298,7 +298,7 @@ int CThhylDlg::UserIconedMsgBox(LPCTSTR text, UINT uIconID, UINT uType, LPCTSTR 
 	return ::MessageBoxIndirect(&mbp);
 }
 
-void CThhylDlg::Analyze()
+void CThhylDlg::Analyze(BOOL bMustRefreshFileList)
 {
 	DWORD dwRead;
 	CString strInfo;
@@ -306,7 +306,7 @@ void CThhylDlg::Analyze()
 
 	m_pRpyData = ReadRPYFile(m_rpyfile, strInfo, this->m_hWnd, &m_filestatus, dwRead);
 	if (m_filestatus.IsValid()) {
-		m_pWndFileList->ChangeFilePath(m_rpyfile);
+		m_pWndFileList->ChangeFilePath(m_rpyfile, bMustRefreshFileList);
 	}
 	if ( m_pRpyData == NULL ) { 
 		if ( !strInfo.IsEmpty() ) {
@@ -644,7 +644,7 @@ void CThhylDlg::CopyOrMoveRpy(LPCTSTR DialogTitle, BOOL bCopy)
 		//如果是移动，或者在选项中选中了“打开复制后的目标文件”
 		if (!bCopy || HasConfigOption(CFG_COPYOPENDEST)) {
 			m_rpyfile = newfilename;
-			Analyze();
+			Analyze(TRUE);
 		}
 	}
 	else {
