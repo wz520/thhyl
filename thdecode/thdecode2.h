@@ -5,20 +5,20 @@
 #include "thcommon.h"
 
 // Touhou decode routines for
-// TH95, TH10, TH11, TH12, TH125, TH128, TH13, TH14, alcostg, TH143
+// alcostg, TH95, TH10, TH11, TH12, TH125, TH128, TH13, TH14, TH143, ...
 //
 // written by wz520
-// Last Update: 2015-08-28
 //
 // ------------ Changelog:
+//
+// * THE NEWER CHANGELOG MAY NOT BE UPDATED HERE ANY MORE BECAUSE I AM LAZY.
 //
 // 2015-08-16:
 // * 增加 th15 支持。
 // * 将 THRPYINFO2::pStageInfo 改成 union 以减少使用时强制转换的需要。
 //
 // 2014-06-03:
-// * added: "nPosX" and "nPosY" data member for TH11_STAGEINFO, TH12_STAGEINFO,
-//          TH128_STAGEINFO, TH13_STAGEINFO, TH14_STAGEINFO.
+// * added: "nPosX" and "nPosY" data member for TH11_STAGEINFO, TH12_STAGEINFO, TH128_STAGEINFO, TH13_STAGEINFO, TH14_STAGEINFO.
 //
 // 2013-09-09:
 // * added: "dwNon20Bonus" data member for TH14_STAGEINFO.
@@ -28,14 +28,11 @@
 // * fix: renamed THRPYINFO2::dwVersion2 to dwGameVersion.
 //
 // 2013-05-27:
-// * fix: changed type of TH11_STAGEINFO::dwContinuedTimes from char to DWORD.
-//        Fortunately, due to the memory alignment, using char type didn't
-//        cause errors.
+// * fix: changed type of TH11_STAGEINFO::dwContinuedTimes from char to DWORD.  Fortunately, due to the memory alignment, using char type didn't cause errors.
 // * add: TH10_STAGEINFO::dwComboGauge.
 // * add: THAL_STAGEINFO, TH14_STAGEINFO.
 // * add: THRPYINFO2::dwVersion2.
-// * fix: In order to simplify the code, the argument pOutInfo to
-//        ReplayDecode2() now CANNOT BE NULL.
+// * fix: In order to simplify the code, the argument pOutInfo to ReplayDecode2() now CANNOT BE NULL.
 //
 // 2012-02-17:
 // * add: some new data members to THRPYINFO2 structure
@@ -65,15 +62,15 @@
 // ---------------------- END RPYFLAGS2 --------------------------
 
 
-// RPY Header struct
+// RPY Header struct(start from the first byte of a rpy file)
 typedef struct tagTHHEADER2 {
     RPYMGC magic_number;
     WORD    rpy_version;
     WORD    padding;
-    DWORD   unknown1; // usually 0
-    DWORD   offsetUSER; // offset of the first USER block
+    DWORD   unknown1;         // usually 0
+    DWORD   offsetUSER;       // offset of the first USER block
     DWORD   game_version;
-    DWORD   unknown2[2]; // usually 0
+    DWORD   unknown2[2];      // usually 0
     DWORD   datasize;
     DWORD   decoded_datasize; // decompressed data size
 }THHEADER2;
@@ -90,7 +87,7 @@ typedef struct tagTHHEADER_STAGEINFO {
     // 6=b1-1,7=b1-2,8=b1-3,9=b2-2...
     // and 16=ex
     WORD  wStageNumber;
-    WORD  unused1;       // maybe random number
+    WORD  unused1;       // maybe random seed
     DWORD dwhdrKeyStateSize;
     DWORD dwhdrDataSize;
 }THHDR_STAGEINFO;
@@ -322,7 +319,7 @@ typedef struct tagTH17_STAGEINFO {
 }TH17_STAGEINFO;
 
 
-// for TH95/TH125/TH143
+// for TH95/TH125/TH143/TH165
 typedef struct tagTHHALF_INFO {
 	// Item ID and count, currently available for TH143 only.
 	int nDayID;   // zero based, need +1 for showing
@@ -353,8 +350,7 @@ public:
 	DWORD dwDecodeSize;  // 文件解码后的大小
 
 	// Player name: char[8] + '\0'
-	// However, sometimes some garbage data would be written into this
-	//   field and 'Name' in text format rpyinfo, which usually are 'Ai'.
+	// However, sometimes some garbage data would be written into this field and the 'Name' field in text format rpyinfo, which usually are 'Ai'.
 	// Keep 12 bytes here.
 	char szPlayerName[12];
 

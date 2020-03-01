@@ -770,9 +770,9 @@ void CThhylDlg::OnEditcomment()
 	else {
 		CDlgComment dlg;
 		dlg.m_pCommentData = &m_strCurrComment;
-		dlg.m_filename = m_rpyfile;
-		dlg.m_pRpyData = m_pRpyData;
-		dlg.m_dwRpySize = m_dwRpySize;
+		dlg.m_filename     = m_rpyfile;
+		dlg.m_pRpyData     = m_pRpyData;
+		dlg.m_dwRpySize    = m_dwRpySize;
 		if (dlg.DoModal()==IDOK)
 			Analyze();
 		
@@ -834,11 +834,7 @@ void CThhylDlg::OnSize(UINT nType, int cx, int cy)
 	
 	if ( IsWindow(this->GetSafeHwnd()) ) {
 		struct tagresizeinfo_t {
-			int ctrlID;
-			int x;
-			int y;
-			int w;
-			int h;
+			int ctrlID; int x; int y; int w; int h;
 		} resize_info[] = {
 			{IDC_STATIC_RPYFILE, 10, 10, cx-20, 50},
 			{IDC_RPYFILE, 20, 30, cx-40, 20},
@@ -1080,14 +1076,16 @@ void CThhylDlg::OnSaverawpart()
 	CSaveRawDlg dlg;
 	RPYINFO_POINTERS pointers;
 	m_pRpyAnalyzer->GetResultPointers(&pointers);
+
+
 	if (pointers.pRPYInfo2){
 		dlg.m_pRpyInfoBase = pointers.pRPYInfo2;
 	}
 	else
 		dlg.m_pRpyInfoBase = pointers.pRPYInfo1;
 	dlg.m_pRpyInfoPointers = &pointers;
-	dlg.m_dwRpySize = m_dwRpySize;
-	dlg.m_strFileName = m_rpyfile;
+	dlg.m_dwRpySize        = m_dwRpySize;
+	dlg.m_strFileName      = m_rpyfile;
 	
 	dlg.DoModal();
 	
@@ -1139,7 +1137,7 @@ void CThhylDlg::CopyOrCutFile(BOOL bCopy)
 	LPWSTR const msg      = bCopy ? L"文件已复制到剪贴板" : L"文件已剪切到剪贴板";
 	LPWSTR const msgerr   = bCopy ? L"无法复制文件到剪贴板" : L"无法剪切文件到剪贴板";
 	LPWSTR const msgtitle = bCopy ? L"无法复制" : L"无法剪切";
-	const HWND hRpyFile = ((CEdit*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd();
+	const HWND hRpyFile   = ((CEdit*)GetDlgItem(IDC_RPYFILE))->GetSafeHwnd();
 
 	if (!m_filestatus.IsValid()) {
 		ShowBalloonMsg( hRpyFile, L"尚未打开录像文件或文件格式不支持", msgtitle, TTI_WARNING);

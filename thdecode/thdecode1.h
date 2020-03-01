@@ -8,7 +8,6 @@
 // TH6, TH7, TH8, TH9
 //
 // written by wz520
-// Last Update: 2015-08-28
 //
 // ------------ Changelog:
 // see thdecode1.cpp

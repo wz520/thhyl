@@ -1,11 +1,9 @@
 /***************************************************************
  * Touhou decode routine for                                   *
- * TH95, TH10, TH11, TH12, TH125, TH128, TH13, TH14tr, alcostg *
+ * alcostg, TH95, TH10, TH11, TH12, TH125, TH128, TH13, ...    *
  *                                                             *
  * written by wz520                                            *
  ***************************************************************/
-
-// Last Update: 2015-08-28
 
 /////////////////////////////////////////////////
 //
@@ -21,6 +19,8 @@
 
 //
 // --------- Changelog
+//
+// * THE NEWER CHANGELOG MAY NOT BE UPDATED HERE ANY MORE BECAUSE I AM LAZY.
 //
 // 2015-08-17:
 // * 注意：本模块原本也可用 C 方式编译，现在已不再支持（只能用 C++ 方式编译）。
@@ -38,8 +38,7 @@
 //     Removed unnecessary variables, made the functions shorter.
 // * Removed unnecessary <stdio.h> including.
 // * Defined CALL_DECRYPT macro to make thdecode2_decrypt() calls shorter.
-// * THRPYINFO2::wFlags now available for th95 and th143, but still not
-//     th125(seems not saved in RPY).
+// * THRPYINFO2::wFlags now available for th95 and th143, but still not th125(seems not saved in RPY).
 // * moved some typedefs to thcommon.h
 // * moved RPYMGC2 to thcommon.h as RPYMGC.
 //
@@ -62,13 +61,10 @@
 //
 // 2012-02-21:
 // * added: check if rpy size <= 0x28 in ReplayDecode2(). If so, return NULL.
-//          This is impossible for a normal rpy.
-// * fixed: Var 'header', 'decodesize', 'decompress_size', 'wVersion' in
-//          ReplayDecode2() was initialized at the same time they were defined.
-//          This is dangerous because at this moment, rpy size has not been
-//            checked for validity.
-//          Now assigning value to them has been deferred until after checking
-//            rpy size.
+//          This is impossible for a regular rpy.
+// * fixed: Var 'header', 'decodesize', 'decompress_size', 'wVersion' in ReplayDecode2() was initialized at the same time they were defined.
+//          This is dangerous because at this moment, rpy size has not been checked for validity.
+//          Now assigning value to them has been deferred until after checking rpy size.
 //
 // 2012-02-17:
 // * fixed: g++ may give an 'operands to ?: have different types' error.
@@ -485,7 +481,7 @@ static bool GetHalfInfo(
 {
 	RPYOFFSETS* const o = &idata.o;
 	idata.nKeyStateElementSize = 6;
-	o->flags = 0;  // 若该值为 0 将不调用 SetFlags()
+	o->flags      = 0;     // 若该值为 0 将不调用 SetFlags()
 	o->clearScore = 0x14;
 	o->stageCount = -1;
 

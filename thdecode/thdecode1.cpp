@@ -5,9 +5,9 @@
  * written by wz520              *
  *********************************/
 
-// Last Update: 2015-08-24
-
 // ------------ Changelog:
+//
+// * THE NEWER CHANGELOG MAY NOT BE UPDATED HERE ANY MORE BECAUSE I AM LAZY.
 //
 // * 2014-06-03:
 // 1. Refactored thdecode1_decode():
@@ -23,14 +23,11 @@
 // * 2012-02-06:
 // 1. 更改 THRPYINFO::pGeneralInfo 的类型为 union ，这样就不用强制类型转换了，并且可以去掉一些 malloc() 和 free()
 // 2. 增加 RPYFLAGS: RPYFLAG_SHOTSLOW, RPYFLAG_P1CHARGE, RPYFLAG_P2CHARGE 。详见下面的说明
-// 3. 发现 TH6_STAGEINFO 结构里原本未知的 dwUnknown，其实是 wRandomSeed 和 wPoints 。
-//    wRandomSeed 顾名思义；wPoints 是蓝点数，和后续作品一样是从游戏开始累计的。
-// 4. 发现 TH7_STAGEINFO, TH8_STAGEINFO 和 TH9_STAGEINFO 结构里原本未知的 wUnknown
-//    果然是 randomseed 无误，改名为 wRandomSeed。
+// 3. 发现 TH6_STAGEINFO 结构里原本未知的 dwUnknown，其实是 wRandomSeed 和 wPoints 。 wRandomSeed 顾名思义；wPoints 是蓝点数，和后续作品一样是从游戏开始累计的。
+// 4. 发现 TH7_STAGEINFO, TH8_STAGEINFO 和 TH9_STAGEINFO 结构里原本未知的 wUnknown 果然是 randomseed 无误，改名为 wRandomSeed。
 // 5. TH9_STAGEINFO 结构新发现 cPlace 成员 ，对战场所，只在 Match 模式中有效。详见结构里的说明。
 // 6. THRPYINFO 结构增加 dwStageSizes, dwFrameCounts 两个成员，详见该结构的说明
-// 7. 才发现红魔乡 rpy 0x04 处原来和其他作品一样也是录像版本号……1.02h 版是 0x0102
-//    以前可能是调试方法问题没有跟踪到，以为游戏根本没用到，进而认为这不是版本号……
+// 7. 才发现红魔乡 rpy 0x04 处原来和其他作品一样也是录像版本号……1.02h 版是 0x0102 以前可能是调试方法问题没有跟踪到，以为游戏根本没用到，进而认为这不是版本号……
 // 8. 排版了一下代码，方便阅读
 // ⑨ 是笨蛋
 // ⑩ ...
@@ -423,13 +420,13 @@ static inline bool isCNVersion(
 void fillStagePointers(THRPYINFO* pOutInfo, const void* const * stagepointers, const DWORD * stagesizes, int player=0)
 {
 	for ( int i = 0; i < pOutInfo->nStageCount; ++i ) {
-		pOutInfo->stagepointers[player][i].p = (BYTE*)(stagepointers[i]);
+		pOutInfo->stagepointers[player][i].p      = (BYTE*)(stagepointers[i]);
 		pOutInfo->stagepointers[player][i].offset = (BYTE*)(stagepointers[i]) - pOutInfo->pDecodeData;
-		pOutInfo->stagepointers[player][i].size = stagesizes[i];
+		pOutInfo->stagepointers[player][i].size   = stagesizes[i];
 
-		pOutInfo->fpspointers[i].p = pOutInfo->fpsinfo.pointers[i];
+		pOutInfo->fpspointers[i].p      = pOutInfo->fpsinfo.pointers[i];
 		pOutInfo->fpspointers[i].offset = pOutInfo->fpsinfo.pointers[i] - pOutInfo->pDecodeData;
-		pOutInfo->fpspointers[i].size = pOutInfo->fpsinfo.sizes[i];
+		pOutInfo->fpspointers[i].size   = pOutInfo->fpsinfo.sizes[i];
 	}
 }
 
@@ -624,9 +621,7 @@ static RPYINFOERR TH8GetInfo(BYTE* pData, DWORD size, THRPYINFO* pOutInfo)
 static RPYINFOERR TH9GetInfo(BYTE* pData, DWORD size, THRPYINFO* pOutInfo)
 {
 	// stagenames
-	LPCTSTR const newstagenames[] = {
-		_T("7"), _T("8"), _T("9"), _T("Match")
-	};
+	LPCTSTR const newstagenames[] = { _T("7"), _T("8"), _T("9"), _T("Match") };
 	pOutInfo->setStageNames(newstagenames, 6, 4);
 
 	const DWORD decode_size = *((DWORD*)(pData+0x0C));
@@ -670,7 +665,7 @@ static RPYINFOERR TH9GetInfo(BYTE* pData, DWORD size, THRPYINFO* pOutInfo)
 
 		// 填写 stagepointers
 		if ( ret == RPYINFO_OK ) {
-			fillStagePointers(pOutInfo, &pOutInfo->pStageInfo.v[0], &pOutInfo->dwStageSizes[0]); // P1
+			fillStagePointers(pOutInfo, &pOutInfo->pStageInfo.v[0], &pOutInfo->dwStageSizes[0]);      // P1
 			fillStagePointers(pOutInfo, &pOutInfo->pStageInfo.v[10], &pOutInfo->dwStageSizes[10], 1); // P2
 		}
 	}
@@ -691,8 +686,8 @@ RPYINFOERR ReplayDecode(BYTE* pRpyData, DWORD rpysize, THRPYINFO* pInfo)
 		{mgc6,  &TH6GetInfo}, {mgc7,  &TH7GetInfo}, {mgc8,  &TH8GetInfo}, {mgc9,  &TH9GetInfo}
 	};
 
-	pInfo->header           = header;
-	pInfo->wVersion         = wVersion;
+	pInfo->header   = header;
+	pInfo->wVersion = wVersion;
 
 	for (int i=0; i<lengthof(RPYInfoFuncMap); ++i) {
 		if (header == RPYInfoFuncMap[i].header) {

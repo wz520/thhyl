@@ -73,7 +73,7 @@ CString& TH17FormatSpiritStock(DWORD dwSpiritCount, const DWORD spirits[], CStri
 	TCHAR szSpiritHZ[stock_count+1] = {0};  // +1 is for '\0'
 	LPCTSTR szSpiritHZMap = _T("空狼獭鹫Ｓ命Ｐ点水牛鸡龟埴马三");
 	for ( int i = 0; i < stock_count; ++i ) {
-		szSpiritHZ[i] = (i >= dwSpiritCount)
+		szSpiritHZ[i] = ((DWORD)(i) >= dwSpiritCount)
 			? szSpiritHZMap[0]
 			: (spirits[i] > stock_type_count)
 				? _T('误')

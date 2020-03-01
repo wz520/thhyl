@@ -147,7 +147,7 @@ int CRPYAnalyzer::GenInfoWrapper2()
 			m_pDecompData = ReplayDecode2(m_pData, m_nDataSize, m_pTHRpyInfo2);
 			if ( m_pDecompData ) {
 
-#if 1
+#if 0
 # ifdef _DEBUG
 				DumpRPYData(_T("c:\\rpyraw.bin"));
 # endif
@@ -388,14 +388,12 @@ void CRPYAnalyzer::TH7GenInfo()
 			,(LPCTSTR)StrPlayer
 			,(LPCTSTR)StrBomb
 			,(int)pCurrStage->cPlayRank
-			,pCurrStage->nPoints
-			,pCurrStage->nNextPoints
+			,pCurrStage->nPoints, pCurrStage->nNextPoints
 			,pCurrStage->nGrazes
 			,pCurrStage->cSpellCardBonusCount
 			,pCurrStage->n1upByPointsCount
 			,pCurrStage->nCurrCherriesPlus
-			,pCurrStage->nCurrCherries
-			,pCurrStage->nMaxCherries
+			,pCurrStage->nCurrCherries, pCurrStage->nMaxCherries
 		);
 
 		m_info += StrFormat2;
@@ -462,8 +460,7 @@ void CRPYAnalyzer::TH8GenStageInfo()
 			,(LPCTSTR)StrPlayer
 			,(LPCTSTR)StrBomb
 			,(int)pCurrStage->cPlayRank
-			,pCurrStage->nPoints
-			,pCurrStage->nNextPoints
+			,pCurrStage->nPoints, pCurrStage->nNextPoints
 			,pCurrStage->nGrazes
 			,pCurrStage->cSpellCardBonusCount
 			,pCurrStage->n1upByPointsCount

@@ -95,11 +95,11 @@ typedef struct tagTH_STAGEPOINTER {
 class THRPYINFO_BASE
 {
 public:
-	TH_FPSINFO		fpsinfo;    // FPS 数据相关结构
+	TH_FPSINFO		fpsinfo;                               // FPS 数据相关结构
 	TH_STAGEPOINTER stagepointers[2][THRPYINFO_MAXSTAGES]; // 关卡指针信息，最多 THRPYINFO_MAXSTAGES 个，但是 TH9 有 2 个 PLAYER
-	TH_STAGEPOINTER fpspointers[THRPYINFO_MAXSTAGES]; // 与 fpsinfo 不同，这里一个索引对应一个固定关卡，而 fpsinfo 在 THRPYINFO2 中则不一定
-	LPCTSTR			stagenames[THRPYINFO_MAXSTAGES]; // 关卡名，最多 THRPYINFO_MAXSTAGES 个（妖精大战争）
-	int				nStageNumberForHalf;	// 95,125,143 的关卡编号，初始 -1 表示未设置
+	TH_STAGEPOINTER fpspointers[THRPYINFO_MAXSTAGES];      // 与 fpsinfo 不同，这里一个索引对应一个固定关卡，而 fpsinfo 在 THRPYINFO2 中则不一定
+	LPCTSTR			stagenames[THRPYINFO_MAXSTAGES];       // 关卡名，最多 THRPYINFO_MAXSTAGES 个（妖精大战争）
+	int				nStageNumberForHalf;                   // 95,125,143 的关卡编号，初始 -1 表示未设置
 
 	void setStageNames(LPCTSTR const newnames[], int start, int length);
 
