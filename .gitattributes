@@ -15,3 +15,12 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+
+# Encoding
+
+*.cpp		encoding=GBK
+*.h			encoding=GBK
+*.rc		encoding=GBK
+*.rc2		encoding=GBK
+*.ds[wp]	encoding=GBK
