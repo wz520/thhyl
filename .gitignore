@@ -57,3 +57,5 @@ tags
 trash/
 Release/
 Debug/
+
+.vscode/
